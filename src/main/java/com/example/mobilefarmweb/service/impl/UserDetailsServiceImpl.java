@@ -34,10 +34,27 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 		User user = userService.findUserByUsername(userName);
 		if (user == null) {
-			throw new UsernameNotFoundException(String.format("No user found with username: %s", userName));
+			throw new UsernameNotFoundException(String.format("Не найден пользователь с именем пользователя: %s", userName));
 		}
+
 		List<GrantedAuthority> authorities = getUserAuthority(user.getRoles());
+		System.out.println("Пользователь"+ user);
 		return buildUserForAuthentication(user, authorities);
+	}
+
+	@Transactional
+	public UserDetails loadUserByUsernameAndUnp(String userName, String unp) throws UsernameNotFoundException {
+		User user = userService.findUserByUsername(userName);
+		if (user == null) {
+			throw new UsernameNotFoundException(String.format("Не найден пользователь с именем пользователя: %s", userName));
+		}
+		if(isValidUNP(unp, user.getOrganization().getUnp()))
+		{
+			List<GrantedAuthority> authorities = getUserAuthority(user.getRoles());
+			System.out.println(user);
+			return buildUserForAuthentication(user, authorities);
+		}
+		else return null;
 	}
 
 	private List<GrantedAuthority> getUserAuthority(Set<Role> userRoles) {
@@ -50,9 +67,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 	private UserDetails buildUserForAuthentication(User user, List<GrantedAuthority> authorities) {
 		System.out.println("authorities"+authorities);
-		System.out.println("Введённый"+user.getOrganization().getUnp());
+		System.out.println("Из бд"+user.getOrganization().getUnp());
+		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+					user.isActive(), true, true, true, authorities);
+	}
+	private UserDetails buildUserForAuthentication(String unp, User user, List<GrantedAuthority> authorities) {
+		System.out.println("authorities"+authorities);
+		System.out.println("Введённый"+unp);
 		System.out.println("Из бд"+organizationService.getOrganizationByUNP(user.getOrganization().getUnp()).getUnp());
-		if(user.getOrganization().getUnp().equals(organizationService.getOrganizationByUNP(user.getOrganization().getUnp()).getUnp())) {
+		if(user.getOrganization().getUnp().equals(unp)) {
 			return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
 					user.isActive(), true, true, true, authorities);
 		}
@@ -61,4 +84,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 					user.isActive(), true, true, true, authorities);
 		}
 	}
+	private boolean isValidUNP(String unpL, String unpDB) {
+		// Реализуйте проверку UNP здесь
+		if(unpDB.equals(unpL))
+		{// Возвращайте true, если UNP действителен, иначе false
+		return true;}
+		else {return false;}
+	}
+
+
 }
