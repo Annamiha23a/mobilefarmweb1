@@ -42,19 +42,19 @@ public class LoginController {
 		return "login";
 	}
 
-//	@PostMapping("/perform_login_unp")
-//	public String perform_login(@RequestParam String unp, @RequestParam String username, @RequestParam String password){
-//		System.out.println("Мой контроллер");
-//		User user = userService.findUserByUsername(username);
-//		System.out.println("Введённый"+unp);
-//		if(user.getOrganization().getUnp().equals(unp))
-//		{
-//			userDetailsServiceImpl.loadUserByUsername(username);
-//			return "start";
-//		}
-//		else {
-//			throw new UsernameNotFoundException(String.format("UNP не совпадает"));
-//		}
-//
-//	}
+	@PostMapping("/perform_login")
+	public String perform_login(@RequestParam String unp, @RequestParam String username, @RequestParam String password){
+		System.out.println("Мой контроллер");
+		User user = userService.findUserByUsername(username);
+		System.out.println("Введённый"+unp);
+		if(user.getOrganization().getUnp().equals(unp))
+		{
+			userDetailsServiceImpl.loadUserByUsername(username);
+			return "start";
+		}
+		else {
+			throw new UsernameNotFoundException(String.format("UNP не совпадает"));
+		}
+
+	}
 }

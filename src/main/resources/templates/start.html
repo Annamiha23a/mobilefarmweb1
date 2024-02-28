@@ -8,16 +8,19 @@
           integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
     <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/location.css">
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
 </head>
 <body>
-<header th:insert="blocks/header :: header"></header>
+<!--<header th:insert="blocks/header :: header"></header>-->
 
-<div class="container mt-5">
+<div class="sidebar" th:insert="blocks/navication :: nav" ></div>
+
+<div class="content container mt-5">
     <div class="album py-5 t">
 
         <div class="fadeIn first">
-            <img src="https://sun9-80.userapi.com/impf/G8JVzlSLrPzoy0CI6p6q1Uo9pGZ8i6hbb8a_XA/ZGIOtsO-XgE.jpg?size=1920x768&quality=95&crop=0,0,939,375&sign=b3263773f6c514ef0ffe9820a8d16dd0&type=cover_group" id="icon" alt="User Icon" />
+            <img src="https://pro-dachnikov.com/uploads/posts/2021-10/1634042070_20-pro-dachnikov-com-p-rancho-foto-20.jpg" id="icon" alt="User Icon" />
         </div>
         <h1 th:utext="${user.firstName}+'!'"></h1>
     <h1>Добро пожаловать в веб версию мобильной фермы</h1>
@@ -25,7 +28,7 @@
 
     </div>
 </div>
-<footer th:insert="blocks/footer :: footer"></footer>
+<!--<footer th:insert="blocks/footer :: footer"></footer>-->
 </body>
 </html>
 

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +38,14 @@ public class UserController {
 		users.add(user);
 		model.addAttribute("user", users);
 		return "user-details";
+	}
+
+	@GetMapping("/user/office")
+	public String userOffice(Principal principal, Model model){
+		User user= userService.findUserByUsername(principal.getName());
+		System.out.println(principal);
+		model.addAttribute("user", user);
+		return "userOffice";
 	}
 
 	@PostMapping("/user/{id}/remove")

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="nav">
+    <nav >
+        <style>
+            /* Дополнительные стили для бокового меню */
+            #sidebar1 {
+                width: 250px;
+                background-color: #f8f9fa;
+                padding: 20px;
+            }
+            #sidebar2 {
+                width: 250px;
+                background-color: #f8f9fa;
+                padding: 20px;
+                padding-top: 90%;
+            }
+        </style>
+        </head>
+        <div >
+            <div id="sidebar1">
+                <h2>Веб ферма</h2>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/start">Главная</a>
+                    </li>
+                    <div th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}" class="unauthorized">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/users">Пользователи</a>
+                        </li>
+                    </div>
+                    <div th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}" class="unauthorized">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/office">Личный кабинет</a>
+                        </li>
+                    </div>
+                </ul>
+
+            </div>
+            <div id="sidebar2">
+                <ul class="nav flex-column">
+
+                    <div th:if="${#authorization.expression('hasAuthority(''ROLE_USER'')')}" class="unauthorized">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Соискатель</a>
+                        </li>
+                    </div>
+                    <div th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}" class="unauthorized">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Администратор</a>
+                        </li>
+                    </div>
+                </ul>
+                <form name="logout" th:action="@{/logout}" method="post">
+                    <button class="btn btn-primary" type="submit">Выйти</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+</div>
+
+</body>
+
+</html>

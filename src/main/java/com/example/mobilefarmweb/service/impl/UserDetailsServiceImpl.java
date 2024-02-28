@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Random;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -39,6 +40,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 		List<GrantedAuthority> authorities = getUserAuthority(user.getRoles());
 		System.out.println("Пользователь"+ user);
+		Random random = new Random();
+		int number = 100000 + random.nextInt(999999); // number is in the range of 10 to 109
+		System.out.println(number);
+
 		return buildUserForAuthentication(user, authorities);
 	}
 
