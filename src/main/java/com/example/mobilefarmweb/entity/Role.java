@@ -15,8 +15,16 @@ public class Role {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_role")
-	private int id;
+	private Integer id;
 
 	@Column(name = "role")
 	private String role;
+
+	@Override
+	public String toString(){
+		return "Role{" +
+				"id=" + id +
+				", role='" + role + '\'' +
+				'}';
+	}
 }

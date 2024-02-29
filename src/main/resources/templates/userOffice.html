@@ -6,10 +6,10 @@
     <title>Личный кабинет</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/footer.css">
-    <link rel="stylesheet" href="css/style.css">
+
+<!--    <link rel="stylesheet" type="text/css" href="css/style.css">-->
     <link rel="stylesheet" href="css/location.css">
-    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+    <link rel="stylesheet"  type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
 </head>
 <body>
 <!--<header th:insert="blocks/header :: header"></header>-->
@@ -35,8 +35,10 @@
             <h1 th:utext="${'<strong>Активный:</strong> ' + user.isActive()}"></h1>
             <br>
             <br>
-            <h1 th:utext="${'<strong>Роль:</strong> ' + user.getRoles()}"></h1>
+            <div th:each="el:${roles}"  class="container">
+            <h1 th:utext="${'<strong>Роль:</strong> ' + el.getRole()}"></h1>
             <br>
+            </div>
             <form th:action="'/user/'+${user.getId()}+'/update'" method="get">
                 <button class="btn  btn-success" type="submit">Редактировать</button>
             </form>

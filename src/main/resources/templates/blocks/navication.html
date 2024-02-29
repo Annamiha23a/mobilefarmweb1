@@ -18,7 +18,6 @@
                 padding-top: 90%;
             }
         </style>
-        </head>
         <div >
             <div id="sidebar1">
                 <h2>Веб ферма</h2>
@@ -33,7 +32,7 @@
                     </div>
                     <div th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}" class="unauthorized">
                         <li class="nav-item">
-                            <a class="nav-link" href="/user/office">Личный кабинет</a>
+                            <a class="nav-link" href="/office">Личный кабинет</a>
                         </li>
                     </div>
                 </ul>

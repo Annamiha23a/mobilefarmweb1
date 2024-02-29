@@ -1,6 +1,8 @@
 package com.example.mobilefarmweb.controller;
 
+import com.example.mobilefarmweb.entity.Role;
 import com.example.mobilefarmweb.entity.User;
+import com.example.mobilefarmweb.service.impl.RoleServiceImpl;
 import com.example.mobilefarmweb.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,15 +14,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Controller
 public class UserController {
 	private final UserServiceImpl userService;
+	private final RoleServiceImpl roleService;
 
 	@Autowired
-	public UserController(UserServiceImpl userService) {
+	public UserController(UserServiceImpl userService, RoleServiceImpl roleService) {
 		this.userService = userService;
+		this.roleService = roleService;
 	}
 
 	@GetMapping("/users")
@@ -40,11 +45,20 @@ public class UserController {
 		return "user-details";
 	}
 
-	@GetMapping("/user/office")
+	@GetMapping("/office")
 	public String userOffice(Principal principal, Model model){
 		User user= userService.findUserByUsername(principal.getName());
-		System.out.println(principal);
+		List<Role> roles = new ArrayList<>();
+		for (Role role : user.getRoles()) {
+			// Действия с каждым элементом role
+			System.out.println(role.getRole());
+			roles.add(role);
+		}
+		//Role role = roleService.findRoleById(user.getRoles());
+		System.out.println("user.getRoles()"+ user.getRoles());
+		System.out.println("principal"+principal);
 		model.addAttribute("user", user);
+		model.addAttribute("roles", roles);
 		return "userOffice";
 	}
 
