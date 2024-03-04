@@ -20,11 +20,15 @@ public class Role {
 	@Column(name = "role")
 	private String role;
 
+	@Column(name = "title")
+	private String title;
+
 	@Override
 	public String toString(){
 		return "Role{" +
 				"id=" + id +
 				", role='" + role + '\'' +
+				", title='" + title + '\'' +
 				'}';
 	}
 }
