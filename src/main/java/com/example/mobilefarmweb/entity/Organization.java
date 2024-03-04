@@ -18,13 +18,13 @@ public class Organization {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long organizationId;
 
-//    @ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "location_id", nullable = false)
-//    private LocationEntity location;
-//
-//    @ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "owner_id", nullable = false)
-//    private OwnerEntity owner;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "location_id", nullable = false)
+    private Location location;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "owner_id", nullable = false)
+    private Owner owner;
 //
 //    @OneToMany(mappedBy = "organization")
 //    private List<FarmEntity> farms;

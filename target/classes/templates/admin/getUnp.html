@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaef.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Организация</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+
+    <!--    <link rel="stylesheet" type="text/css" href="css/style.css">-->
+    <link rel="stylesheet" href="css/location.css">
+    <link rel="stylesheet"  type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+</head>
+<body>
+<!--<header th:insert="blocks/header :: header"></header>-->
+
+
+<div class="sidebar" th:insert="blocks/navication :: nav" ></div>
+
+<div class="content container mt-5">
+
+    <h1>Организация</h1>
+
+    <div  class="alert alert-primary mt-2">
+        <h1 th:utext="${'<strong>Глобальный идентификатор:</strong> ' + organization.getGln()}"></h1>
+        <br>
+        <h1 th:utext="${'<strong>Полное название:</strong> ' + organization.getName()}"></h1>
+        <br>
+        <h1 th:utext="${'<strong>Сокращённое название:</strong> ' + organization.getShortName()}"></h1>
+        <br>
+        <h1 th:utext="${'<strong>Код УНП:</strong> ' + organization.getUnp()}"></h1>
+        <br>
+        <h1 th:utext="${'<strong>Код ОКПО:</strong> ' + organization.getOkpo()}"></h1>
+        <br>
+        <h1 th:utext="${'<strong>Код банка:</strong> ' + organization.getBankCode()}"></h1>
+        <br>
+        <h1 th:utext="${'<strong>Расчётный счёт:</strong> ' + organization.getPaymentAccount()}"></h1>
+        <br>
+
+    </div>
+    <h1>Руководитель</h1>
+    <div  class="alert alert-primary mt-2">
+        <h1 th:utext="${'<strong>Фамилия:</strong> ' + organization.owner.getLastName()}"></h1>
+        <br>
+        <h1 th:utext="${'<strong>Имя:</strong> ' + organization.owner.getFirstName()}"></h1>
+        <br>
+        <h1 th:utext="${'<strong>Отчёство:</strong> ' + organization.owner.getMiddleName()}"></h1>
+        <br>
+    </div>
+    <h1>Адресная информация</h1>
+    <div  class="alert alert-primary mt-2">
+        <h1 th:utext="${'<strong>Почтовый индекс:</strong> ' + organization.location.getLocationIndex()}"></h1>
+        <br>
+        <h1 th:utext="${'<strong>Область:</strong> ' + organization.location.getRegion()}"></h1>
+        <br>
+        <h1 th:utext="${'<strong>Район:</strong> ' + organization.location.getDistrict()}"></h1>
+        <br>
+        <h1 th:utext="${'<strong>Населённый пункт:</strong> ' + organization.location.getLocationName()}"></h1>
+        <br>
+        <h1 th:utext="${'<strong>Координаты:</strong> ' + organization.location.getCoordinates()}"></h1>
+        <br>
+        <h1 th:utext="${'<strong>Дом:</strong> ' + organization.location.getHouseNumber()}"></h1>
+        <br>
+    </div>
+    <h1>Контактная информация</h1>
+    <div  class="alert alert-primary mt-2">
+        <h1 th:utext="${'<strong>Телефон:</strong> ' + organization.location.getPhoneNumber()}"></h1>
+        <br>
+        <h1 th:utext="${'<strong>Факс:</strong> ' + organization.location.getFaxNumber()}"></h1>
+        <br>
+        <h1 th:utext="${'<strong>E-mail:</strong> ' + organization.location.getEmail()}"></h1>
+        <br>
+    </div>
+</div>
+<!--<footer th:insert="blocks/footer :: footer"></footer>-->
+</body>
+</html>
+
+
+
+

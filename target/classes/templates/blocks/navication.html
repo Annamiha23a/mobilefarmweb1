@@ -15,7 +15,7 @@
                 width: 250px;
                 background-color: #f8f9fa;
                 padding: 20px;
-                padding-top: 90%;
+                /*padding-top: 80%;*/
             }
         </style>
         <div >
@@ -33,6 +33,41 @@
                     <div th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}" class="unauthorized">
                         <li class="nav-item">
                             <a class="nav-link" href="/office">Личный кабинет</a>
+                        </li>
+                    </div>
+                    <div th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}" class="unauthorized">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/organizations/unp">Документация и сведения</a>
+                        </li>
+                    </div>
+                    <div th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}" class="unauthorized">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/office">Виды учёта</a>
+                        </li>
+                    </div>
+                    <div th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}" class="unauthorized">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/office">Зоотехния</a>
+                        </li>
+                    </div>
+                    <div th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}" class="unauthorized">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/office">Управление фермой</a>
+                        </li>
+                    </div>
+                    <div th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}" class="unauthorized">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/office">Ветеринария</a>
+                        </li>
+                    </div>
+                    <div th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}" class="unauthorized">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/office">Выпуск продукции</a>
+                        </li>
+                    </div>
+                    <div th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}" class="unauthorized">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/office">О нас</a>
                         </li>
                     </div>
                 </ul>
