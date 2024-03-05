@@ -17,7 +17,6 @@
         </div>
 
         <form th:action="@{/perform_login}" method="post">
-            <input type="text" id="unp" class="form-control" name="unp" placeholder="unp">
             <input type="text" id="username" class="form-control" name="username" placeholder="login">
             <input type="text" id="password" class="form-control" name="password" placeholder="password">
             <div class="form-row"  th:if="${param.error}">

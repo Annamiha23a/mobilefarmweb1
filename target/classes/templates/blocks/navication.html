@@ -5,6 +5,20 @@
 <div th:fragment="nav">
     <nav >
         <style>
+            .sidebar {
+                height: 100%;
+                width: 250px;
+                position: fixed;
+                top: 0;
+                left: 0;
+                background-color: #f8f9fa;
+                padding-top: 20px;
+            }
+
+            .content {
+                margin-left: 250px;
+                padding: 20px;
+            }
             /* Дополнительные стили для бокового меню */
             #sidebar1 {
                 width: 250px;
@@ -17,6 +31,56 @@
                 padding: 20px;
                 /*padding-top: 80%;*/
             }
+            /* Стилизация выпадающей кнопки */
+            .dropbtn {
+
+                color: blue;
+                border: none;
+                /*cursor: pointer;*/
+            }
+
+            /* Контейнер <div> - необходимо разместить выпадающий контент */
+            .dropdown {
+                position: relative;
+                display: block;
+                padding: 0.5rem 1rem;
+                /*margin-bottom: -1px;*/
+            }
+            .dropdown:hover, .dropdown:focus {
+                text-decoration: none;
+            }
+
+
+            /* Выпадающий контент (скрыт по умолчанию) */
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: #f9f9f9;
+                min-width: 160px;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                z-index: 1;
+            }
+
+            /* Ссылки внутри выпадающего */
+            .dropdown-content a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+
+            /* Изменить цвет выпадающих ссылок при наведении */
+            .dropdown-content a:hover {background-color: #f1f1f1}
+
+            /* Показать выпадающее меню при наведении */
+            .dropdown:hover .dropdown-content {
+                display: block;
+            }
+
+            /*!* Изменить цвет фона кнопки выпадающего списка, когда отображается содержимое выпадающего списка. *!*/
+            /*.dropdown:hover .dropbtn {*/
+            /*    background-color: #3e8e41;*/
+            /*}*/
         </style>
         <div >
             <div id="sidebar1">
@@ -42,12 +106,28 @@
                     </div>
                     <div th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}" class="unauthorized">
                         <li class="nav-item">
-                            <a class="nav-link" href="/office">Виды учёта</a>
+                            <div class="dropdown">
+                                <button class="dropbtn">Виды учёта</button>
+                                <div class="dropdown-content">
+                                    <a href="#">Производственный</a>
+                                    <a href="#">Бухгалтерский</a>
+                                    <a href="#">Управленческий</a>
+                                </div>
+                            </div>
                         </li>
                     </div>
                     <div th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}" class="unauthorized">
                         <li class="nav-item">
-                            <a class="nav-link" href="/office">Зоотехния</a>
+                            <div class="dropdown">
+                                <button class="dropbtn">Зоотехния</button>
+                                <div class="dropdown-content">
+                                    <a href="#">Уход за животными</a>
+                                    <a href="/farms">Обьекты хозяйствования</a>
+                                    <a href="#">Реестр паспортов</a>
+                                    <a href="#">Движения поголовья</a>
+                                    <a href="#">Кормление</a>
+                                </div>
+                            </div>
                         </li>
                     </div>
                     <div th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}" class="unauthorized">
@@ -92,6 +172,8 @@
                 </form>
             </div>
         </div>
+
+
     </nav>
 </div>
 
