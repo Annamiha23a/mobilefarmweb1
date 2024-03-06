@@ -30,8 +30,8 @@ public class Farm {
     @JoinColumn(name = "owner_id", nullable = false)
     private Owner owner;
 
-//    @OneToMany(mappedBy = "farm")
-//    private List<AnimalPassport> animalPassports;
+    @OneToMany(mappedBy = "farm")
+    private List<AnimalPassport> animalPassports;
 
     @Column(name = "gln", nullable = false)
     private String gln;

@@ -20,15 +20,15 @@
 <div  class="content container mt-5">
 
     <h1>Животновод. объекты</h1>
-
     <div th:each="farm:${farms}" class="alert alert-primary mt-2">
+
         <h2 th:utext="${farm.getName}"></h2>
         <br>
         <h4 th:utext="${farm.location.getLocationIndex()+ ', '+ farm.location.getRegion()+ ' обл., '+ farm.location.getDistrict()+' район, '+ farm.location.getLocationName() }" ></h4>
         <br>
         <h3 th:utext="${'<strong>Код объекта:</strong> ' + farm.getGln}"></h3>
+        <h3 th:utext="${'<strong>Кол-во животных:</strong> ' + farm.animalPassports.size()}"></h3>
         <br>
-
 
     </div>
 </div>

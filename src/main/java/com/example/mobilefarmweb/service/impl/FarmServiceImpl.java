@@ -1,5 +1,6 @@
 package com.example.mobilefarmweb.service.impl;
 
+import com.example.mobilefarmweb.entity.AnimalPassport;
 import com.example.mobilefarmweb.entity.Farm;
 import com.example.mobilefarmweb.entity.Organization;
 import com.example.mobilefarmweb.entity.Owner;
@@ -19,12 +20,14 @@ public class FarmServiceImpl implements FarmService {
     private final FarmRepository farmRepository;
     private final OrganizationRepository organizationRepository;
     private final OwnerRepository ownerRepository;
+    private final AnimalPassportServiceImpl animalPassportService;
 
     @Autowired
-    public FarmServiceImpl(FarmRepository farmRepository, OrganizationRepository organizationRepository, OwnerRepository ownerRepository){
+    public FarmServiceImpl(FarmRepository farmRepository, OrganizationRepository organizationRepository, OwnerRepository ownerRepository, AnimalPassportServiceImpl animalPassportService){
         this.farmRepository = farmRepository;
         this.organizationRepository= organizationRepository;
         this.ownerRepository=ownerRepository;
+        this.animalPassportService=animalPassportService;
     }
     @Override
     public Farm getFarmByGLN(String gln) {
@@ -35,6 +38,8 @@ public class FarmServiceImpl implements FarmService {
     public List<Farm> getFarmsByOrganizationId(Long organizationId) {
         return farmRepository.findByOrganization_OrganizationId(organizationId);
     }
+
+
 
 //    @Override
 //    public List<Farm> getFarmsByOrganizationId(Long organizationId) {

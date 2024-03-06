@@ -25,9 +25,9 @@ public class Organization {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "owner_id", nullable = false)
     private Owner owner;
-//
-//    @OneToMany(mappedBy = "organization")
-//    private List<FarmEntity> farms;
+
+    @OneToMany(mappedBy = "organization")
+    private List<Farm> farms;
 
     @Column(name = "gln", nullable = false)
     private String gln;

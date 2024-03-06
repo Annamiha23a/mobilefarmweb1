@@ -50,10 +50,6 @@ public class User {
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "id_user"), inverseJoinColumns = @JoinColumn(name = "id_role"))
 	private Set<Role> roles;
 
-//	@JsonIgnore
-//	@ManyToOne
-//	@JoinTable(name = "user_organization", joinColumns = @JoinColumn(name = "organizationId"), inverseJoinColumns = @JoinColumn(name = "organizationId"))
-//	private OrganizationEntity organization;
 
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch =FetchType.LAZY)
 	@JoinColumn(name="id_organization")
