@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Фермы</title>
+    <title>Животновод. объекты</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
 
@@ -17,17 +17,21 @@
 
 <div class="sidebar" th:insert="blocks/navication :: nav" ></div>
 
-<!--<div th:each="farm:${farms}" class="content container mt-5">-->
+<div  class="content container mt-5">
 
-<!--    <h1>Ферма</h1>-->
+    <h1>Животновод. объекты</h1>
 
-<!--    <div  class="alert alert-primary mt-2">-->
-<!--        <h1 th:utext="${'<strong>Глобальный идентификатор:</strong> ' + farm.getFarmid}"></h1>-->
-<!--        <br>-->
+    <div th:each="farm:${farms}" class="alert alert-primary mt-2">
+        <h2 th:utext="${farm.getName}"></h2>
+        <br>
+        <h4 th:utext="${farm.location.getLocationIndex()+ ', '+ farm.location.getRegion()+ ' обл., '+ farm.location.getDistrict()+' район, '+ farm.location.getLocationName() }" ></h4>
+        <br>
+        <h3 th:utext="${'<strong>Код объекта:</strong> ' + farm.getGln}"></h3>
+        <br>
 
 
-<!--    </div>-->
-<!--</div>-->
+    </div>
+</div>
 <!--<footer th:insert="blocks/footer :: footer"></footer>-->
 </body>
 </html>
