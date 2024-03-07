@@ -11,4 +11,6 @@ public interface FarmService {
 //    Farm updateFarmById(Farm farm, String gln, Long organizationId, Long ownerId);
 //
 //    void deleteFarmById(Long farmId);
+    List<Farm> getFarmByName(List<Farm> farms, String name);
+    List<Farm> getFarmsByOrganizationIdAndName(Long organizationId, String name);
 }

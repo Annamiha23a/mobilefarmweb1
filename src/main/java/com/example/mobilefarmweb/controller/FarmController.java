@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -27,10 +28,10 @@ public class FarmController {
         this.userService=userService;
     }
     @GetMapping()
-    public String getFarmByOrganizationId(Principal principal, Model model){
+    public String getFarmByOrganizationId(Principal principal, Model model, @RequestParam(name="title", required = false) String title){
         User user= userService.findUserByUsername(principal.getName());
         Organization organization=user.getOrganization();
-        List<Farm> farms=farmService.getFarmsByOrganizationId(organization.getOrganizationId());
+        List<Farm> farms=farmService.getFarmsByOrganizationIdAndName(organization.getOrganizationId(), title);
         model.addAttribute("farms", farms);
         return "admin/farms";
 

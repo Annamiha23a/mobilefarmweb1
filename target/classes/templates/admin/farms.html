@@ -18,7 +18,11 @@
 <div class="sidebar" th:insert="blocks/navication :: nav" ></div>
 
 <div  class="content container mt-5">
-
+    <form action="/farms" method="get"  >
+        <label for="title">Поиск по названию</label>
+        <input type="text" name="title" id="title"><br>
+        <button class="btn w-25 btn-lg btn-primary" type="submit">Поиск</button>
+    </form>
     <h1>Животновод. объекты</h1>
     <div th:each="farm:${farms}" class="alert alert-primary mt-2">
 

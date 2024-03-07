@@ -11,6 +11,7 @@ import com.example.mobilefarmweb.service.FarmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -38,7 +39,23 @@ public class FarmServiceImpl implements FarmService {
     public List<Farm> getFarmsByOrganizationId(Long organizationId) {
         return farmRepository.findByOrganization_OrganizationId(organizationId);
     }
+    @Override
+    public List<Farm> getFarmsByOrganizationIdAndName(Long organizationId, String name) {
+        if(name!=null)return farmRepository.findByOrganization_OrganizationIdAndNameContaining(organizationId, name);
+        return farmRepository.findByOrganization_OrganizationId(organizationId);
+    }
 
+    @Override
+    public List<Farm> getFarmByName(List<Farm> farms, String name) {
+        List<Farm> newFarms = new ArrayList<>();
+                for (Farm farm: newFarms){
+                    System.out.println(farm.getName().contains(name));
+                    if(farm.getName().contains(name))
+                    {newFarms.add(farm);
+                    System.out.println(farm.getName());}
+                }
+        return newFarms;
+    }
 
 
 //    @Override
