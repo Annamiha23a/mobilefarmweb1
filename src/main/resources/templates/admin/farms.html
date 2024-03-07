@@ -19,10 +19,10 @@
 
 <div  class="content container mt-5">
     <form action="/farms" method="get"  >
-        <label for="title">Поиск по названию</label>
-        <input type="text" name="title" id="title"><br>
-        <button class="btn w-25 btn-lg btn-primary" type="submit">Поиск</button>
-    </form>
+        <input placeholder="Поиск по названию" class="w-50" type="text" name="title" id="title">
+        <button   class="btn w-25 btn-sm btn-primary" type="submit">Поиск</button><br/>
+    </form><br/>
+    <button style="float: right;" onclick="location.href='/farms/add'" class="btn w-50 btn-sm btn-primary">Добавить ферму</button>
     <h1>Животновод. объекты</h1>
     <div th:each="farm:${farms}" class="alert alert-primary mt-2">
 

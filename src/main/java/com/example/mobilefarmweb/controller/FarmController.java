@@ -36,4 +36,8 @@ public class FarmController {
         return "admin/farms";
 
     }
+    @GetMapping("/add")
+    private String addFirm(){
+        return "admin/farmAdd";
+    }
 }
