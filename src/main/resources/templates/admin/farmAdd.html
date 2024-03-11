@@ -23,25 +23,25 @@
         <div  class="alert alert-primary mt-2">
             <form action="/farms/add" method="post" >
                 Общие сведения
-                <input placeholder="Глобальный идентификатор" type="text" class="form-control" name="title"  >
-                <input placeholder="Дата регистрации" type="text" class="form-control" name="field">
-                <input placeholder="Наименование объекта" type="number" class="form-control" name="year" >
+                <input placeholder="Глобальный идентификатор" type="text" class="form-control" name="gln"  >
+<!--                <input placeholder="Дата регистрации" type="date" class="form-control" name="registrationDate">-->
+                <input placeholder="Наименование объекта" type="text" class="form-control" name="name" >
                 Ответственное лицо
-                <input placeholder="Фамилия" type="text" class="form-control" name="website" >
-                <input placeholder="Имя" type="text" class="form-control" name="director" >
-                <input placeholder="Отчество" type="text" class="form-control" name="workPhone" >
+                <input placeholder="Фамилия" type="text" class="form-control" name="ownerLastName" >
+                <input placeholder="Имя" type="text" class="form-control" name="ownerFirstName" >
+                <input placeholder="Отчество" type="text" class="form-control" name="ownerMiddleName" >
                 Адрес объекта
-                <input placeholder="Почтовый индекс" type="text" class="form-control" name="title"  >
-                <input placeholder="Область" type="text" class="form-control" name="field">
-                <input placeholder="Район" type="number" class="form-control" name="year" >
-                <input placeholder="Населённый пункт" type="text" class="form-control" name="title"  >
-                <input placeholder="Координаты" type="text" class="form-control" name="field">
-                <input placeholder="Дом" type="number" class="form-control" name="year" >
-                <input placeholder="Корпус" type="number" class="form-control" name="year" >
-                <input placeholder="Квартира" type="number" class="form-control" name="year" >
-                <input placeholder="Телефон" type="number" class="form-control" name="year" >
-                <input placeholder="Факс" type="number" class="form-control" name="year" >
-                <input placeholder="E-mail" type="number" class="form-control" name="year" >
+                <input placeholder="Почтовый индекс" type="text" class="form-control" name="locationLocationIndex"  >
+                <input placeholder="Область" type="text" class="form-control" name="locationRegion">
+                <input placeholder="Район" type="text" class="form-control" name="locationDistrict" >
+                <input placeholder="Населённый пункт" type="text" class="form-control" name="locationLocationName"  >
+                <input placeholder="Координаты" type="text" class="form-control" name="locationCoordinates">
+                <input placeholder="Дом" type="number" class="form-control" name="locationHouseNumber" >
+                <input placeholder="Корпус" type="number" class="form-control" name="locationCorpusNumber" >
+                <input placeholder="Квартира" type="number" class="form-control" name="locationFlatNumber" >
+                <input placeholder="Телефон" type="number" class="form-control" name="locationPhoneNumber" >
+                <input placeholder="Факс" type="number" class="form-control" name="locationFaxNumber" >
+                <input placeholder="E-mail" type="text" class="form-control" name="locationEmail" >
                 <button class="btn w-100 btn-lg btn-primary" type="submit">Зарегистрировать фирму</button>
 
             </form>

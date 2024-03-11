@@ -1,10 +1,8 @@
 package com.example.mobilefarmweb.service.impl;
 
-import com.example.mobilefarmweb.entity.AnimalPassport;
-import com.example.mobilefarmweb.entity.Farm;
-import com.example.mobilefarmweb.entity.Organization;
-import com.example.mobilefarmweb.entity.Owner;
+import com.example.mobilefarmweb.entity.*;
 import com.example.mobilefarmweb.repository.FarmRepository;
+import com.example.mobilefarmweb.repository.LocationRepository;
 import com.example.mobilefarmweb.repository.OrganizationRepository;
 import com.example.mobilefarmweb.repository.OwnerRepository;
 import com.example.mobilefarmweb.service.FarmService;
@@ -22,13 +20,15 @@ public class FarmServiceImpl implements FarmService {
     private final OrganizationRepository organizationRepository;
     private final OwnerRepository ownerRepository;
     private final AnimalPassportServiceImpl animalPassportService;
+    private final LocationRepository locationRepository;
 
     @Autowired
-    public FarmServiceImpl(FarmRepository farmRepository, OrganizationRepository organizationRepository, OwnerRepository ownerRepository, AnimalPassportServiceImpl animalPassportService){
+    public FarmServiceImpl(FarmRepository farmRepository, OrganizationRepository organizationRepository, OwnerRepository ownerRepository, AnimalPassportServiceImpl animalPassportService, LocationRepository locationRepository){
         this.farmRepository = farmRepository;
         this.organizationRepository= organizationRepository;
         this.ownerRepository=ownerRepository;
         this.animalPassportService=animalPassportService;
+        this.locationRepository=locationRepository;
     }
     @Override
     public Farm getFarmByGLN(String gln) {
@@ -64,10 +64,10 @@ public class FarmServiceImpl implements FarmService {
 //    }
 
 
-//    @Override
-//    public Farm createFarm(Farm farm, Long organizationId) {
-//        return farmRepository.save(farm);
-//    }
+    @Override
+    public Farm createFarm(Farm farm, Long organizationId) {
+        return farmRepository.save(farm);
+    }
 
 //    @Override
 //    public Farm updateFarmById(Farm farm, String gln, Long organizationId, Long ownerId) {
@@ -83,4 +83,34 @@ public class FarmServiceImpl implements FarmService {
 //    public void deleteFarmById(Long farmId) {
 //        farmRepository.deleteByFarmId(farmId);
 //    }
+@Override
+public Farm setFarm(Farm farm,  String gln, String name,  String ownerLastName, String ownerFirstName,  String ownerMiddleName,
+                    String locationLocationIndex, String locationRegion,  String locationDistrict, String locationLocationName,  String locationCoordinates,
+                    String locationHouseNumber,  String locationCorpusNumber,  String locationFlatNumber,  String locationPhoneNumber,  String locationFaxNumber,
+                    String locationEmail){
+        farm.setGln(gln);
+//        farm.setRegistrationDate(registrationDate);
+        farm.setName(name);
+        Owner owner=new Owner();
+        owner.setFirstName(ownerFirstName);
+        owner.setLastName(ownerLastName);
+        owner.setMiddleName(ownerMiddleName);
+        ownerRepository.save(owner);
+        farm.setOwner(owner);
+        Location location=new Location();
+        location.setLocationIndex(locationLocationIndex);
+        location.setRegion(locationRegion);
+        location.setDistrict(locationDistrict);
+        location.setLocationName(locationLocationName);
+        location.setCoordinates(locationCoordinates);
+        location.setHouseNumber(locationHouseNumber);
+        location.setCorpusNumber(locationCorpusNumber);
+        location.setFlatNumber(locationFlatNumber);
+        location.setPhoneNumber(locationPhoneNumber);
+        location.setFaxNumber(locationFaxNumber);
+        locationRepository.save( location);
+        farm.setLocation(location);
+//        farmRepository.save(farm);
+return farm;
+}
 }

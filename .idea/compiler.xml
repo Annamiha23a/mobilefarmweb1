@@ -7,6 +7,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="mobilefarmweb1" />
         <module name="mobilefarmweb" />
         <module name="movieMarking-main" />
         <module name="warehouseManagement" />
@@ -23,6 +24,7 @@
       <module name="mikhalevichRecrutment" options="-parameters" />
       <module name="mikhalevich_movies" options="-parameters" />
       <module name="mobilefarmweb" options="-parameters" />
+      <module name="mobilefarmweb1" options="-parameters" />
       <module name="movieMarking-main" options="-parameters" />
       <module name="warehouseManagement" options="-parameters" />
       <module name="warehouseManagement-main — копия" options="-parameters" />

@@ -10,11 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -39,5 +41,21 @@ public class FarmController {
     @GetMapping("/add")
     private String addFirm(){
         return "admin/farmAdd";
+    }
+
+    @PostMapping("/add")
+    public String addFarm(Principal principal, Model model, Farm farm, @RequestParam String gln,
+//                          @RequestParam Date registrationDate ,
+                          @RequestParam String name, @RequestParam String ownerLastName, @RequestParam String ownerFirstName, @RequestParam String ownerMiddleName, @RequestParam String locationLocationIndex, @RequestParam String locationRegion, @RequestParam String locationDistrict, @RequestParam String locationLocationName, @RequestParam String locationCoordinates, @RequestParam String locationHouseNumber, @RequestParam String locationCorpusNumber, @RequestParam String locationFlatNumber, @RequestParam String locationPhoneNumber, @RequestParam String locationFaxNumber, @RequestParam String locationEmail){
+        User user= userService.findUserByUsername(principal.getName());
+        Organization organization=user.getOrganization();
+        farm=farmService.setFarm(farm, gln, name,   ownerLastName,  ownerFirstName,  ownerMiddleName,
+                 locationLocationIndex,  locationRegion,   locationDistrict,  locationLocationName,   locationCoordinates,
+                 locationHouseNumber,   locationCorpusNumber,  locationFlatNumber,  locationPhoneNumber,  locationFaxNumber,
+                 locationEmail);
+        farmService.createFarm(farm, organization.getOrganizationId());
+        List<Farm> farms=farmService.getFarmsByOrganizationId(organization.getOrganizationId());
+        model.addAttribute("farms", farms);
+        return "admin/farms";
     }
 }
