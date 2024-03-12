@@ -10,15 +10,16 @@
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
 </head>
 <body>
-<header th:insert="blocks/header :: header"></header>
+<!--<header th:insert="blocks/header :: header"></header>-->
 
+<div class="sidebar" th:insert="blocks/navication :: nav" ></div>
 
-<div class="album py-5 bg-light">
+<div class="content album py-5 bg-light">
     <div class="container mt-5">
         <h1>Редактирование пользователя</h1>
     </div>
     <div class="container">
-        <div th:each="el : ${user}" class="alert alert-success mt-2">
+        <div th:each="el : ${user}" class="alert alert-primary mt-2">
             <form th:action="'/user/'+${el.getId()}+'/updateU'" method="post">
             <label>Имя</label><br>
             <input type="text" class="form-control" name="firstName"  th:value="${el.getFirstName()}"></input>
@@ -31,11 +32,11 @@
                 <br><label>Возраст</label><br>
             <input type="text" class="form-control" name="age" th:value="${el.getAge()}"></input>
             <br>
-                <button class="btn w-100 btn-lg btn-success" type="submit">Редактировать</button>
+                <button class="btn w-100 btn-lg btn-primary" type="submit">Редактировать</button>
             </form>
         </div>
     </div>
 </div>
-<footer th:insert="blocks/footer :: footer"></footer>
+<!--<footer th:insert="blocks/footer :: footer"></footer>-->
 </body>
 </html>

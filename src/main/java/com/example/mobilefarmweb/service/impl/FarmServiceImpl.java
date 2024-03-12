@@ -65,7 +65,8 @@ public class FarmServiceImpl implements FarmService {
 
 
     @Override
-    public Farm createFarm(Farm farm, Long organizationId) {
+    public Farm createFarm(Farm farm, Organization organization) {
+        farm.setOrganization(organization);
         return farmRepository.save(farm);
     }
 
@@ -87,7 +88,7 @@ public class FarmServiceImpl implements FarmService {
 public Farm setFarm(Farm farm,  String gln, String name,  String ownerLastName, String ownerFirstName,  String ownerMiddleName,
                     String locationLocationIndex, String locationRegion,  String locationDistrict, String locationLocationName,  String locationCoordinates,
                     String locationHouseNumber,  String locationCorpusNumber,  String locationFlatNumber,  String locationPhoneNumber,  String locationFaxNumber,
-                    String locationEmail){
+                    String locationEmail, String locationStreetName){
         farm.setGln(gln);
 //        farm.setRegistrationDate(registrationDate);
         farm.setName(name);
@@ -108,7 +109,10 @@ public Farm setFarm(Farm farm,  String gln, String name,  String ownerLastName, 
         location.setFlatNumber(locationFlatNumber);
         location.setPhoneNumber(locationPhoneNumber);
         location.setFaxNumber(locationFaxNumber);
+        location.setEmail(locationEmail);
+        location.setStreetName(locationStreetName);
         locationRepository.save( location);
+
         farm.setLocation(location);
 //        farmRepository.save(farm);
 return farm;

@@ -46,14 +46,19 @@ public class FarmController {
     @PostMapping("/add")
     public String addFarm(Principal principal, Model model, Farm farm, @RequestParam String gln,
 //                          @RequestParam Date registrationDate ,
-                          @RequestParam String name, @RequestParam String ownerLastName, @RequestParam String ownerFirstName, @RequestParam String ownerMiddleName, @RequestParam String locationLocationIndex, @RequestParam String locationRegion, @RequestParam String locationDistrict, @RequestParam String locationLocationName, @RequestParam String locationCoordinates, @RequestParam String locationHouseNumber, @RequestParam String locationCorpusNumber, @RequestParam String locationFlatNumber, @RequestParam String locationPhoneNumber, @RequestParam String locationFaxNumber, @RequestParam String locationEmail){
+                          @RequestParam String name, @RequestParam String ownerLastName, @RequestParam String ownerFirstName,
+                          @RequestParam String ownerMiddleName, @RequestParam String locationLocationIndex, @RequestParam String locationRegion,
+                          @RequestParam String locationDistrict, @RequestParam String locationLocationName, @RequestParam String locationCoordinates,
+                          @RequestParam String locationHouseNumber, @RequestParam String locationCorpusNumber, @RequestParam String locationFlatNumber,
+                          @RequestParam String locationPhoneNumber, @RequestParam String locationFaxNumber, @RequestParam String locationEmail,
+                          @RequestParam String locationStreetName){
         User user= userService.findUserByUsername(principal.getName());
         Organization organization=user.getOrganization();
         farm=farmService.setFarm(farm, gln, name,   ownerLastName,  ownerFirstName,  ownerMiddleName,
                  locationLocationIndex,  locationRegion,   locationDistrict,  locationLocationName,   locationCoordinates,
                  locationHouseNumber,   locationCorpusNumber,  locationFlatNumber,  locationPhoneNumber,  locationFaxNumber,
-                 locationEmail);
-        farmService.createFarm(farm, organization.getOrganizationId());
+                 locationEmail, locationStreetName);
+        farmService.createFarm(farm, organization);
         List<Farm> farms=farmService.getFarmsByOrganizationId(organization.getOrganizationId());
         model.addAttribute("farms", farms);
         return "admin/farms";

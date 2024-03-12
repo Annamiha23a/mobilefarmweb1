@@ -39,9 +39,16 @@ public class UserController {
 	@GetMapping("/user/{id}")
 	public String findUser(@PathVariable(value = "id") int id, Model model) {
 		User user = userService.findUserById(id);
-		List<User> users = new ArrayList<>();
-		users.add(user);
-		model.addAttribute("user", users);
+		List<Role> roles = new ArrayList<>();
+		for (Role role : user.getRoles()) {
+			// Действия с каждым элементом role
+			System.out.println(role.getRole());
+			roles.add(role);
+		}
+		//Role role = roleService.findRoleById(user.getRoles());
+		System.out.println("user.getRoles()"+ user.getRoles());
+		model.addAttribute("user", user);
+		model.addAttribute("roles", roles);
 		return "user-details";
 	}
 
