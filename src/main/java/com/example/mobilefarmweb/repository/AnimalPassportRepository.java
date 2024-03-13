@@ -18,4 +18,9 @@ public interface AnimalPassportRepository extends JpaRepository<AnimalPassport, 
             "INNER JOIN AnimalPassport ap ON f.farmId = ap.farm.farmId\n" +
             "WHERE o.organizationId = ?1")
     List<AnimalPassport> findByOrganizationId(Long organizationId);
+    @Query("SELECT ap FROM Organization o\n" +
+            "INNER JOIN Farm f ON o.organizationId = f.organization.organizationId\n" +
+            "INNER JOIN AnimalPassport ap ON f.farmId = ap.farm.farmId\n" +
+            "WHERE o.organizationId = ?1 And ap.externalId like %?2%")
+    List<AnimalPassport> findByOrganizationIdAndExternalIdContaining(Long organizationId, String externalId);
 }
