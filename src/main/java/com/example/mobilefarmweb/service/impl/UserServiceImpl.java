@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	public User save(User user)  {
-		EmailDetails details = new EmailDetails(user.getUsername(),"Добро пожаловать в службу рекрутинга. Ваш логин:" + user.getUsername() +". Ваш пароль:"+user.getPassword(), "Регистрация в службе рекрутинга", null);
+		EmailDetails details = new EmailDetails(user.getUsername(),"Добро пожаловать в веб ферму. Ваш логин:" + user.getUsername() +". Ваш пароль:"+user.getPassword(), "Регистрация в службе рекрутинга", null);
 	    user.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
 		user.setActive(true);
 		Role role = list.isEmpty()? roleRepository.findByRole("ROLE_ADMIN") : roleRepository.findByRole("ROLE_USER");

@@ -34,9 +34,9 @@ public class AnimalPassport {
     @JoinColumn(name = "mother_id")
     private AnimalPassport mother;
 
-//    @ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "feed_group_id")
-//    private FeedGroup feedGroup;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "feed_group_id")
+    private FeedGroup feedGroup;
 
     @Column(name = "created_date", nullable = false)
     private OffsetDateTime createdDate;

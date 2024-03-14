@@ -20,7 +20,7 @@
 <div  class="content container mt-5">
     <div class="btn-group">
         <button  onclick="location.href='/animal_passports/organization_id'" class="btn w-50 btn-sm btn-primary">Паспорта животных</button>
-        <button  onclick="location.href='/animal_passports/add'" class="btn w-50 btn-sm ">Рацион кормления</button>
+        <button  onclick="location.href='#'" class="btn w-50 btn-sm ">Рацион кормления</button>
         <br>
     </div>
     <br>
@@ -28,7 +28,7 @@
         <input placeholder="Поиск по ID" class="w-50" type="text" name="externalId" id="externalId">
         <button   class="btn w-25 btn-sm btn-primary" type="submit">Поиск</button><br/>
     </form><br/>
-    <button style="float: right;" onclick="location.href='/animal_passports/add'" class="btn w-50 btn-sm btn-primary">Добавить паспорт</button>
+    <button style="float: right;" onclick="location.href='#'" class="btn w-50 btn-sm btn-primary">Добавить паспорт</button>
 
     <h1>Паспорт</h1>
     <div  class="alert alert-primary mt-2">
@@ -56,8 +56,13 @@
                 <h4 th:utext="${'<strong>Отец:</strong> ' + passport.father.getExternalId}"></h4>
             </div>
         </div>
-
-
+        <h4 th:utext="${'<strong>Группа кормления:</strong> ' + passport.feedGroup.getType}"></h4>
+        <br>
+        <div >
+            <button  onclick="location.href='#'" class="btn btn-sm btn-primary w-100">Посмотреть группу кормления</button><br><br>
+            <button  onclick="location.href='#'" class="btn btn-sm btn-primary w-100">Изменить</button>
+            <br>
+        </div>
     </div>
 </div>
 <!--<footer th:insert="blocks/footer :: footer"></footer>-->

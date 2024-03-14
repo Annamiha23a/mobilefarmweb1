@@ -36,6 +36,11 @@ public class FarmServiceImpl implements FarmService {
     }
 
     @Override
+    public Farm getFarmByFarmId(Long farmId) {
+        return farmRepository.findByFarmId(farmId).orElseThrow(()->new NoSuchElementException());
+    }
+
+    @Override
     public List<Farm> getFarmsByOrganizationId(Long organizationId) {
         return farmRepository.findByOrganization_OrganizationId(organizationId);
     }

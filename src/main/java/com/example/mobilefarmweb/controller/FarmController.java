@@ -9,10 +9,7 @@ import com.example.mobilefarmweb.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -39,8 +36,14 @@ public class FarmController {
 
     }
     @GetMapping("/add")
-    private String addFirm(){
+    private String addFarm(){
         return "admin/farmAdd";
+    }
+    @GetMapping("/{id}")
+    public String getDetailsFarm(@PathVariable("id") Long id, Model model){
+        Farm farm=farmService.getFarmByFarmId(id);
+        model.addAttribute(farm);
+        return "admin/farm-details";
     }
 
     @PostMapping("/add")

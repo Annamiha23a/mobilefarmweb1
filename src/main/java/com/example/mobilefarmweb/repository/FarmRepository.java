@@ -9,6 +9,7 @@ import java.util.Optional;
 @Repository
 public interface FarmRepository extends JpaRepository<Farm, Long> {
     Optional<Farm> findByGln(String gln);
+    Optional<Farm> findByFarmId(Long farmId);
 
     List<Farm> findByOrganization_OrganizationId(Long organizationId);
     List<Farm> findByOrganization_OrganizationIdAndNameContaining(Long organizationId, String name);

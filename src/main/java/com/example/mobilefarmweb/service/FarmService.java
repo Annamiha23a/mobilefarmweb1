@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface FarmService {
     Farm getFarmByGLN(String gln);
+    Farm getFarmByFarmId(Long farmId);
     List<Farm> getFarmsByOrganizationId(Long organizationId);
     Farm createFarm(Farm farm, Organization organization);
 //    Farm updateFarmById(Farm farm, String gln, Long organizationId, Long ownerId);

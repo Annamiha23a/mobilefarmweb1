@@ -33,6 +33,7 @@
         <h3 th:utext="${'<strong>Код объекта:</strong> ' + farm.getGln}"></h3>
         <h3 th:utext="${'<strong>Кол-во животных:</strong> ' + farm.animalPassports.size()}"></h3>
         <br>
+        <a th:href="'/farms/'+${farm.getFarmId()}"  class="btn btn-sm btn-outline-primary">Подробнее</a>
 
     </div>
 </div>
