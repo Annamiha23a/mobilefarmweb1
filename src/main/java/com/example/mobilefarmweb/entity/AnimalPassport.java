@@ -116,7 +116,7 @@ public class AnimalPassport {
                 "originalOwnerFarm = " + originalOwnerFarm.getName() + ", " +
                 "father = " + father.getNickname() + ", " +
                 "mother = " + mother.getNickname() + ", " +
-//                "geneticGroup = " + feedGroup.getType() + ", " +
+                "geneticGroup = " + feedGroup.getType() + ", " +
                 "createdDate = " + createdDate + ", " +
                 "externalId = " + externalId + ", " +
                 "nickname = " + nickname + ", " +

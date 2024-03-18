@@ -27,4 +27,8 @@ public class Owner {
     private String lastName;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "owner")
     private List<Organization> organization = new ArrayList<>();
+    @Override
+    public String toString(){
+        return "";
+    }
 }

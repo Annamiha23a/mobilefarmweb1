@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaef.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Корма</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+
+    <!--    <link rel="stylesheet" type="text/css" href="css/style.css">-->
+    <link rel="stylesheet" href="css/location.css">
+    <link rel="stylesheet"  type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+</head>
+<body>
+<!--<header th:insert="blocks/header :: header"></header>-->
+
+
+<div class="sidebar" th:insert="blocks/navication :: nav" ></div>
+
+<div  class="content container mt-5">
+    <div class="btn-group">
+        <button  onclick="location.href='/animal_passports/organization_id'" class="btn w-50 btn-sm ">Паспорта животных</button>
+        <button  onclick="location.href='/rations'" class="btn w-50 btn-sm btn-primary">Рацион кормления</button>
+        <br>
+    </div>
+    <br>
+
+    <h1>Корма</h1>
+    <div th:each="feed:${feeds}" class="alert alert-primary mt-2">
+
+        <h4 th:utext="${'<strong>Название:</strong> ' + feed.getName}"></h4>
+        <h4 th:utext="${'<strong>Тип корма:</strong> ' + feed.getType}"></h4>
+        <h4 th:utext="${'<strong>Корм. ед.:</strong> ' + feed. nutrients.getFeedUnit}"></h4>
+        <a th:href="'/rations/feeds/'+${feed.nutrients.getNutrientsId}"  class="btn btn-sm btn-outline-primary">Подробнее</a>
+
+
+    </div>
+</div>
+<!--<footer th:insert="blocks/footer :: footer"></footer>-->
+</body>
+</html>

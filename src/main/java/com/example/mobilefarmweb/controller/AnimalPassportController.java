@@ -1,6 +1,7 @@
 package com.example.mobilefarmweb.controller;
 
 import com.example.mobilefarmweb.entity.AnimalPassport;
+import com.example.mobilefarmweb.entity.FeedGroup;
 import com.example.mobilefarmweb.entity.Organization;
 import com.example.mobilefarmweb.entity.User;
 import com.example.mobilefarmweb.service.AnimalPassportService;
@@ -45,5 +46,14 @@ public class AnimalPassportController {
         AnimalPassport animalPassport= animalPassportService.getAnimalPassportByExternalId(externalId);
         model.addAttribute("passport", animalPassport);
         return "admin/animalPassport-details";
+    }
+    @GetMapping("/organization_id/feedgroup/{externalId}")
+    public String getFeedGroupByOrganizationId(@PathVariable("externalId") String externalId,Principal principal, Model model){
+        User user= userService.findUserByUsername(principal.getName());
+        Organization organization=user.getOrganization();
+        AnimalPassport animalPassport= animalPassportService.getAnimalPassportByExternalId(externalId);
+        FeedGroup feedGroup=animalPassport.getFeedGroup();
+        model.addAttribute("feedGroup", feedGroup);
+        return "admin/feedgroup";
     }
 }

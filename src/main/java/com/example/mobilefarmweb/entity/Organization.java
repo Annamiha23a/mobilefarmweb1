@@ -61,4 +61,8 @@ public class Organization {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "organization")
     private List<User> users = new ArrayList<>();
+    @Override
+    public String toString(){
+        return "";
+    }
 }

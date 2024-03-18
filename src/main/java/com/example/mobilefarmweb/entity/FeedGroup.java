@@ -35,14 +35,14 @@ public class FeedGroup {
     @Column(name = "age")
     private Integer age;
 
-//    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "nutrients_rate_id")
-//    private Nutrients nutrients;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "nutrients_rate_id")
+    private Nutrients nutrients;
 
-//    @OneToMany(mappedBy = "feedGroup", fetch = FetchType.EAGER)
-//    private List<Ration> rations;
+    @OneToMany(mappedBy = "feedGroup", fetch = FetchType.LAZY)
+    private List<Ration> rations;
 
-    @OneToMany(mappedBy = "feedGroup", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "feedGroup", fetch = FetchType.LAZY)
     private List<AnimalPassport> animalPassports;
 
     @Override
@@ -53,7 +53,7 @@ public class FeedGroup {
                 "weight = " + weight + ", " +
                 "geneticWeight = " + geneticWeight + ", " +
                 "age = " + age + ", "
-//               + "rations = " + (Objects.isNull(rations) ? 0 : rations.size())
+               + "rations = " + (Objects.isNull(rations) ? 0 : rations.size())
                 ;
     }
 }

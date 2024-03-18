@@ -57,4 +57,9 @@ public class Location {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "location")
     private List<Organization> organization = new ArrayList<>();
+
+    @Override
+    public String toString(){
+        return "";
+    }
 }

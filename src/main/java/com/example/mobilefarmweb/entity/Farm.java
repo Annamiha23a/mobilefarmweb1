@@ -50,4 +50,8 @@ public class Farm {
 
     @Column(name = "former_name", nullable = false)
     private String formerName;
+    @Override
+    public String toString(){
+        return "";
+    }
 }
