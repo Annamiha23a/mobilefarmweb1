@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Рацион кормления</title>
+    <title>Нормы кормления</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
 
@@ -23,14 +23,23 @@
         <button  onclick="location.href='/rations'" class="btn w-50 btn-sm btn-primary ">Рацион кормления</button>
         <br>
     </div>
-    <br><br>
-        <button  onclick="location.href='/rations/feeds'" class="btn btn-sm btn-primary w-100">Корма</button><br><br>
-        <button  onclick="location.href='/feedgroups'" class="btn btn-sm btn-primary w-100">Нормы кормления</button><br><br>
-        <button  onclick="location.href='#'" class="btn btn-sm btn-primary w-100">Рацион кормления</button>
-        <br>
-
     <br>
 
+    <h1>Нормы кормления</h1>
+    <div th:each="feedGroup:${feedgroups}" class="alert alert-primary mt-2">
+
+        <h3 th:utext="${'<strong>Генетическая группа:</strong> ' + feedGroup.getType}"></h3>
+        <h4 th:utext="${'<strong>Период лактации:</strong> ' + feedGroup.getProductivity}"></h4>
+        <h4 th:utext="${'<strong>Возраст:</strong> ' + feedGroup.getAge}"></h4>
+        <a th:href="'/feedgroups/'+${feedGroup.getFeedGroupId}"  class="btn btn-sm btn-outline-primary">Подробнее</a>
+<!--        <h4 th:utext="${'<strong>Вес:</strong> ' + feedGroup.getWeight}"></h4>-->
+<!--        <h4 th:utext="${'<strong>Генетический вес:</strong> ' + feedGroup.getGeneticWeight}"></h4>-->
+
+        <!--        <div th:each="ration:${feedGroup.rations}" >-->
+        <!--            <h1 th:utext="${'<strong>Рацион:</strong> ' + ration}"></h1>-->
+        <!--            <br>-->
+        <!--        </div>-->
+    </div>
 </div>
 <!--<footer th:insert="blocks/footer :: footer"></footer>-->
 </body>

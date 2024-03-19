@@ -16,6 +16,11 @@ public interface FeedGroupRepository extends JpaRepository<FeedGroup, Long> {
     @Query("SELECT o FROM FeedGroup o\n" +
             "INNER JOIN AnimalPassport a ON o.feedGroupId = a.feedGroup.feedGroupId\n" +
             "INNER JOIN Farm f ON a.farm.farmId = f.farmId\n" +
-            "WHERE f.organization.name = ?1")
-    List<FeedGroup> findByOrganizationName(String organization);
+            "WHERE f.organization.organizationId = ?1")
+    List<FeedGroup> findByOrganizationName(Long organizationId);
+
+    List<FeedGroup> findAll();
+
+    FeedGroup findByFeedGroupId(Long feedgroupId);
+//    List<FeedGroup> findByRationId(Long rationId);
 }
