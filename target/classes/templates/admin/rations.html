@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Рацион кормления</title>
+    <title>Рационы</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
 
@@ -20,17 +20,25 @@
 <div  class="content container mt-5">
     <div class="btn-group">
         <button  onclick="location.href='/animal_passports/organization_id'" class="btn w-50 btn-sm ">Паспорта животных</button>
-        <button  onclick="location.href='/rations'" class="btn w-50 btn-sm btn-primary ">Рацион кормления</button>
+        <button  onclick="location.href='/rations'" class="btn w-50 btn-sm btn-primary">Рацион кормления</button>
         <br>
     </div>
-    <br><br>
-        <button  onclick="location.href='/rations/feeds'" class="btn btn-sm btn-primary w-100">Корма</button><br><br>
-        <button  onclick="location.href='/feedgroups'" class="btn btn-sm btn-primary w-100">Нормы кормления</button><br><br>
-        <button  onclick="location.href='/rations/all'" class="btn btn-sm btn-primary w-100">Рацион кормления</button>
-        <br>
-
     <br>
 
+    <h1>Рационы</h1>
+    <button  onclick="location.href='/rations/all'" class="btn btn-sm btn-primary w-100">Добавить рацион</button>
+    <div th:each="ration:${rations}" class="alert alert-primary mt-2">
+
+        <h5 th:utext="${'Рацион №'+ration.getRationId}"></h5>
+        <br>
+        <h5 th:utext="${'<strong>Норма кормления:</strong> '+ration.feedGroup.getType() }" ></h5>
+        <br>
+        <div th:each="el:${ration.rationFeeds}" >
+            <h5 th:utext="${'<strong>Корм:</strong> ' + el.feed.getName()}"></h5>
+            <br>
+
+    </div>
+</div>
 </div>
 <!--<footer th:insert="blocks/footer :: footer"></footer>-->
 </body>

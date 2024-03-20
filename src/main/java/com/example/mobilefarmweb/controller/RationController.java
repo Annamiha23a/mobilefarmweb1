@@ -1,8 +1,10 @@
 package com.example.mobilefarmweb.controller;
 
 import com.example.mobilefarmweb.entity.*;
+import com.example.mobilefarmweb.service.RationService;
 import com.example.mobilefarmweb.service.impl.FeedServiceImpl;
 import com.example.mobilefarmweb.service.impl.NutrientsServiceImpl;
+import com.example.mobilefarmweb.service.impl.RationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,12 +19,14 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/rations")
 public class RationController {
+    private RationServiceImpl rationService;
     private FeedServiceImpl feedService;
     private NutrientsServiceImpl nutrientsService;
     @Autowired
-    public RationController(FeedServiceImpl feedService, NutrientsServiceImpl nutrientsService){
+    public RationController(FeedServiceImpl feedService, NutrientsServiceImpl nutrientsService, RationServiceImpl rationService){
         this.feedService=feedService;
         this.nutrientsService=nutrientsService;
+        this.rationService=rationService;
     }
     @GetMapping()
     public String getRations(){
@@ -41,6 +45,13 @@ public class RationController {
         Nutrients nutrient=nutrientsService.getNutrientsById(id);
         model.addAttribute("nutrient", nutrient);
         return "admin/nutrient";
+
+    }
+    @GetMapping("/all")
+    public String getAllRations(Model model){
+        List<Ration> rations=rationService.getAll();
+        model.addAttribute("rations", rations);
+        return "admin/rations";
 
     }
 }
