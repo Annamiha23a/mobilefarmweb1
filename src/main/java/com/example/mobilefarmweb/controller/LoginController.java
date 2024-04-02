@@ -42,6 +42,11 @@ public class LoginController {
 		return "login";
 	}
 
+	@GetMapping("/aboutUs")
+	public String getAboutUs() {
+		return "aboutUs";
+	}
+
 	@PostMapping("/perform_login")
 	public String perform_login(@RequestParam String unp, @RequestParam String username, @RequestParam String password){
 		System.out.println("Мой контроллер");

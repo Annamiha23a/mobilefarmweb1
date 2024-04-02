@@ -125,29 +125,52 @@
                                     <a href="/farms">Обьекты хозяйствования</a>
                                     <a href="/animal_passports/organization_id">Реестр паспортов</a>
                                     <a href="#">Движения поголовья</a>
-                                    <a href="#">Кормление</a>
+                                    <a href="/feeding">Кормление</a>
                                 </div>
                             </div>
                         </li>
                     </div>
                     <div th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}" class="unauthorized">
                         <li class="nav-item">
-                            <a class="nav-link" href="/office">Управление фермой</a>
+                            <div class="dropdown">
+                                <button class="dropbtn">Управление фермой</button>
+                                <div class="dropdown-content">
+                                    <a href="#">Резервы</a>
+                                    <a href="#">Заказ-наряд</a>
+                                    <a href="#">Управление производством</a>
+                                    <a href="#">Управление финансами</a>
+                                    <a href="#">Бюджет</a>
+                                </div>
+                            </div>
                         </li>
                     </div>
                     <div th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}" class="unauthorized">
                         <li class="nav-item">
-                            <a class="nav-link" href="/office">Ветеринария</a>
+                            <div class="dropdown">
+                                <button class="dropbtn">Ветеринария</button>
+                                <div class="dropdown-content">
+                                    <a href="#">Электронный паспорт</a>
+                                    <a href="#">Карточка болезней</a>
+                                    <a href="#">Календарь вакцинаций</a>
+                                </div>
+                            </div>
                         </li>
                     </div>
                     <div th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}" class="unauthorized">
                         <li class="nav-item">
-                            <a class="nav-link" href="/office">Выпуск продукции</a>
+                            <div class="dropdown">
+                                <button class="dropbtn">Выпуск продукции</button>
+                                <div class="dropdown-content">
+                                    <a href="#">Молоко</a>
+                                    <a href="#">Привес KPC</a>
+                                    <a href="#">Приплод</a>
+                                </div>
+                            </div>
                         </li>
                     </div>
                     <div th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}" class="unauthorized">
                         <li class="nav-item">
-                            <a class="nav-link" href="/office">О нас</a>
+                            <a class="nav-link" href="/aboutUs">О нас</a>
                         </li>
                     </div>
                 </ul>
