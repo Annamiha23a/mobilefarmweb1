@@ -1,25 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Проверка кода</title>
 </head>
 <body>
 <div class="album py-5 bg-light">
-    <div class="container mt-5">
-        <h1>Зарегистрировать фирму</h1>
-    </div>
-    <div class="container">
-        <div  class="alert alert-success mt-2">
-            <form action="/login/check" method="post" >
-                <label>  Код</label><br>
-                <input type="text" class="form-control" name="code"  >
-
-                <button class="btn w-100 btn-lg btn-success" type="submit">Проверить</button>
-
-            </form>
-        </div>
-    </div>
+    <h4>Введите код для проверки</h4>
+    <br>
+    <input type="number" class="form-control" id="receivedCod">
+    <br>
+    <input type="number"  th:value="${cod}" id="sendCod" style="opacity: 0" >
+    <br><br>
+    <button class="w-75 btn btn-primary btn-lg" type="submit" id="method"  onclick="checking(receivedCod.value)">Проверить</button>
 </div>
+<div id="id"></div>
+</div>
+<script >
+    function checking(receivedCod){
+        var sendCod = document.getElementById('sendCod').value;
+        console.log(sendCod);
+        if(Number(receivedCod)===Number(sendCod))
+        {console.log("верно");
+            setTimeout(function(){
+                window.location.href = 'http://localhost:8088/';
+            }, 5 * 1000);
+        }
+        else console.log("не верно")
+    }
+</script>
 </body>
 </html>
