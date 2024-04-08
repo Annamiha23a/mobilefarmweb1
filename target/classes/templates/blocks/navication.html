@@ -33,7 +33,7 @@
             }
             /* Стилизация выпадающей кнопки */
             .dropbtn {
-
+                background-color:snow;
                 color: blue;
                 border: none;
                 /*cursor: pointer;*/
@@ -101,7 +101,15 @@
                     </div>
                     <div th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}" class="unauthorized">
                         <li class="nav-item">
-                            <a class="nav-link" href="/organizations/unp">Документация и сведения</a>
+                            <div class="dropdown">
+                                <button class="dropbtn" style="align: left">Документация и сведения</button>
+                                <div class="dropdown-content">
+                                    <a href="/organizations/unp">Организация</a>
+                                    <a href="#">Первичная</a>
+                                    <a href="#">Сводная</a>
+                                    <a href="#">Аналитическая</a>
+                                </div>
+                            </div>
                         </li>
                     </div>
                     <div th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}" class="unauthorized">

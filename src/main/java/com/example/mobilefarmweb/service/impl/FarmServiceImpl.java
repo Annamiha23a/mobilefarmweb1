@@ -9,6 +9,8 @@ import com.example.mobilefarmweb.service.FarmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -71,6 +73,10 @@ public class FarmServiceImpl implements FarmService {
 
     @Override
     public Farm createFarm(Farm farm, Organization organization) {
+        farm.setFormerName("");
+        farm.setFormingDate(OffsetDateTime.now());
+        farm.setIsFormed(false);
+        farm.setRegistrationDate(OffsetDateTime.now());
         farm.setOrganization(organization);
         return farmRepository.save(farm);
     }
@@ -122,4 +128,11 @@ public Farm setFarm(Farm farm,  String gln, String name,  String ownerLastName, 
 //        farmRepository.save(farm);
 return farm;
 }
+
+    @Override
+    public Integer getSize(Farm farm) {
+        Integer size=farm.getAnimalPassports().size();
+        if(size==null) size=0;
+        return size;
+    }
 }

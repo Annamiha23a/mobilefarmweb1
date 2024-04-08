@@ -2,6 +2,7 @@ package com.example.mobilefarmweb.controller;
 
 import com.example.mobilefarmweb.entity.Farm;
 import com.example.mobilefarmweb.entity.Organization;
+import com.example.mobilefarmweb.entity.Role;
 import com.example.mobilefarmweb.entity.User;
 import com.example.mobilefarmweb.service.impl.FarmServiceImpl;
 import com.example.mobilefarmweb.service.impl.OrganizationServiceImpl;
@@ -31,6 +32,10 @@ public class FarmController {
         User user= userService.findUserByUsername(principal.getName());
         Organization organization=user.getOrganization();
         List<Farm> farms=farmService.getFarmsByOrganizationIdAndName(organization.getOrganizationId(), title);
+        for (Farm f : farms) {
+            // Действия с каждым элементом role
+            farmService.getSize(f);
+        }
         model.addAttribute("farms", farms);
         return "admin/farms";
 

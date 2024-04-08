@@ -5,6 +5,7 @@ import com.example.mobilefarmweb.entity.FeedGroup;
 import com.example.mobilefarmweb.entity.Organization;
 import com.example.mobilefarmweb.entity.User;
 import com.example.mobilefarmweb.service.AnimalPassportService;
+import com.example.mobilefarmweb.service.impl.FeedGroupServiceImpl;
 import com.example.mobilefarmweb.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,10 +25,12 @@ public class AnimalPassportController {
     private final AnimalPassportService animalPassportService;
     private final UserServiceImpl userService;
 
+    private final FeedGroupServiceImpl feedGroupService;
     @Autowired
-    public AnimalPassportController(AnimalPassportService animalPassportService, UserServiceImpl userService){
+    public AnimalPassportController(AnimalPassportService animalPassportService, UserServiceImpl userService, FeedGroupServiceImpl feedGroupService){
         this.animalPassportService = animalPassportService;
         this.userService=userService;
+        this.feedGroupService=feedGroupService;
     }
 
     @GetMapping("/organization_id")
@@ -55,5 +58,12 @@ public class AnimalPassportController {
         FeedGroup feedGroup=animalPassport.getFeedGroup();
         model.addAttribute("feedGroup", feedGroup);
         return "admin/feedgroup";
+    }
+
+    @GetMapping({"/add"})
+    public String getAddPassport(Model model){
+        List<FeedGroup> feedGroups=feedGroupService.findAll();
+        model.addAttribute("feedgroups", feedGroups);
+        return "admin/animalPassportAdd";
     }
 }
