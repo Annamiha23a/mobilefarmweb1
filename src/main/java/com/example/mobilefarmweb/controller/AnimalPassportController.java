@@ -1,36 +1,36 @@
 package com.example.mobilefarmweb.controller;
 
-import com.example.mobilefarmweb.entity.AnimalPassport;
-import com.example.mobilefarmweb.entity.FeedGroup;
-import com.example.mobilefarmweb.entity.Organization;
-import com.example.mobilefarmweb.entity.User;
+import com.example.mobilefarmweb.entity.*;
 import com.example.mobilefarmweb.service.AnimalPassportService;
+import com.example.mobilefarmweb.service.impl.AnimalPassportServiceImpl;
+import com.example.mobilefarmweb.service.impl.FarmServiceImpl;
 import com.example.mobilefarmweb.service.impl.FeedGroupServiceImpl;
 import com.example.mobilefarmweb.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
 @RequestMapping(value = "/animal_passports")
 public class AnimalPassportController {
-    private final AnimalPassportService animalPassportService;
+    private final AnimalPassportServiceImpl animalPassportService;
     private final UserServiceImpl userService;
 
     private final FeedGroupServiceImpl feedGroupService;
+    private final FarmServiceImpl farmService;
     @Autowired
-    public AnimalPassportController(AnimalPassportService animalPassportService, UserServiceImpl userService, FeedGroupServiceImpl feedGroupService){
+    public AnimalPassportController(AnimalPassportServiceImpl animalPassportService, UserServiceImpl userService, FeedGroupServiceImpl feedGroupService, FarmServiceImpl farmService){
         this.animalPassportService = animalPassportService;
         this.userService=userService;
         this.feedGroupService=feedGroupService;
+        this.farmService=farmService;
     }
 
     @GetMapping("/organization_id")
@@ -61,9 +61,25 @@ public class AnimalPassportController {
     }
 
     @GetMapping({"/add"})
-    public String getAddPassport(Model model){
-        List<FeedGroup> feedGroups=feedGroupService.findAll();
-        model.addAttribute("feedgroups", feedGroups);
+    public String getAddPassport(Model model, Principal principal){
+        User user=userService.getUserByUserName(principal);
+        List<Farm> farms=farmService.getFarmsByOrganizationId(user.getOrganization().getOrganizationId());
+        model.addAttribute("farms", farms);
         return "admin/animalPassportAdd";
+    }
+    @PostMapping("/add")
+    public String addAnimalPassport(Principal principal, Model model, AnimalPassport animalPassport, @RequestParam String externalId,
+//                                    @RequestParam Date createdDate ,
+                                    @RequestParam String nickname, @RequestParam String sex, @RequestParam String breed,
+                                    @RequestParam Boolean breedingAnimal,
+//                                    @RequestParam Date birthDate ,
+                                    @RequestParam BigDecimal weight, @RequestParam BigDecimal averageProductivity,
+                                    @RequestParam BigDecimal geneticProductivity, @RequestParam BigDecimal weightGrowth, @RequestParam String mother,
+                                    @RequestParam String father, @RequestParam Long farm_id){
+        User user= userService.getUserByUserName(principal);
+        animalPassportService.saveAnimalPassport(animalPassport, externalId,nickname, sex,  breed, breedingAnimal, weight,  averageProductivity, geneticProductivity, weightGrowth,  mother, father,  farm_id);
+        List<AnimalPassport> passports=animalPassportService.getAllAnimals();
+        model.addAttribute("passports", passports);
+        return "admin/animalPassports";
     }
 }

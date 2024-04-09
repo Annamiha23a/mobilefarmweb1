@@ -18,11 +18,12 @@
 <div  class="content container mt-5">
     <h1>Создание паспорта животного</h1>
     <div class="container">
-        <div  class="alert alert-primary mt-2">
+        <div  class=" mt-2">
             <form action="/animal_passports/add" method="post" >
                 Общие сведения
+                <div  class="alert alert-primary mt-2">
                 <input placeholder="Идентификационный номер животного" type="text" class="form-control" name="externalId"  >
-                <input placeholder="Дата выдачи паспорта" type="date" class="form-control" name="createdDate" >
+<!--                <input placeholder="Дата выдачи паспорта" type="date" class="form-control" name="createdDate" >-->
                 <input placeholder="Кличка" type="text" class="form-control" name="nickname" >
                 <select id="sex"  name="sex"  class="form-select">
                     <option value=""> Выберите группу животного </option>
@@ -31,7 +32,7 @@
                     <option>Телочка</option>
                     <option>Бычок</option>
                     <option>Бык</option>
-                </select><br>
+                </select>
                 <select id="breed"  name="breed"  class="form-select">
                     <option value=""> Выберите масть, породу </option>
                     <option>Англерская</option>
@@ -48,14 +49,11 @@
                     <option>Красная степная</option>
                     <option>Тагильская</option>
                     <option>Ярославская</option>
-                </select><br>
-                <h6>Пол</h6>
+                </select>
                 <div>
+                    Пол
                     <input type="radio" id="huey" name="drone" value="huey" checked />
                     <label for="huey">Тёлочка</label>
-                </div>
-
-                <div>
                     <input type="radio" id="dewey" name="drone" value="dewey" />
                     <label for="dewey">Бычок</label>
                 </div>
@@ -63,7 +61,33 @@
                     <input type="checkbox" id="breedingAnimal" name="breedingAnimal" checked />
                     <label for="breedingAnimal">Племенное животное</label>
                 </div>
+                </div>
+                Сведения о рождении
+                <div  class="alert alert-primary mt-2">
+<!--                    <input placeholder="Дата рождения" type="date" class="form-control" name="birthDate" >-->
+                    <input placeholder="Вес" type="number" class="form-control" name="weight" >
+                    <input placeholder="Средняя продуктивность" type="number" class="form-control" name="averageProductivity" >
+                    <input placeholder="Генетическая продуктивность" type="number" class="form-control" name="geneticProductivity" >
+                    <input placeholder="Прирост веса" type="number" class="form-control" name="weightGrowth" >
 
+                </div>
+                Происхождение
+                <div  class="alert alert-primary mt-2">
+                    Мать
+                    <input placeholder="Идентификационный номер" type="text" class="form-control" name="mother" >
+                    Отец
+                    <input placeholder="Идентификационный номер" type="text" class="form-control" name="father" >
+                </div>
+                Ферма
+                <div  class="alert alert-primary mt-2">
+                    <select id="farm"  name="farm_id"  class="form-select">
+                        <option value=""> Выберите </option>
+                        <option th:each="farm : ${farms}"
+                                th:value="${farm.getFarmId()}"
+                                th:utext="${farm.getName()}"/>
+                    </select><br>
+                </div>
+                <button class="btn w-100 btn-lg btn-primary" type="submit">Зарегистрировать паспорт</button>
             </form>
         </div>
     </div>
