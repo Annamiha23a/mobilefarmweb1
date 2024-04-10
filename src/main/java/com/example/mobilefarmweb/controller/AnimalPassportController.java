@@ -70,14 +70,14 @@ public class AnimalPassportController {
     @PostMapping("/add")
     public String addAnimalPassport(Principal principal, Model model, AnimalPassport animalPassport, @RequestParam String externalId,
 //                                    @RequestParam Date createdDate ,
-                                    @RequestParam String nickname, @RequestParam String sex, @RequestParam String breed,
+                                    @RequestParam String nickname,@RequestParam String type, @RequestParam String sex, @RequestParam String breed,
                                     @RequestParam Boolean breedingAnimal,
 //                                    @RequestParam Date birthDate ,
                                     @RequestParam BigDecimal weight, @RequestParam BigDecimal averageProductivity,
                                     @RequestParam BigDecimal geneticProductivity, @RequestParam BigDecimal weightGrowth, @RequestParam String mother,
                                     @RequestParam String father, @RequestParam Long farm_id){
         User user= userService.getUserByUserName(principal);
-        animalPassportService.saveAnimalPassport(animalPassport, externalId,nickname, sex,  breed, breedingAnimal, weight,  averageProductivity, geneticProductivity, weightGrowth,  mother, father,  farm_id);
+        animalPassportService.saveAnimalPassport(animalPassport, externalId,nickname, type, sex,  breed, breedingAnimal, weight,  averageProductivity, geneticProductivity, weightGrowth,  mother, father,  farm_id);
         List<AnimalPassport> passports=animalPassportService.getAllAnimals();
         model.addAttribute("passports", passports);
         return "admin/animalPassports";

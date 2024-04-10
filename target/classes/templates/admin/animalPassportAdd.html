@@ -25,7 +25,7 @@
                 <input placeholder="Идентификационный номер животного" type="text" class="form-control" name="externalId"  >
 <!--                <input placeholder="Дата выдачи паспорта" type="date" class="form-control" name="createdDate" >-->
                 <input placeholder="Кличка" type="text" class="form-control" name="nickname" >
-                <select id="sex"  name="sex"  class="form-select">
+                <select id="type"  name="type"  class="form-select">
                     <option value=""> Выберите группу животного </option>
                     <option>Корова</option>
                     <option>Нетель</option>
@@ -52,10 +52,11 @@
                 </select>
                 <div>
                     Пол
-                    <input type="radio" id="huey" name="drone" value="huey" checked />
-                    <label for="huey">Тёлочка</label>
-                    <input type="radio" id="dewey" name="drone" value="dewey" />
-                    <label for="dewey">Бычок</label>
+                    <input type="radio" id="woman" name="sex" value="Тёлочка" checked />
+                    <label for="woman">Тёлочка</label>
+                    <input type="radio" id="man" name="sex" value="Бычок" />
+                    <label for="man">Бычок</label>
+
                 </div>
                 <div>
                     <input type="checkbox" id="breedingAnimal" name="breedingAnimal" checked />

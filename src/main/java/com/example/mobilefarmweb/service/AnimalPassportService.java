@@ -15,5 +15,5 @@ public interface AnimalPassportService {
 
   AnimalPassport getAnimalPassportByExternalId(String externalId);
 
-  AnimalPassport saveAnimalPassport(AnimalPassport animalPassport, String externalId, String nickname, String sex, String breed, Boolean breedingAnimal, BigDecimal weight, BigDecimal averageProductivity, BigDecimal geneticProductivity, BigDecimal weightGrowth, String mother, String father, Long farm_id);
+  AnimalPassport saveAnimalPassport(AnimalPassport animalPassport, String externalId, String nickname, String type, String sex, String breed, Boolean breedingAnimal, BigDecimal weight, BigDecimal averageProductivity, BigDecimal geneticProductivity, BigDecimal weightGrowth, String mother, String father, Long farm_id);
 }

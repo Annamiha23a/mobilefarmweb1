@@ -37,8 +37,9 @@
         <h4 th:utext="${'<strong>Кличка:</strong> ' + passport.getNickname}"></h4>
         <h4 th:utext="${'<strong>Масть, порода:</strong> ' + passport.getBreed}"></h4>
         <h4 th:utext="${'<strong>Пол:</strong> ' + passport.getSex}"></h4>
+        <h4 th:utext="${'<strong>Группа:</strong> ' + passport.getType}"></h4>
         <h4 th:utext="${'<strong>Дата рождения:</strong> ' + passport.getBirthDate}"></h4>
-        <h4 th:utext="${'<strong>Наименование объекта:</strong> ' + passport.farm.getName}"></h4>
+        <h4 th:utext="${'<strong>Наименование объекта:</strong> ' + passport.farm?.getName}"></h4>
         <h4 th:utext="${'<strong>Отвественное лицо:</strong> ' + passport.getFormerName}"></h4>
         <h4 th:utext="${'<strong>Страна происхождения:</strong> ' + passport.getOriginCountry}"></h4>
         <h4 th:utext="${'<strong>Номер животного в стране происхождения:</strong> ' + passport.getExternalIdInOriginCountry}"></h4>
@@ -56,10 +57,16 @@
                 <h4 th:utext="${'<strong>Отец:</strong> ' + passport.father.getExternalId}"></h4>
             </div>
         </div>
-        <h4 th:utext="${'<strong>Группа кормления:</strong> ' + passport.feedGroup.getType}"></h4>
+        <div class="form-row" th:if="${passport.feedGroup!=null}">
+            <div class="col-sm-12">
+                <h4 th:utext="${'<strong>Группа кормления:</strong> ' + passport.feedGroup.getType}"></h4><br><br>
+                <a th:href="'/animal_passports/organization_id/feedgroup/'+${passport.getExternalId()}"  class="btn btn-sm btn-primary w-100">Посмотреть группу кормления</a><br><br>
+            </div>
+        </div>
+
         <br>
         <div >
-            <a th:href="'/animal_passports/organization_id/feedgroup/'+${passport.getExternalId()}"  class="btn btn-sm btn-primary w-100">Посмотреть группу кормления</a><br><br>
+
             <button  onclick="location.href='#'" class="btn btn-sm btn-primary w-100">Изменить</button>
             <br>
         </div>

@@ -94,7 +94,7 @@
                             <a class="nav-link" href="/users">Пользователи</a>
                         </li>
                     </div>
-                    <div th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}" class="unauthorized">
+                    <div  class="unauthorized">
                         <li class="nav-item">
                             <a class="nav-link" href="/office">Личный кабинет</a>
                         </li>
@@ -124,7 +124,7 @@
                             </div>
                         </li>
                     </div>
-                    <div th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}" class="unauthorized">
+                    <div  class="unauthorized">
                         <li class="nav-item">
                             <div class="dropdown">
                                 <button class="dropbtn">Зоотехния</button>
@@ -176,7 +176,7 @@
                             </div>
                         </li>
                     </div>
-                    <div th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}" class="unauthorized">
+                    <div  class="unauthorized">
                         <li class="nav-item">
                             <a class="nav-link" href="/aboutUs">О нас</a>
                         </li>

@@ -48,10 +48,11 @@ public class AnimalPassportServiceImpl implements AnimalPassportService {
     }
 
     @Override
-    public AnimalPassport saveAnimalPassport(AnimalPassport animalPassport, String externalId,  String nickname, String sex, String breed, Boolean breedingAnimal, BigDecimal weight, BigDecimal averageProductivity, BigDecimal geneticProductivity, BigDecimal weightGrowth, String mother, String father, Long farm_id) {
+    public AnimalPassport saveAnimalPassport(AnimalPassport animalPassport, String externalId,  String nickname,String type, String sex, String breed, Boolean breedingAnimal, BigDecimal weight, BigDecimal averageProductivity, BigDecimal geneticProductivity, BigDecimal weightGrowth, String mother, String father, Long farm_id) {
         animalPassport.setExternalId(externalId);
         animalPassport.setCreatedDate(OffsetDateTime.now());//TODO
         animalPassport.setNickname(nickname);
+        animalPassport.setType(type);
         animalPassport.setSex(sex);
         animalPassport.setBreed(breed);
         animalPassport.setBreedingAnimal(breedingAnimal);
