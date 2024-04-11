@@ -96,12 +96,12 @@ public class FarmServiceImpl implements FarmService {
 //        farmRepository.deleteByFarmId(farmId);
 //    }
 @Override
-public Farm setFarm(Farm farm,  String gln, String name,  String ownerLastName, String ownerFirstName,  String ownerMiddleName,
-                    String locationLocationIndex, String locationRegion,  String locationDistrict, String locationLocationName,  String locationCoordinates,
-                    String locationHouseNumber,  String locationCorpusNumber,  String locationFlatNumber,  String locationPhoneNumber,  String locationFaxNumber,
+public Farm setFarm(Farm farm, String gln,  String name, String ownerLastName, String ownerFirstName, String ownerMiddleName,
+                    String locationLocationIndex, String locationRegion, String locationDistrict, String locationLocationName, String locationCoordinates,
+                    String locationHouseNumber, String locationCorpusNumber, String locationFlatNumber, String locationPhoneNumber, String locationFaxNumber,
                     String locationEmail, String locationStreetName){
         farm.setGln(gln);
-//        farm.setRegistrationDate(registrationDate);
+//        farm.setRegistrationDate(OffsetDateTime.from(registrationDate));
         farm.setName(name);
         Owner owner=new Owner();
         owner.setFirstName(ownerFirstName);
@@ -134,5 +134,28 @@ return farm;
         Integer size=farm.getAnimalPassports().size();
         if(size==null) size=0;
         return size;
+    }
+
+    @Override
+    public Integer getSizeType(Farm farm, String X) {
+        Integer size=0;
+        for (AnimalPassport passport : farm.getAnimalPassports()) {
+            if(passport.getType().equals(X)){
+                size++;
+            }
+        }
+        return size;
+    }
+
+    @Override
+    public List<Integer> typeAnimals(Farm farm) {
+        List<Integer> sizes=new ArrayList<>();
+        sizes.add(getSizeType(farm, "Бык"));
+        sizes.add(getSizeType(farm, "Тёлка")+getSizeType(farm, "Телка"));
+        sizes.add(getSizeType(farm, "Корова"));
+        sizes.add(getSizeType(farm, "Нетель"));
+        sizes.add(getSizeType(farm, "Бычок"));
+        sizes.add(getSizeType(farm, "Тёлочка")+getSizeType(farm, "Телочка"));
+        return sizes;
     }
 }

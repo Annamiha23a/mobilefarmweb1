@@ -13,6 +13,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,10 +35,6 @@ public class FarmController {
         User user= userService.findUserByUsername(principal.getName());
         Organization organization=user.getOrganization();
         List<Farm> farms=farmService.getFarmsByOrganizationIdAndName(organization.getOrganizationId(), title);
-        for (Farm f : farms) {
-            // Действия с каждым элементом role
-            farmService.getSize(f);
-        }
         model.addAttribute("farms", farms);
         return "admin/farms";
 
@@ -48,12 +47,14 @@ public class FarmController {
     public String getDetailsFarm(@PathVariable("id") Long id, Model model){
         Farm farm=farmService.getFarmByFarmId(id);
         model.addAttribute(farm);
+        List<Integer> sizes=farmService.typeAnimals(farm);
+        model.addAttribute("sizes", sizes);
         return "admin/farm-details";
     }
 
     @PostMapping("/add")
     public String addFarm(Principal principal, Model model, Farm farm, @RequestParam String gln,
-//                          @RequestParam Date registrationDate ,
+//                          @RequestParam LocalDateTime registrationDate ,
                           @RequestParam String name, @RequestParam String ownerLastName, @RequestParam String ownerFirstName,
                           @RequestParam String ownerMiddleName, @RequestParam String locationLocationIndex, @RequestParam String locationRegion,
                           @RequestParam String locationDistrict, @RequestParam String locationLocationName, @RequestParam String locationCoordinates,
@@ -62,7 +63,7 @@ public class FarmController {
                           @RequestParam String locationStreetName){
         User user= userService.findUserByUsername(principal.getName());
         Organization organization=user.getOrganization();
-        farm=farmService.setFarm(farm, gln, name,   ownerLastName,  ownerFirstName,  ownerMiddleName,
+        farm=farmService.setFarm(farm, gln,  name,   ownerLastName,  ownerFirstName,  ownerMiddleName,
                  locationLocationIndex,  locationRegion,   locationDistrict,  locationLocationName,   locationCoordinates,
                  locationHouseNumber,   locationCorpusNumber,  locationFlatNumber,  locationPhoneNumber,  locationFaxNumber,
                  locationEmail, locationStreetName);
