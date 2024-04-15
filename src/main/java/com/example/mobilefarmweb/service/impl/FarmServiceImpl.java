@@ -76,7 +76,7 @@ public class FarmServiceImpl implements FarmService {
         farm.setFormerName("");
         farm.setFormingDate(OffsetDateTime.now());
         farm.setIsFormed(false);
-        farm.setRegistrationDate(OffsetDateTime.now());
+//        farm.setRegistrationDate(OffsetDateTime.now());
         farm.setOrganization(organization);
         return farmRepository.save(farm);
     }
@@ -96,12 +96,13 @@ public class FarmServiceImpl implements FarmService {
 //        farmRepository.deleteByFarmId(farmId);
 //    }
 @Override
-public Farm setFarm(Farm farm, String gln,  String name, String ownerLastName, String ownerFirstName, String ownerMiddleName,
+public Farm setFarm(Farm farm, String gln, OffsetDateTime dateTime, String name, String ownerLastName, String ownerFirstName, String ownerMiddleName,
                     String locationLocationIndex, String locationRegion, String locationDistrict, String locationLocationName, String locationCoordinates,
                     String locationHouseNumber, String locationCorpusNumber, String locationFlatNumber, String locationPhoneNumber, String locationFaxNumber,
                     String locationEmail, String locationStreetName){
         farm.setGln(gln);
 //        farm.setRegistrationDate(OffsetDateTime.from(registrationDate));
+        farm.setRegistrationDate(dateTime);
         farm.setName(name);
         Owner owner=new Owner();
         owner.setFirstName(ownerFirstName);

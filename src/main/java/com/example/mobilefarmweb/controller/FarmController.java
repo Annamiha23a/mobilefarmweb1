@@ -8,6 +8,7 @@ import com.example.mobilefarmweb.service.impl.FarmServiceImpl;
 import com.example.mobilefarmweb.service.impl.OrganizationServiceImpl;
 import com.example.mobilefarmweb.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,8 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -54,7 +57,7 @@ public class FarmController {
 
     @PostMapping("/add")
     public String addFarm(Principal principal, Model model, Farm farm, @RequestParam String gln,
-//                          @RequestParam LocalDateTime registrationDate ,
+                          @RequestParam String registrationDate,
                           @RequestParam String name, @RequestParam String ownerLastName, @RequestParam String ownerFirstName,
                           @RequestParam String ownerMiddleName, @RequestParam String locationLocationIndex, @RequestParam String locationRegion,
                           @RequestParam String locationDistrict, @RequestParam String locationLocationName, @RequestParam String locationCoordinates,
@@ -63,7 +66,12 @@ public class FarmController {
                           @RequestParam String locationStreetName){
         User user= userService.findUserByUsername(principal.getName());
         Organization organization=user.getOrganization();
-        farm=farmService.setFarm(farm, gln,  name,   ownerLastName,  ownerFirstName,  ownerMiddleName,
+        String date= registrationDate + "+03:00";
+        // Получение объекта OffsetDateTime из строки
+        OffsetDateTime dateTime2 = OffsetDateTime.parse(date);
+        // Использование объекта OffsetDateTime
+        System.out.println("Дата и время: " + dateTime2);
+        farm=farmService.setFarm(farm, gln, dateTime2, name ,   ownerLastName,  ownerFirstName,  ownerMiddleName,
                  locationLocationIndex,  locationRegion,   locationDistrict,  locationLocationName,   locationCoordinates,
                  locationHouseNumber,   locationCorpusNumber,  locationFlatNumber,  locationPhoneNumber,  locationFaxNumber,
                  locationEmail, locationStreetName);

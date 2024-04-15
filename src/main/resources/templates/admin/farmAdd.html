@@ -3,13 +3,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Добавление объекта</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--    <link rel="stylesheet" type="text/css" href="css/style.css">-->
-    <link rel="stylesheet" href="css/location.css">
+<!--    <link rel="stylesheet" href="css/location.css">-->
     <link rel="stylesheet"  type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
 <!--<header th:insert="blocks/header :: header"></header>-->
@@ -24,7 +26,7 @@
             <form action="/farms/add" method="post" >
                 Общие сведения
                 <input placeholder="Глобальный идентификатор" type="text" class="form-control" name="gln"  >
-<!--                <input placeholder="Дата регистрации" type="datetime-local" class="form-control" name="registrationDate">-->
+                <input type="datetime-local" placeholder="Дата и время регистрации" id="datetimePicker" name="registrationDate" />
                 <input placeholder="Наименование объекта" type="text" class="form-control" name="name" >
                 Ответственное лицо
                 <input placeholder="Фамилия" type="text" class="form-control" name="ownerLastName" >
@@ -50,6 +52,22 @@
 </div>
 </div>
 <!--<footer th:insert="blocks/footer :: footer"></footer>-->
+
+
+<!-- Подключение скрипта для flatpickr -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+    // Инициализация flatpickr для поля ввода
+    flatpickr("#datetimePicker", {
+        enableTime: true, // Включить выбор времени
+        dateFormat: "Y-m-dTH:i:S", // Формат даты и времени
+        altInput: true, // Использовать альтернативный ввод (для кросс-браузерной поддержки)
+        altFormat: "F j, Y H:i", // Формат для альтернативного ввода
+        time_24hr: true, // Использовать 24-часовой формат времени
+        timeZone: "UTC" // Задать временную зону (вы можете указать нужное смещение временной зоны)
+    });
+</script>
+
 </body>
 </html>
 

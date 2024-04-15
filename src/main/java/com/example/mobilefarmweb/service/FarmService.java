@@ -19,7 +19,7 @@ public interface FarmService {
 //    void deleteFarmById(Long farmId);
     List<Farm> getFarmByName(List<Farm> farms, String name);
     List<Farm> getFarmsByOrganizationIdAndName(Long organizationId, String name);
-    Farm setFarm(Farm farm, String gln, String name, String ownerLastName, String ownerFirstName, String ownerMiddleName, String locationLocationIndex, String locationRegion, String locationDistrict, String locationLocationName, String locationCoordinates, String locationHouseNumber, String locationCorpusNumber, String locationFlatNumber, String locationPhoneNumber, String locationFaxNumber, String locationEmail, String locationStreetName);
+    Farm setFarm(Farm farm, String gln,OffsetDateTime dateTime, String name, String ownerLastName, String ownerFirstName, String ownerMiddleName, String locationLocationIndex, String locationRegion, String locationDistrict, String locationLocationName, String locationCoordinates, String locationHouseNumber, String locationCorpusNumber, String locationFlatNumber, String locationPhoneNumber, String locationFaxNumber, String locationEmail, String locationStreetName);
 
     Integer getSize(Farm farm);
 
