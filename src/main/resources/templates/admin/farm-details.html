@@ -37,8 +37,9 @@
         <h4 th:utext="${'<strong>Дата, время формирования:</strong> '+farm.getFormingDate}"></h4>
         <h4 th:utext="${'<strong>Пользователь:</strong> '+farm.getFormerName}"></h4>
         <br>
-        <button  onclick="location.href='#'" class="btn w-100 btn-sm btn-primary">Паспорта</button>
-
+        <form th:action="'/farms/byFarm/'+${farm.getFarmId}" method="get">
+            <button class="btn w-100 btn-lg btn-primary" type="submit">Паспорта</button>
+        </form>
 
     </div>
 </div>

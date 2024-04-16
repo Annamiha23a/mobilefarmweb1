@@ -26,7 +26,7 @@
             <form action="/farms/add" method="post" >
                 Общие сведения
                 <input placeholder="Глобальный идентификатор" type="text" class="form-control" name="gln"  >
-                <input type="datetime-local" placeholder="Дата и время регистрации" id="datetimePicker" name="registrationDate" />
+                <input type="datetime-local" placeholder="Дата и время регистрации" id="datetimePicker" name="dateTime" />
                 <input placeholder="Наименование объекта" type="text" class="form-control" name="name" >
                 Ответственное лицо
                 <input placeholder="Фамилия" type="text" class="form-control" name="ownerLastName" >
@@ -56,6 +56,8 @@
 
 <!-- Подключение скрипта для flatpickr -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<!-- Подключение локализации для русского языка -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js"></script>
 <script>
     // Инициализация flatpickr для поля ввода
     flatpickr("#datetimePicker", {
@@ -65,6 +67,9 @@
         altFormat: "F j, Y H:i", // Формат для альтернативного ввода
         time_24hr: true, // Использовать 24-часовой формат времени
         timeZone: "UTC" // Задать временную зону (вы можете указать нужное смещение временной зоны)
+        ,weekNumbers: true, // Включить отображение номеров недели
+        locale: 'ru', // Установить русскую локализацию
+        firstDayOfWeek: 1 // Начало недели с понедельника (0 - воскресенье, 1 - понедельник и т.д.)
     });
 </script>
 

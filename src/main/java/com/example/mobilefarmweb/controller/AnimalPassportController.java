@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.security.Principal;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -73,11 +74,19 @@ public class AnimalPassportController {
                                     @RequestParam String nickname,@RequestParam String type, @RequestParam String sex, @RequestParam String breed,
                                     @RequestParam Boolean breedingAnimal,
 //                                    @RequestParam Date birthDate ,
+                                    @RequestParam String dateTime,
                                     @RequestParam BigDecimal weight, @RequestParam BigDecimal averageProductivity,
                                     @RequestParam BigDecimal geneticProductivity, @RequestParam BigDecimal weightGrowth, @RequestParam String mother,
                                     @RequestParam String father, @RequestParam Long farm_id){
+        System.out.println(dateTime);
+        String date= dateTime + "+03:00";
+        System.out.println(date);
+        // Получение объекта OffsetDateTime из строки
+        OffsetDateTime birthDate = OffsetDateTime.parse(date);
+        // Использование объекта OffsetDateTime
+        System.out.println("Дата и время: " + birthDate);
         User user= userService.getUserByUserName(principal);
-        animalPassportService.saveAnimalPassport(animalPassport, externalId,nickname, type, sex,  breed, breedingAnimal, weight,  averageProductivity, geneticProductivity, weightGrowth,  mother, father,  farm_id);
+        animalPassportService.saveAnimalPassport(animalPassport, externalId,nickname, type, sex,  breed, breedingAnimal, birthDate, weight,  averageProductivity, geneticProductivity, weightGrowth,  mother, father,  farm_id);
         List<AnimalPassport> passports=animalPassportService.getAllAnimals();
         model.addAttribute("passports", passports);
         return "admin/animalPassports";

@@ -75,7 +75,7 @@ public class FarmServiceImpl implements FarmService {
     public Farm createFarm(Farm farm, Organization organization) {
         farm.setFormerName("");
         farm.setFormingDate(OffsetDateTime.now());
-        farm.setIsFormed(false);
+        farm.setIsFormed(true);
 //        farm.setRegistrationDate(OffsetDateTime.now());
         farm.setOrganization(organization);
         return farmRepository.save(farm);

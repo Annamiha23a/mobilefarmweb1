@@ -3,6 +3,7 @@ package com.example.mobilefarmweb.service;
 import com.example.mobilefarmweb.entity.AnimalPassport;
 
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -15,5 +16,5 @@ public interface AnimalPassportService {
 
   AnimalPassport getAnimalPassportByExternalId(String externalId);
 
-  AnimalPassport saveAnimalPassport(AnimalPassport animalPassport, String externalId, String nickname, String type, String sex, String breed, Boolean breedingAnimal, BigDecimal weight, BigDecimal averageProductivity, BigDecimal geneticProductivity, BigDecimal weightGrowth, String mother, String father, Long farm_id);
+  AnimalPassport saveAnimalPassport(AnimalPassport animalPassport, String externalId, String nickname, String type, String sex, String breed, Boolean breedingAnimal, OffsetDateTime birthDate, BigDecimal weight, BigDecimal averageProductivity, BigDecimal geneticProductivity, BigDecimal weightGrowth, String mother, String father, Long farm_id);
 }

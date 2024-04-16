@@ -31,7 +31,12 @@
         <h4 th:utext="${farm.location.getLocationIndex()+ ', '+ farm.location.getRegion()+ ' обл., '+ farm.location.getDistrict()+' район, '+ farm.location.getLocationName() }" ></h4>
         <br>
         <h3 th:utext="${'<strong>Код объекта:</strong> ' + farm.getGln}"></h3>
-        <h3 th:utext="${'<strong>Кол-во животных:</strong> ' + farm.animalPassports.size()?:0}"></h3>
+        <div class="form-row" th:if="${farm.animalPassports!=null}">
+            <div class="col-sm-12">
+                <h3 th:utext="${'<strong>Кол-во животных:</strong> ' + farm.animalPassports.size()?:0}"></h3>
+            </div>
+        </div>
+
         <br>
         <a th:href="'/farms/'+${farm.getFarmId()}"  class="btn btn-sm btn-outline-primary">Подробнее</a>
 

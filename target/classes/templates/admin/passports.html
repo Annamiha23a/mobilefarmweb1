@@ -18,11 +18,7 @@
 <div class="sidebar" th:insert="blocks/navication :: nav" ></div>
 
 <div  class="content container mt-5">
-    <div class="btn-group">
-        <button  onclick="location.href='/animal_passports/organization_id'" class="btn w-50 btn-sm btn-primary">Паспорта животных</button>
-        <button  onclick="location.href='/rations'" class="btn w-50 btn-sm ">Рацион кормления</button>
-        <br>
-    </div>
+
     <br>
     <form action="/animal_passports/organization_id" method="get"  >
         <input placeholder="Поиск по ID" class="w-50" type="text" name="externalId" id="externalId">
@@ -37,11 +33,7 @@
         <h4 th:utext="${'<strong>Кличка:</strong> ' + passport.getNickname}"></h4>
         <h4 th:utext="${'<strong>Дата рождения:</strong> ' + passport.getBirthDate}"></h4>
         <h4 th:utext="${'<strong>Пол:</strong> ' + passport.getSex}"></h4>
-        <div class="form-row" th:if="${passport.farm.getName!=null}">
-            <div class="col-sm-12">
-                <h4 th:utext="${'<strong>Объект:</strong> ' + passport.farm.getName}"></h4>
-            </div>
-        </div>
+        <h4 th:utext="${'<strong>Объект:</strong> ' + passport.farm.getName}"></h4>
         <a th:href="'/animal_passports/organization_id/'+${passport.getExternalId()}"  class="btn btn-sm btn-outline-primary">Подробнее</a>
 
     </div>

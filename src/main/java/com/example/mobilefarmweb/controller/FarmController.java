@@ -1,9 +1,6 @@
 package com.example.mobilefarmweb.controller;
 
-import com.example.mobilefarmweb.entity.Farm;
-import com.example.mobilefarmweb.entity.Organization;
-import com.example.mobilefarmweb.entity.Role;
-import com.example.mobilefarmweb.entity.User;
+import com.example.mobilefarmweb.entity.*;
 import com.example.mobilefarmweb.service.impl.FarmServiceImpl;
 import com.example.mobilefarmweb.service.impl.OrganizationServiceImpl;
 import com.example.mobilefarmweb.service.impl.UserServiceImpl;
@@ -54,10 +51,16 @@ public class FarmController {
         model.addAttribute("sizes", sizes);
         return "admin/farm-details";
     }
-
+    @GetMapping("/byFarm/{id}")
+    public String getPassportsByFarm(@PathVariable("id") Long id, Model model){
+        Farm farm=farmService.getFarmByFarmId(id);
+        List<AnimalPassport> passports=farm.getAnimalPassports();
+        model.addAttribute("passports", passports);
+        return "admin/passports";
+    }
     @PostMapping("/add")
     public String addFarm(Principal principal, Model model, Farm farm, @RequestParam String gln,
-                          @RequestParam String registrationDate,
+                          @RequestParam String dateTime,
                           @RequestParam String name, @RequestParam String ownerLastName, @RequestParam String ownerFirstName,
                           @RequestParam String ownerMiddleName, @RequestParam String locationLocationIndex, @RequestParam String locationRegion,
                           @RequestParam String locationDistrict, @RequestParam String locationLocationName, @RequestParam String locationCoordinates,
@@ -66,7 +69,9 @@ public class FarmController {
                           @RequestParam String locationStreetName){
         User user= userService.findUserByUsername(principal.getName());
         Organization organization=user.getOrganization();
-        String date= registrationDate + "+03:00";
+        System.out.println(dateTime);
+        String date= dateTime + "+03:00";
+        System.out.println(date);
         // Получение объекта OffsetDateTime из строки
         OffsetDateTime dateTime2 = OffsetDateTime.parse(date);
         // Использование объекта OffsetDateTime

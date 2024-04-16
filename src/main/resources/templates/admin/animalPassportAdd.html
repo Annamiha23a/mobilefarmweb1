@@ -8,6 +8,7 @@
           integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
     <link rel="stylesheet" href="css/location.css">
     <link rel="stylesheet"  type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
 
@@ -58,14 +59,14 @@
                     <label for="man">Бычок</label>
 
                 </div>
-                <div>
-                    <input type="checkbox" id="breedingAnimal" name="breedingAnimal" checked />
-                    <label for="breedingAnimal">Племенное животное</label>
-                </div>
+                    <input type="hidden" name="breedingAnimal" value="false" />
+                    <input type="checkbox" id="breedingAnimalCheckbox" name="breedingAnimal" value="true" />
+                    <label for="breedingAnimalCheckbox">Племенное животное</label>
                 </div>
                 Сведения о рождении
                 <div  class="alert alert-primary mt-2">
 <!--                    <input placeholder="Дата рождения" type="date" class="form-control" name="birthDate" >-->
+                    <input type="datetime-local" placeholder="Дата и время рождения" id="datetimePicker" name="dateTime" />
                     <input placeholder="Вес" type="number" class="form-control" name="weight" >
                     <input placeholder="Средняя продуктивность" type="number" class="form-control" name="averageProductivity" >
                     <input placeholder="Генетическая продуктивность" type="number" class="form-control" name="geneticProductivity" >
@@ -93,6 +94,25 @@
         </div>
     </div>
 </div>
+<!-- Подключение скрипта для flatpickr -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<!-- Подключение локализации для русского языка -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js"></script>
+<script>
+    // Инициализация flatpickr для поля ввода
+    flatpickr("#datetimePicker", {
+        enableTime: true, // Включить выбор времени
+        dateFormat: "Y-m-dTH:i:S", // Формат даты и времени
+        altInput: true, // Использовать альтернативный ввод (для кросс-браузерной поддержки)
+        altFormat: "F j, Y H:i", // Формат для альтернативного ввода
+        time_24hr: true, // Использовать 24-часовой формат времени
+        timeZone: "UTC" // Задать временную зону (вы можете указать нужное смещение временной зоны)
+        ,weekNumbers: true, // Включить отображение номеров недели
+        locale: 'ru', // Установить русскую локализацию
+        firstDayOfWeek: 1 // Начало недели с понедельника (0 - воскресенье, 1 - понедельник и т.д.)
+    });
+</script>
+
 </body>
 </html>
 

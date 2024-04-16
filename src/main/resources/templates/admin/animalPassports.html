@@ -37,7 +37,11 @@
         <h4 th:utext="${'<strong>Кличка:</strong> ' + passport.getNickname}"></h4>
         <h4 th:utext="${'<strong>Дата рождения:</strong> ' + passport.getBirthDate}"></h4>
         <h4 th:utext="${'<strong>Пол:</strong> ' + passport.getSex}"></h4>
-        <h4 th:utext="${'<strong>Объект:</strong> ' + passport.farm.getName}"></h4>
+        <div class="form-row" th:if="${passport.farm.getName!=null}">
+            <div class="col-sm-12">
+                <h4 th:utext="${'<strong>Объект:</strong> ' + passport.farm.getName}"></h4>
+            </div>
+        </div>
         <a th:href="'/animal_passports/organization_id/'+${passport.getExternalId()}"  class="btn btn-sm btn-outline-primary">Подробнее</a>
 
     </div>
