@@ -12,17 +12,30 @@
     <link rel="stylesheet"  type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
 </head>
 <body>
-<!--<header th:insert="blocks/header :: header"></header>-->
-
 
 <div class="sidebar" th:insert="blocks/navication :: nav" ></div>
 
 <div  class="content container mt-5">
-    <br><br>
+    <h1>Резервы</h1>
+    <form action="/reserv/one/" method="get"  >
+        <input placeholder="Выберите организацию" class="w-50" type="text" name="name" id="title">
+        <button   class="btn w-25 btn-sm btn-primary" type="submit">Поиск</button><br/>
+    </form><br/>
 
-    <br>
+    <div  class="alert alert-primary mt-2">
+        <h4 th:utext="${'Организация '+reserv.name}"></h4>
+        <h4 th:utext="${'Средний удой от коровы, кг '+reserv.avYield}"></h4>
+        <h4 th:utext="${'Рейтинг в республике '+reserv.ratingRB}"></h4>
+        <h4 th:utext="${'Краткосрочный резерв роста продуктивности, кг '+reserv.shReserve}"></h4>
+        <h4 th:utext="${'Долгосрочный резерв роста продуктивности, кг '+reserv.lnReserve}"></h4>
+        <h4 th:utext="${'Краткосрочный объём увеличения производства молока, т '+reserv.shVolume}"></h4>
+        <h4 th:utext="${'Долгосрочный объём увеличения производства молока, т '+reserv.lnVolume}"></h4>
 
+    </div>
 </div>
-<!--<footer th:insert="blocks/footer :: footer"></footer>-->
 </body>
 </html>
+
+
+
+

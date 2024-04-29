@@ -17,6 +17,16 @@
 
 <div  class="content container mt-5">
     <h1>Резервы</h1>
+    <form action="/reserv/one/" method="get"  >
+        <select id="name"  name="name"  class="form-select"  >
+        <option value=""> Выберите </option>
+        <option th:each="reserv:${reservs}"
+                th:value="${reserv.name}"
+                th:utext="${reserv.name}"/>
+    </select><br>
+
+        <button   class="btn w-25 btn-sm btn-primary" type="submit">Поиск</button><br/>
+    </form><br/>
     <table class="table table-striped mt-3">
         <thead>
         <tr>
@@ -26,6 +36,8 @@
             <th>Рейтинг в РБ</th>
             <th>Кр. резерв</th>
             <th>Дол. резерв</th>
+            <th>Кр. объём</th>
+            <th>Дол. объём</th>
         </tr>
         </thead>
         <tbody>
@@ -36,6 +48,8 @@
             <td th:text="${reserv.ratingRB}"></td>
             <td th:text="${reserv.shReserve}"></td>
             <td th:text="${reserv.lnReserve}"></td>
+            <td th:text="${reserv.shVolume}"></td>
+            <td th:text="${reserv.lnVolume}"></td>
         </tr>
         </tbody>
     </table>
