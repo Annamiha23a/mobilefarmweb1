@@ -30,6 +30,8 @@ public class ReservController {
     public String readingOne(Model model, @RequestParam String name){
         Reselv reselv=Read.readingOne(name);
         model.addAttribute("reserv", reselv);
+        List<String> names=Read.readingName();
+        model.addAttribute("names", names);
         return "admin/reserves";
     }
 

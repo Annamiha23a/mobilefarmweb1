@@ -18,18 +18,25 @@
 <div  class="content container mt-5">
     <h1>Резервы</h1>
     <form action="/reserv/one/" method="get"  >
-        <input placeholder="Выберите организацию" class="w-50" type="text" name="name" id="title">
+        <select id="name"  name="name"  class="form-select"  >
+            <option th:value="${reserv.name}"
+                    th:utext="${reserv.name}"></option>
+            <option th:each="name:${names}"
+                    th:value="${name}"
+                    th:utext="${name}"/>
+        </select><br>
+
         <button   class="btn w-25 btn-sm btn-primary" type="submit">Поиск</button><br/>
     </form><br/>
 
     <div  class="alert alert-primary mt-2">
-        <h4 th:utext="${'Организация '+reserv.name}"></h4>
-        <h4 th:utext="${'Средний удой от коровы, кг '+reserv.avYield}"></h4>
-        <h4 th:utext="${'Рейтинг в республике '+reserv.ratingRB}"></h4>
-        <h4 th:utext="${'Краткосрочный резерв роста продуктивности, кг '+reserv.shReserve}"></h4>
-        <h4 th:utext="${'Долгосрочный резерв роста продуктивности, кг '+reserv.lnReserve}"></h4>
-        <h4 th:utext="${'Краткосрочный объём увеличения производства молока, т '+reserv.shVolume}"></h4>
-        <h4 th:utext="${'Долгосрочный объём увеличения производства молока, т '+reserv.lnVolume}"></h4>
+        <h4 th:utext="${'<strong>Организация:</strong> '+reserv.name}"></h4>
+        <h4 th:utext="${'<strong>Средний удой от коровы, кг:</strong> '+reserv.avYield}"></h4>
+        <h4 th:utext="${'<strong>Рейтинг в республике:</strong> '+reserv.ratingRB}"></h4>
+        <h4 th:utext="${'<strong>Краткосрочный резерв роста продуктивности, кг:</strong> '+reserv.shReserve}"></h4>
+        <h4 th:utext="${'<strong>Долгосрочный резерв роста продуктивности, кг:</strong> '+reserv.lnReserve}"></h4>
+        <h4 th:utext="${'<strong>Краткосрочный объём увеличения производства молока, т:</strong> '+reserv.shVolume}"></h4>
+        <h4 th:utext="${'<strong>Долгосрочный объём увеличения производства молока, т:</strong> '+reserv.lnVolume}"></h4>
 
     </div>
 </div>
