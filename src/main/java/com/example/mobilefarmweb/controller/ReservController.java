@@ -35,4 +35,14 @@ public class ReservController {
         return "admin/reserves";
     }
 
+    @GetMapping("/one2")
+    public String readingOne2(Model model, @RequestParam String name){
+        List<Reselv> reselvs=Read.readingOne2(name);
+        model.addAttribute("reservs", reselvs);
+        List<String> names=Read.readingName();
+        model.addAttribute("names", names);
+        model.addAttribute("name", name);
+        return "admin/reserves2";
+    }
+
 }
