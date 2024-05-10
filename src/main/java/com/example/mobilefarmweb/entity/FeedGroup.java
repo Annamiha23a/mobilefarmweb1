@@ -24,10 +24,10 @@ public class FeedGroup {
     private String type;
 
     @Column(name = "productivity")
-    private BigDecimal productivity;
+    private Integer productivity;
 
     @Column(name = "weight")
-    private BigDecimal weight;
+    private Integer weight;
 
     @Column(name = "genetic_weight")
     private BigDecimal geneticWeight;

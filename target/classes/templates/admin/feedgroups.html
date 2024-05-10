@@ -24,7 +24,15 @@
         <br>
     </div>
     <br>
+    <form action="/feedgroups/filter" method="get"  >
+        <input placeholder="Удой от" class="w-50" type="number" name="milk1" id="milk1">
+        <input placeholder="Удой до" class="w-50" type="number" name="milk2" id="milk2">
+        <input placeholder="Вес от" class="w-50" type="number" name="weight1" id="weight1">
+        <input placeholder="Вес до" class="w-50" type="number" name="weight2" id="weight2">
+        </select><br>
 
+        <button   class="btn w-25 btn-sm btn-primary" type="submit">Поиск</button><br/>
+    </form><br/>
     <h1>Нормы кормления</h1>
     <div th:each="feedGroup:${feedgroups}" class="alert alert-primary mt-2">
 
