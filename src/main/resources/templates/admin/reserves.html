@@ -28,7 +28,12 @@
 
         <button   class="btn w-25 btn-sm btn-primary" type="submit">Поиск</button><br/>
     </form><br/>
+    <form action="/reserv/one2/" method="get"  >
+        <input placeholder="Поиск по названию" class="w-50" type="text" name="name" id="title">
+        </select><br>
 
+        <button   class="btn w-25 btn-sm btn-primary" type="submit">Поиск</button><br/>
+    </form><br/>
     <div  class="alert alert-primary mt-2">
         <h4 th:utext="${'<strong>Организация:</strong> '+reserv.name}"></h4>
         <h4 th:utext="${'<strong>Средний удой от коровы, кг:</strong> '+reserv.avYield}"></h4>
