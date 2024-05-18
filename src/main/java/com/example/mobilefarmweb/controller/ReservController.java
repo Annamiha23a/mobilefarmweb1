@@ -45,4 +45,14 @@ public class ReservController {
         return "admin/reserves2";
     }
 
+    @GetMapping("/onetable")
+    public String readingOneTable(Model model, @RequestParam String name){
+        List<Reselv> reselvs=Read.readingOne2(name);
+        model.addAttribute("reservs", reselvs);
+        List<String> names=Read.readingName();
+        model.addAttribute("names", names);
+        model.addAttribute("name", name);
+        return "admin/reservs";
+    }
+
 }

@@ -27,6 +27,12 @@
 
         <button   class="btn w-25 btn-sm btn-primary" type="submit">Поиск</button><br/>
     </form><br/>
+    <form action="/reserv/onetable/" method="get"  >
+        <input placeholder="Поиск по названию" class="w-50" type="text" name="name" id="title" th:value="${name}">
+        </select><br>
+
+        <button   class="btn w-25 btn-sm btn-primary" type="submit">Поиск</button><br/>
+    </form><br/>
     <table class="table table-striped mt-3">
         <thead>
         <tr>
