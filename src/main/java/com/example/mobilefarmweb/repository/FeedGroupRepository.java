@@ -24,4 +24,13 @@ public interface FeedGroupRepository extends JpaRepository<FeedGroup, Long> {
     FeedGroup findByFeedGroupId(Long feedgroupId);
 //    List<FeedGroup> findByRationId(Long rationId);
     List<FeedGroup> findByProductivityBetweenAndWeightBetween(Integer m1, Integer m2, Integer w1, Integer w2);
+
+    List<FeedGroup> findByProductivityBetween(Integer m1, Integer m2);
+    List<FeedGroup> findByProductivityAfter(Integer m1);
+    List<FeedGroup> findByProductivityBefore(Integer m2);
+
+    List<FeedGroup> findByWeightBetween( Integer w1, Integer w2);
+
+    List<FeedGroup> findByWeightAfter(Integer w1);
+    List<FeedGroup> findByWeightBefore(Integer w2);
 }

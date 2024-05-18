@@ -39,10 +39,12 @@ public class FeedGroupController {
     }
 
     @GetMapping("/filter")
-    public String filter(Model model, @RequestParam Integer milk1, @RequestParam Integer milk2, @RequestParam Integer weight1, @RequestParam Integer weight2){
-       System.out.println("Начало фильтра");
+    public String filter(Model model, @RequestParam(name="milk1", required = false) Integer milk1, @RequestParam(name="milk2", required = false) Integer milk2, @RequestParam(name="weight1", required = false) Integer weight1, @RequestParam(name="weight2", required = false) Integer weight2){
         List<FeedGroup> feedgroups = feedGroupService.filter(milk1, milk2, weight1, weight2);
         model.addAttribute("feedgroups", feedgroups);
         return "admin/feedgroups";
     }
+
+
+
 }

@@ -10,5 +10,6 @@ public interface FeedGroupService {
     FeedGroup findByFeedGroupId(Long feedgroupId);
 //    List<FeedGroup> findByRationId(Long rationId);
     List<FeedGroup> filter(Integer m1, Integer m2, Integer w1, Integer w2);
+    List<FeedGroup> filter(Integer m1, Integer m2);
 
 }

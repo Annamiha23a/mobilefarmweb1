@@ -10,6 +10,23 @@
     <!--    <link rel="stylesheet" type="text/css" href="css/style.css">-->
     <link rel="stylesheet" href="css/location.css">
     <link rel="stylesheet"  type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+    <style>
+        .form-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            gap: 1rem;
+            width: 100%;
+        }
+
+        .form-group input {
+            flex: 1;
+        }
+    </style>
 </head>
 <body>
 <!--<header th:insert="blocks/header :: header"></header>-->
@@ -25,10 +42,16 @@
     </div>
     <br>
     <form action="/feedgroups/filter" method="get"  >
-        <input placeholder="Удой от" class="w-50" type="number" name="milk1" id="milk1">
-        <input placeholder="Удой до" class="w-50" type="number" name="milk2" id="milk2">
-        <input placeholder="Вес от" class="w-50" type="number" name="weight1" id="weight1">
-        <input placeholder="Вес до" class="w-50" type="number" name="weight2" id="weight2">
+        <br/>
+        <div class="form-group">
+            <input placeholder="Удой от" class="w-50" type="number" name="milk1" id="milk1">
+            <input placeholder="Удой до" class="w-50" type="number" name="milk2" id="milk2">
+        </div>
+        <br/>
+        <div class="form-group">
+            <input placeholder="Вес от" class="w-50" type="number" name="weight1" id="weight1">
+            <input placeholder="Вес до" class="w-50" type="number" name="weight2" id="weight2">
+        </div>
         </select><br>
 
         <button   class="btn w-25 btn-sm btn-primary" type="submit">Поиск</button><br/>

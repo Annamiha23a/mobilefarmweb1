@@ -17,7 +17,6 @@ import java.util.List;
 @Service
 public class FeedGroupServiceImpl implements FeedGroupService {
     private FeedGroupRepository feedGroupRepository;
-    private RationRepository rationRepository;
     @Autowired
     public void FeedGroupServiceImpl(FeedGroupRepository feedGroupRepository){
         this.feedGroupRepository=feedGroupRepository;
@@ -33,13 +32,44 @@ public class FeedGroupServiceImpl implements FeedGroupService {
 
     @Override
     public List<FeedGroup> filter(Integer m1,Integer m2, Integer w1, Integer w2) {
-
-        List<FeedGroup> list1 = feedGroupRepository.findByProductivityBetweenAndWeightBetween(m1 , m2, w1, w2);
+        List<FeedGroup> list1 = new ArrayList<>();
+        if(m1!=null && m2!=null && w1!= null && w2!= null) {
+            list1 = feedGroupRepository.findByProductivityBetweenAndWeightBetween(m1 , m2, w1, w2);
+        }
+        else{
+            if(m1!=null && m2!=null) {
+                list1 = feedGroupRepository.findByProductivityBetween(m1 , m2);
+            }
+            else {
+                if(m1!=null) {
+                    list1 = feedGroupRepository.findByProductivityAfter(m1);
+                }
+                if(m2!=null) {
+                    list1 = feedGroupRepository.findByProductivityBefore(m2);
+                }
+            }
+            if(w1!=null && w2!=null) {
+                list1 = feedGroupRepository.findByWeightBetween(w1 , w2);
+            }
+            else {
+                if(w1!=null) {
+                    list1 = feedGroupRepository.findByWeightAfter(w1);
+                }
+                if(w2!=null) {
+                    list1 = feedGroupRepository.findByWeightBefore(w2);
+                }
+            }
+        }
 
         return list1;
     }
-//    @Override
-//    public List<FeedGroup> findByRationId(Long rationId){
-//        return feedGroupRepository.findByRationId(rationId);
-//    }
+
+    @Override
+    public List<FeedGroup> filter(Integer m1,Integer m2) {
+
+        List<FeedGroup> list1 = feedGroupRepository.findByProductivityBetween(m1 , m2);
+
+        return list1;
+    }
+
 }
