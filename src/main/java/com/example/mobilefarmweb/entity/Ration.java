@@ -26,10 +26,10 @@ public class Ration {
 
     @Override
     public String toString(){
-        return  "rationId = " + rationId + ", " +
+        return  "'{rationId = " + rationId + ", " +
                 "geneticGroup = " + feedGroup + ", "
                 +
-                "rationFeeds = " + rationFeeds
+                "rationFeeds = " + rationFeeds + "}'"
                 ;
     }
 }
