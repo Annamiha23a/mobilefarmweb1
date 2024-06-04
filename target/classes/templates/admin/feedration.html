@@ -1,23 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaef.org">
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Резервы</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
-
-    <!--    <link rel="stylesheet" type="text/css" href="css/style.css">-->
-    <link rel="stylesheet" href="css/location.css">
-    <link rel="stylesheet"  type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+    <title>Расчет рациона</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
-
-<div class="sidebar" th:insert="blocks/navication :: nav" ></div>
-
-<div  class="content container mt-5">
+<div class="content container mt-5">
     <h1>Расчет рациона</h1>
-
     <table class="table table-striped mt-3">
         <thead>
         <tr>
@@ -54,50 +43,95 @@
         </thead>
         <tbody id="feed-table-body">
         <tr>
-            <td >  <select   class="form-select" style="width: 900px" onchange="addRow(this)" >
-                <option value=""> Выберите </option>
-                <option th:each="feed:${feeds}"
-                        th:value="${feed}"
-                        th:utext="${feed.name}"
-                        data-feed='{"id":11,"name":"Feed 1"}'></select>
+            <td>
+                <select class="form-select" style="width: 300px" onchange="addRow(this)">
+                    <option value="">Выберите</option>
+                    <option th:each="feed:${feeds}"
+                            th:value="${feed.name}"
+                            th:utext="${feed.name}"
+                            th:data-feedUnit="${feed.nutrients.feedUnit}"
+                            th:data-energyExchange="${feed.nutrients.energyExchange}"
+                            th:data-dryMatter="${feed.nutrients.dryMatter}"
+                            th:data-dryProtein="${feed.nutrients.dryProtein}"
+                            th:data-digestedProtein="${feed.nutrients.digestedProtein}"
+                            th:data-rawFat="${feed.nutrients.rawFat}"
+                            th:data-rawFiber="${feed.nutrients.rawFiber}"
+                            th:data-starch="${feed.nutrients.starch}"
+                            th:data-sugar="${feed.nutrients.sugar}"
+                            th:data-calcium="${feed.nutrients.calcium}"
+                            th:data-phosphorus="${feed.nutrients.phosphorus}"
+                            th:data-magnesium="${feed.nutrients.magnesium}"
+                            th:data-potassium="${feed.nutrients.potassium}"
+                            th:data-sulfur="${feed.nutrients.sulfur}"
+                            th:data-ferrum="${feed.nutrients.ferrum}"
+                            th:data-copper="${feed.nutrients.copper}"
+                            th:data-zins="${feed.nutrients.zins}"
+                            th:data-manganese="${feed.nutrients.manganese}"
+                            th:data-cobalt="${feed.nutrients.cobalt}"
+                            th:data-iodine="${feed.nutrients.iodine}"
+                            th:data-carotene="${feed.nutrients.carotene}"
+                            th:data-vitaminE="${feed.nutrients.vitaminE}"
+                            th:data-vitaminD="${feed.nutrients.vitaminD}">
+                    </option>
+                </select>
             </td>
         </tr>
         </tbody>
     </table>
 </div>
-<script >
-
+<script>
     function addRow(selectElement) {
-
         if (selectElement.value) {
-            const feedJson = selectElement.selectedOptions[0].getAttribute('data-feed');
-            const feedData = JSON.parse(feedJson);
+            const selectedOption = selectElement.selectedOptions[0];
+            const nutrients = [
+                'feedUnit', 'energyExchange', 'dryMatter', 'dryProtein', 'digestedProtein', 'rawFat', 'rawFiber',
+                'starch', 'sugar', 'calcium', 'phosphorus', 'magnesium', 'potassium', 'sulfur', 'ferrum', 'copper',
+                'zins', 'manganese', 'cobalt', 'iodine', 'carotene', 'vitaminE', 'vitaminD'
+            ];
+
+            const rowData = [
+                selectElement.value,
+                '<input type="number" class="form-control" value="1" oninput="updateRow(this)">',
+                ''
+            ];
+
+            nutrients.forEach(nutrient => {
+                rowData.push(selectedOption.getAttribute(`data-${nutrient}`));
+            });
+
             const tableBody = document.getElementById('feed-table-body');
             const newRow = document.createElement('tr');
-            const feedName = selectElement.value;
-            // Пример данных для заполнения строки
-            const rowData = [
-                feedName, '10', '15%', feedData.id, '2.5', '300', '50', '45', '10', '5', '25', '10', '1', '0.5', '0.3', '2', '0.4',
-                '30', '0.5', '20', '0.3', '0.1', '0.05', '0.02', '500', '10', '5', '1', '3'
-            ];
 
             rowData.forEach(data => {
                 const newCell = document.createElement('td');
-                newCell.textContent = data;
+                if (typeof data === 'string' && data.includes('<input')) {
+                    newCell.innerHTML = data;
+                } else {
+                    newCell.textContent = data;
+                    newCell.setAttribute('data-original-value', data);
+                }
                 newRow.appendChild(newCell);
             });
 
-            // Добавляем новую строку перед текущей строкой с select-элементом
             tableBody.insertBefore(newRow, selectElement.parentElement.parentElement);
 
-            // Очищаем текущий select-элемент для новой выборки
             selectElement.value = '';
+        }
+    }
+
+    function updateRow(inputElement) {
+        const quantity = parseFloat(inputElement.value);
+        const row = inputElement.parentElement.parentElement;
+        const cells = row.children;
+
+        for (let i = 3; i < cells.length; i++) {
+            const cell = cells[i];
+            const originalValue = parseFloat(cell.getAttribute('data-original-value'));
+            if (!isNaN(originalValue)) {
+                cell.textContent = (originalValue * quantity).toFixed(2);
+            }
         }
     }
 </script>
 </body>
 </html>
-
-
-
-
