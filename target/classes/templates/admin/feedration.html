@@ -6,6 +6,107 @@
 </head>
 <body>
 <div class="content container mt-5">
+    <h1>Норма для рациона</h1>
+    <table class="table table-striped mt-3">
+        <thead>
+        <tr>
+            <th>Корм</th>
+            <th>Килограммы корма</th>
+            <th>Структура по ОЭ, %</th>
+            <th>Корм. ед.</th>
+            <th>Обмен.энерг., МДж</th>
+            <th>Сухое в-во, г.</th>
+            <th>Сырой протеин,г</th>
+            <th>Перев.протеин, г</th>
+            <th>сыр. жир, г</th>
+            <th>сыр.клетчатка,г</th>
+            <th>крахмал,г</th>
+            <th>Сахар,г</th>
+            <th>кальций,г</th>
+            <th>Фосфор,г</th>
+            <th>Магний,г</th>
+            <th>Калий,г</th>
+            <th>Сера,г</th>
+            <th>Железо, мг</th>
+            <th>Медь, мг</th>
+            <th>Цинк, мг</th>
+            <th>Марганец, мг</th>
+            <th>Кобальт, мг</th>
+            <th>Йод, мг</th>
+            <th>Каротин, мг</th>
+            <th>Вит. Д, МЕ</th>
+            <th>Вит. Е, мг</th>
+            <th>ЛФУ</th>
+            <th>мин</th>
+            <th>макс</th>
+        </tr>
+        </thead>
+        <tbody id="feedgroup-table-body">
+        <tr id="data-row">
+            <td id="stand" >
+                <select class="form-select" style="width: 300px" oninput="addRowStandard(this)">
+                    <option value="">Выберите</option>
+                    <option th:each="feedgroup:${feedgroups}"
+                            th:value="${feedgroup.type}"
+                            th:utext="${feedgroup.type}"
+                            th:data-feedUnit="${feedgroup.nutrients.feedUnit}"
+                            th:data-energyExchange="${feedgroup.nutrients.energyExchange}"
+                            th:data-dryMatter="${feedgroup.nutrients.dryMatter}"
+                            th:data-dryProtein="${feedgroup.nutrients.dryProtein}"
+                            th:data-digestedProtein="${feedgroup.nutrients.digestedProtein}"
+                            th:data-rawFat="${feedgroup.nutrients.rawFat}"
+                            th:data-rawFiber="${feedgroup.nutrients.rawFiber}"
+                            th:data-starch="${feedgroup.nutrients.starch}"
+                            th:data-sugar="${feedgroup.nutrients.sugar}"
+                            th:data-calcium="${feedgroup.nutrients.calcium}"
+                            th:data-phosphorus="${feedgroup.nutrients.phosphorus}"
+                            th:data-magnesium="${feedgroup.nutrients.magnesium}"
+                            th:data-potassium="${feedgroup.nutrients.potassium}"
+                            th:data-sulfur="${feedgroup.nutrients.sulfur}"
+                            th:data-ferrum="${feedgroup.nutrients.ferrum}"
+                            th:data-copper="${feedgroup.nutrients.copper}"
+                            th:data-zins="${feedgroup.nutrients.zins}"
+                            th:data-manganese="${feedgroup.nutrients.manganese}"
+                            th:data-cobalt="${feedgroup.nutrients.cobalt}"
+                            th:data-iodine="${feedgroup.nutrients.iodine}"
+                            th:data-carotene="${feedgroup.nutrients.carotene}"
+                            th:data-vitaminE="${feedgroup.nutrients.vitaminE}"
+                            th:data-vitaminD="${feedgroup.nutrients.vitaminD}">
+                           >
+                    </option>
+                </select>
+            </td>
+        </tr>
+        <tr id = "real">
+            <td>Фактически содержится в рационе</td>
+            <td id="kg"></td>
+            <td id = "structura"></td>
+            <td id = "feedUnit"></td>
+            <td id = "energyExchange"></td>
+            <td id = "dryMatter"></td>
+            <td id = "dryProtein"></td>
+            <td id = "digestedProtein"></td>
+            <td id = "rawFat"></td>
+            <td id = "rawFiber"></td>
+            <td id = "starch"></td>
+            <td id = "sugar"></td>
+            <td id = "calcium"></td>
+            <td id = "phosphorus"></td>
+            <td id = "magnesium"></td>
+            <td id = "potassium"></td>
+            <td id = "sulfur"></td>
+            <td id = "ferrum"></td>
+            <td id = "copper"></td>
+            <td id = "zins"></td>
+            <td id = "manganese"></td>
+            <td id = "cobalt"></td>
+            <td id = "iodine"></td>
+            <td id = "carotene"></td>
+            <td id = "vitaminE"></td>
+            <td id = "vitaminD"></td>
+        </tr>
+        </tbody>
+    </table>
     <h1>Расчет рациона</h1>
     <table class="table table-striped mt-3">
         <thead>
@@ -43,7 +144,7 @@
         </thead>
         <tbody id="feed-table-body">
         <tr>
-            <td>
+            <td >
                 <select class="form-select" style="width: 300px" onchange="addRow(this)">
                     <option value="">Выберите</option>
                     <option th:each="feed:${feeds}"
@@ -116,6 +217,8 @@
             tableBody.insertBefore(newRow, selectElement.parentElement.parentElement);
 
             selectElement.value = '';
+            // Вызываем пересчет сумм по столбцам
+            updateTotals();
         }
     }
 
@@ -131,7 +234,115 @@
                 cell.textContent = (originalValue * quantity).toFixed(2);
             }
         }
+        // Вызываем пересчет сумм по столбцам
+        updateTotals();
     }
+
+    function addRowStandard(selectElement) {
+        if (selectElement.value) {
+            const selectedOption = selectElement.selectedOptions[0];
+            const nutrients = [
+                'feedUnit', 'energyExchange', 'dryMatter', 'dryProtein', 'digestedProtein', 'rawFat', 'rawFiber',
+                'starch', 'sugar', 'calcium', 'phosphorus', 'magnesium', 'potassium', 'sulfur', 'ferrum', 'copper',
+                'zins', 'manganese', 'cobalt', 'iodine', 'carotene', 'vitaminE', 'vitaminD'
+            ];
+
+            const rowData = [
+
+                '',
+                '100%'
+            ];
+
+            nutrients.forEach(nutrient => {
+                rowData.push(selectedOption.getAttribute(`data-${nutrient}`));
+            });
+
+            const tableBody = document.getElementById('feedroup-table-body');
+            const row = document.getElementById("data-row");
+
+// Начинаем с индекса 1, чтобы пропустить первую ячейку, содержащую селект
+            rowData.forEach((data, index) => {
+                // Смещаем индекс на 1, чтобы пропустить первую ячейку
+                let actualIndex = index + 1;
+                let existingCell = row.cells[actualIndex];
+
+                // Если ячейка уже существует, обновляем её данные
+                if (existingCell) {
+                    if (typeof data === 'string' && data.includes('<input')) {
+                        existingCell.innerHTML = data;
+                    } else {
+                        existingCell.textContent = data;
+                        existingCell.setAttribute('data-original-value', data);
+                    }
+                }
+                // Если ячейки нет, создаём новую и заполняем её
+                else {
+                    const newCell = document.createElement('td');
+                    if (typeof data === 'string' && data.includes('<input')) {
+                        newCell.innerHTML = data;
+                    } else {
+                        newCell.textContent = data;
+                        newCell.setAttribute('data-original-value', data);
+                    }
+                    row.appendChild(newCell);
+                }
+            });
+
+// Если строка уже существует в таблице, обновляем её; если нет, вставляем её
+            if (!row.parentElement) {
+                tableBody.insertBefore(row, selectElement.parentElement.parentElement);
+            }
+
+        }
+    }
+
+    function updateTotals() {
+        const tableBody = document.getElementById('feed-table-body');
+        const rows = tableBody.querySelectorAll('tr');
+        const totalsRow = document.getElementById('real');
+        const totalsCells = totalsRow.children;
+
+        // Инициализируем массив для хранения сумм
+        const totals = new Array(totalsCells.length).fill(0);
+
+        rows.forEach(row => {
+            const cells = row.children;
+            // Добавляем сумму для килограммов корма (индекс 1)
+            // const kgCell = cells[1].querySelector('input');
+            // if (kgCell) {
+            //     const kgCellValue = parseFloat(kgCell.value);
+            //     if (!isNaN(kgCellValue)) {
+            //         totals[1] += kgCellValue;
+            //     }
+            // }
+
+
+                const cellValue = document.querySelector('input[type="number"]').value;
+                if (!isNaN(cellValue)) {
+                    totals[1] += cellValue;
+                }
+
+            for (let i = 3; i < cells.length; i++) {
+                const cellValue = parseFloat(cells[i].textContent);
+                if (!isNaN(cellValue)) {
+                    totals[i] += cellValue;
+                }
+            }
+        });
+
+        // Обновляем ячейки в строке с фактическими значениями
+        // Обновляем ячейки в строке с фактическими значениями
+
+                totalsCells[1].textContent = totals[1];
+
+        for (let i = 3; i < totalsCells.length; i++) {
+
+                totalsCells[i].textContent = totals[i].toFixed(2);
+
+        }
+    }
+
+
 </script>
 </body>
 </html>
