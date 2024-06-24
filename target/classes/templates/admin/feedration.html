@@ -10,7 +10,7 @@
     <table class="table table-striped mt-3">
         <thead>
         <tr>
-            <th>Корм</th>
+            <th>Группа питания</th>
             <th>Килограммы корма</th>
             <th>Структура по ОЭ, %</th>
             <th>Корм. ед.</th>
@@ -104,6 +104,34 @@
             <td id = "carotene"></td>
             <td id = "vitaminE"></td>
             <td id = "vitaminD"></td>
+        </tr>
+        <tr id = "variance">
+            <td>Отклонение от нормы</td>
+            <td ></td>
+            <td ></td>
+            <td ></td>
+            <td ></td>
+            <td ></td>
+            <td ></td>
+            <td ></td>
+            <td ></td>
+            <td ></td>
+            <td ></td>
+            <td ></td>
+            <td ></td>
+            <td ></td>
+            <td ></td>
+            <td ></td>
+            <td ></td>
+            <td ></td>
+            <td ></td>
+            <td ></td>
+            <td ></td>
+            <td ></td>
+            <td ></td>
+            <td ></td>
+            <td ></td>
+            <td ></td>
         </tr>
         </tbody>
     </table>
@@ -248,19 +276,23 @@
             ];
 
             const rowData = [
-
                 '',
                 '100%'
             ];
 
             nutrients.forEach(nutrient => {
-                rowData.push(selectedOption.getAttribute(`data-${nutrient}`));
+                let value = selectedOption.getAttribute(`data-${nutrient}`);
+                // Умножаем значение сухого вещества на 1000
+                if (nutrient === 'dryMatter' && value) {
+                    value = (parseFloat(value) * 1000).toString();
+                }
+                rowData.push(value);
             });
 
             const tableBody = document.getElementById('feedroup-table-body');
             const row = document.getElementById("data-row");
 
-// Начинаем с индекса 1, чтобы пропустить первую ячейку, содержащую селект
+            // Начинаем с индекса 1, чтобы пропустить первую ячейку, содержащую селект
             rowData.forEach((data, index) => {
                 // Смещаем индекс на 1, чтобы пропустить первую ячейку
                 let actualIndex = index + 1;
@@ -288,11 +320,10 @@
                 }
             });
 
-// Если строка уже существует в таблице, обновляем её; если нет, вставляем её
+            // Если строка уже существует в таблице, обновляем её; если нет, вставляем её
             if (!row.parentElement) {
                 tableBody.insertBefore(row, selectElement.parentElement.parentElement);
             }
-
         }
     }
 
@@ -301,26 +332,30 @@
         const rows = tableBody.querySelectorAll('tr');
         const totalsRow = document.getElementById('real');
         const totalsCells = totalsRow.children;
+        const totalsRowStand = document.getElementById('stand');
+        const totalsCellsStand = totalsRowStand.children;
+
 
         // Инициализируем массив для хранения сумм
         const totals = new Array(totalsCells.length).fill(0);
 
         rows.forEach(row => {
             const cells = row.children;
-            // Добавляем сумму для килограммов корма (индекс 1)
-            // const kgCell = cells[1].querySelector('input');
-            // if (kgCell) {
-            //     const kgCellValue = parseFloat(kgCell.value);
-            //     if (!isNaN(kgCellValue)) {
-            //         totals[1] += kgCellValue;
-            //     }
-            // }
 
-
-                const cellValue = document.querySelector('input[type="number"]').value;
-                if (!isNaN(cellValue)) {
-                    totals[1] += cellValue;
+                // const cellValue = parseFloat(cells[1].valueOf());
+            if (cells[1] && cells[1].querySelector('input[type="number"]')) {
+                const kgCell = cells[1].querySelector('input');
+                let kgValue = 1; // default value
+                if (kgCell) {
+                    kgValue = parseFloat(kgCell.value);
+                    if (isNaN(kgValue)) {
+                        kgValue = 0;
+                    }
                 }
+
+                totals[1] += kgValue;
+            }
+
 
             for (let i = 3; i < cells.length; i++) {
                 const cellValue = parseFloat(cells[i].textContent);
@@ -331,17 +366,84 @@
         });
 
         // Обновляем ячейки в строке с фактическими значениями
-        // Обновляем ячейки в строке с фактическими значениями
 
-                totalsCells[1].textContent = totals[1];
+        totalsCells[1].textContent = totals[1];
 
         for (let i = 3; i < totalsCells.length; i++) {
 
                 totalsCells[i].textContent = totals[i].toFixed(2);
 
         }
+        // Обновляем процентное соотношение для каждой строки
+        rows.forEach(row => {
+            const cells = row.children;
+            if (cells[4]) {
+
+
+                    cellValue = parseFloat(cells[4].textContent);
+                    if (!isNaN(cellValue) && totals[4] !== 0) {
+                        const percentageCell = cells[2];
+                        percentageCell.textContent = ((cellValue / totals[4]) * 100).toFixed(2) + '%';
+                    }
+
+            }
+        });
+        updateVariance();
     }
 
+    function updateVariance() {
+        const tableBody = document.getElementById('feedgroup-table-body');
+        const rows = tableBody.querySelectorAll('tr');
+        const totalsRowStand = document.getElementById('stand');
+        const totalsCellsStand = totalsRowStand.children;
+        const totalsRowVar = document.getElementById('variance');
+        const totalsCellsVar = totalsRowVar.children;
+
+        // Инициализируем массив для хранения разностей
+        const totalsStand = new Array(totalsCellsStand.length).fill(0);
+
+        // Обрабатываем строку с данными "data-row"
+        const dataRow = document.getElementById('data-row');
+        const cellsData = dataRow.children;
+        const dataRowReal = document.getElementById('real');
+        const cellsDataReal = dataRowReal.children;
+
+        // Считываем значения из "data-row"
+        for (let i = 3; i < cellsData.length; i++) {
+            const cellValue = parseFloat(cellsData[i].textContent);
+            const cellValueReal = parseFloat(cellsDataReal[i].textContent);
+            if (!isNaN(cellValue)) {
+                totalsStand[i] = cellValue - cellValueReal;
+            }
+        }
+
+        // for (let i = 3; i < cellsData.length; i++) {
+        //     const cellValue = parseFloat(cellsData[i].textContent);
+        //     if (!isNaN(cellValue)) {
+        //         totalsReal[i] = cellValue;
+        //     }
+        // }
+
+
+
+        // Обновляем ячейки в строке с разностями
+        for (let i = 3; i < totalsCellsStand.length; i++) {
+            const standValue = parseFloat(totalsCellsStand[i].textContent);
+
+
+            if (!isNaN(standValue)) {
+                totalsCellsVar[i].textContent = (totalsStand[i] - standValue).toFixed(2);
+            } else {
+                totalsCellsVar[i].textContent = totalsStand[i].toFixed(2);
+            }
+
+        }
+        for (let i = 3; i < totalsCellsVar.length; i++) {
+
+            totalsCellsVar[i].textContent = totalsStand[i].toFixed(2);
+
+        }
+    }
 
 </script>
 </body>
