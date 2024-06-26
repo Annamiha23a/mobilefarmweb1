@@ -356,7 +356,6 @@
                 totals[1] += kgValue;
             }
 
-
             for (let i = 3; i < cells.length; i++) {
                 const cellValue = parseFloat(cells[i].textContent);
                 if (!isNaN(cellValue)) {
@@ -371,23 +370,38 @@
 
         for (let i = 3; i < totalsCells.length; i++) {
 
-                totalsCells[i].textContent = totals[i].toFixed(2);
+            totalsCells[i].textContent = totals[i].toFixed(2);
 
         }
         // Обновляем процентное соотношение для каждой строки
         rows.forEach(row => {
             const cells = row.children;
             if (cells[4]) {
+                const dataRow = document.getElementById('data-row');
+                const cellsData = dataRow.children;
+                // Считываем значения из "data-row"
+                const cellValueSt = parseFloat(cellsData[4].textContent);
 
-
+                if (!isNaN(cellValueSt)) {
                     cellValue = parseFloat(cells[4].textContent);
-                    if (!isNaN(cellValue) && totals[4] !== 0) {
+                    if (!isNaN(cellValue)) {
                         const percentageCell = cells[2];
-                        percentageCell.textContent = ((cellValue / totals[4]) * 100).toFixed(2) + '%';
+                        percentageCell.textContent = ((cellValue / cellValueSt) * 100).toFixed(2) + '%';
                     }
+                }
+
+                const cellValue2 = parseFloat(cells[2].textContent);
+                if (!isNaN(cellValue2)) {
+                    totals[2] += cellValue2;
+                }
+
+                totalsCells[2].textContent = totals[2].toFixed(2) + "%";
+
 
             }
         });
+
+
         updateVariance();
     }
 
@@ -409,7 +423,7 @@
         const cellsDataReal = dataRowReal.children;
 
         // Считываем значения из "data-row"
-        for (let i = 3; i < cellsData.length; i++) {
+        for (let i = 2; i < cellsData.length; i++) {
             const cellValue = parseFloat(cellsData[i].textContent);
             const cellValueReal = parseFloat(cellsDataReal[i].textContent);
             if (!isNaN(cellValue)) {
@@ -417,27 +431,7 @@
             }
         }
 
-        // for (let i = 3; i < cellsData.length; i++) {
-        //     const cellValue = parseFloat(cellsData[i].textContent);
-        //     if (!isNaN(cellValue)) {
-        //         totalsReal[i] = cellValue;
-        //     }
-        // }
-
-
-
-        // Обновляем ячейки в строке с разностями
-        for (let i = 3; i < totalsCellsStand.length; i++) {
-            const standValue = parseFloat(totalsCellsStand[i].textContent);
-
-
-            if (!isNaN(standValue)) {
-                totalsCellsVar[i].textContent = (totalsStand[i] - standValue).toFixed(2);
-            } else {
-                totalsCellsVar[i].textContent = totalsStand[i].toFixed(2);
-            }
-
-        }
+        totalsCellsVar[2].textContent = totalsStand[2].toFixed(2) + "%";
         for (let i = 3; i < totalsCellsVar.length; i++) {
 
             totalsCellsVar[i].textContent = totalsStand[i].toFixed(2);
