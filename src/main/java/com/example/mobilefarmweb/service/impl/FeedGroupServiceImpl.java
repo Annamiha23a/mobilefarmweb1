@@ -1,9 +1,11 @@
 package com.example.mobilefarmweb.service.impl;
 
 import com.example.mobilefarmweb.entity.FeedGroup;
+import com.example.mobilefarmweb.entity.Nutrients;
 import com.example.mobilefarmweb.entity.Ration;
 import com.example.mobilefarmweb.entity.User;
 import com.example.mobilefarmweb.repository.FeedGroupRepository;
+import com.example.mobilefarmweb.repository.NutrientsRepository;
 import com.example.mobilefarmweb.repository.RationRepository;
 import com.example.mobilefarmweb.service.FeedGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +15,16 @@ import javax.persistence.criteria.CriteriaBuilder;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class FeedGroupServiceImpl implements FeedGroupService {
     private FeedGroupRepository feedGroupRepository;
+    private NutrientsRepository nutrientsRepository;
     @Autowired
-    public void FeedGroupServiceImpl(FeedGroupRepository feedGroupRepository){
+    public void FeedGroupServiceImpl(FeedGroupRepository feedGroupRepository, NutrientsRepository nutrientsRepository){
         this.feedGroupRepository=feedGroupRepository;
+        this.nutrientsRepository = nutrientsRepository;
     }
     @Override
     public List<FeedGroup> findAll() {
@@ -70,6 +75,17 @@ public class FeedGroupServiceImpl implements FeedGroupService {
         List<FeedGroup> list1 = feedGroupRepository.findByProductivityBetween(m1 , m2);
 
         return list1;
+    }
+
+    @Override
+    public void save(FeedGroup feedGroup, String  type, Integer weight, Integer geneticWeight,  Integer age, Long nutrients_rate_id) {
+        feedGroup.setType(type);
+        feedGroup.setWeight(weight);
+        feedGroup.setGeneticWeight(BigDecimal.valueOf(geneticWeight));
+        feedGroup.setAge(age);
+        feedGroup.setNutrients(nutrientsRepository.findByNutrientsId(nutrients_rate_id).orElseThrow(()->new NoSuchElementException()));
+        feedGroupRepository.save(feedGroup);
+        System.out.println("Успешно сохранено");
     }
 
 }

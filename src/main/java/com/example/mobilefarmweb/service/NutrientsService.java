@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface NutrientsService {
     Nutrients getNutrientsById(Long nutrients_id);
+    List<Nutrients> getAllNutrients();
 
 }

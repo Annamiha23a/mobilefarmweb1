@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaef.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создание группы питания</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet"  type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+</head>
+<body>
+
+<div class="sidebar" th:insert="blocks/navication :: nav" ></div>
+
+<div  class="content container mt-4">
+    <h3 style="padding-left: 10px" >Создание группы питания</h3>
+    <div class="container">
+        <form action="/feedgroups/add" method="post" style="width: 70%">
+        <div  class="alert alert-primary mt-2" >
+                Общие сведения
+                <input placeholder="Тип" type="text" class="form-control" name="type"  >
+                <br>
+                <input placeholder="Продуктивность" type="number" class="form-control" name="productivity" >
+                <br>
+                <input placeholder="Вес" type="number" class="form-control" name="weight" >
+                <br>
+                <input placeholder="Генетический вес" type="number" class="form-control" name="geneticWeight" >
+                <br>
+                <input placeholder="Возвраст" type="number" class="form-control" name="age" >
+                <br>
+                </div>
+
+                <div  class="alert alert-primary mt-2">
+                    Нутриенты
+                    <select id="nutrient"  name="nutrients_rate_id"  class="form-select">
+                        <option value=""> Выберите нутриенты</option>
+                        <option th:each="nutrient : ${nutrients}"
+                                th:value="${nutrient.getNutrientsId()}"
+                                th:utext="${'Корм ед ' +nutrient.feedUnit + '. Обмен.энерг. ' + nutrient.energyExchange + '. Сухое в-во ' + nutrient.dryMatter + '.'}"/>
+                    </select><br>
+                </div>
+                <button class="btn w-100 btn-lg btn-primary" type="submit">Сохранить группу питания</button>
+
+            </form>
+
+    </div>
+</div>
+
+
+</body>
+</html>
+
+
+
+
