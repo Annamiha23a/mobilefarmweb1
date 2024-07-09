@@ -2,18 +2,19 @@ package com.example.mobilefarmweb.controller;
 
 import com.example.mobilefarmweb.entity.*;
 import com.example.mobilefarmweb.service.RationService;
+import com.example.mobilefarmweb.service.impl.FeedGroupServiceImpl;
 import com.example.mobilefarmweb.service.impl.FeedServiceImpl;
 import com.example.mobilefarmweb.service.impl.NutrientsServiceImpl;
 import com.example.mobilefarmweb.service.impl.RationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import java.math.BigDecimal;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -22,11 +23,13 @@ public class RationController {
     private RationServiceImpl rationService;
     private FeedServiceImpl feedService;
     private NutrientsServiceImpl nutrientsService;
+    private FeedGroupServiceImpl feedGroupService;
     @Autowired
-    public RationController(FeedServiceImpl feedService, NutrientsServiceImpl nutrientsService, RationServiceImpl rationService){
+    public RationController(FeedServiceImpl feedService, NutrientsServiceImpl nutrientsService, RationServiceImpl rationService, FeedGroupServiceImpl feedGroupService){
         this.feedService=feedService;
         this.nutrientsService=nutrientsService;
         this.rationService=rationService;
+        this.feedGroupService=feedGroupService;
     }
     @GetMapping()
     public String getRations(){
@@ -53,5 +56,17 @@ public class RationController {
         model.addAttribute("rations", rations);
         return "admin/rations";
 
+    }
+    @PostMapping("/save")
+    public String saveRations(Model model, @RequestParam(name="kg") List<BigDecimal>  kg, @RequestParam(name="feed") List<Long>  feed, @RequestParam(name="feedGroup") Long  feedGroup){
+        System.out.println("Успешно сохранено " + kg + feed + feedGroup);
+        FeedGroup feedGroup1=feedGroupService.findByFeedGroupId(feedGroup);
+        List<Feed> feeds = new ArrayList<>();
+        for(Long f:feed){
+            Feed feed1=feedService.findbyId(f);
+            feeds.add(feed1);
+        }
+        rationService.saveRation(feedGroup1, feeds, kg );
+        return "admin/rations";
     }
 }

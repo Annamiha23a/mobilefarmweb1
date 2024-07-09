@@ -20,6 +20,10 @@ public class FeedServiceImpl implements FeedService {
         return feedRepository.findAll();
     }
 
+    public Feed findbyId(Long id) {
+        return feedRepository.findByFeedId(id).orElseThrow(()->new NoSuchElementException());
+    }
+
     @Override
     public Feed createFeed(Feed feed) {
         return feedRepository.save(feed);

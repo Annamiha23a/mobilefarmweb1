@@ -13,6 +13,7 @@
         <p class="lead">рационов кормления KPC</p>
     </div>
     <h4>Контроль рациона</h4>
+    <form action="/rations/save" method="post">
     <table class="table table-striped mt-3" >
         <thead>
         <tr>
@@ -52,10 +53,10 @@
             <td>Норма</td></tr>
         <tr id="data-row">
             <td id="stand" >
-                <select class="form-select" style="width: 300px" oninput="addRowStandard(this)">
+                <select class="form-select" style="width: 300px" oninput="addRowStandard(this)" name="feedGroup">
                     <option value="">Выберите</option>
                     <option th:each="feedgroup:${feedgroups}"
-                            th:value="${feedgroup.type}"
+                            th:value="${feedgroup.feedGroupId}"
                             th:utext="${feedgroup.type}"
                             th:data-feedUnit="${feedgroup.nutrients.feedUnit}"
                             th:data-energyExchange="${feedgroup.nutrients.energyExchange}"
@@ -187,6 +188,7 @@
                     <option th:each="feed:${feeds}"
                             th:value="${feed.name}"
                             th:utext="${feed.name}"
+                            th:data-id="${feed.feedId}"
                             th:data-feedUnit="${feed.nutrients.feedUnit}"
                             th:data-energyExchange="${feed.nutrients.energyExchange}"
                             th:data-dryMatter="${feed.nutrients.dryMatter}"
@@ -216,23 +218,26 @@
         </tr>
         </tbody>
     </table>
-    <button  onclick="location.href='#'" class="btn btn-sm btn-primary w-25">Сохранить рацион</button>
+    <button  class="btn btn-sm btn-primary w-25" type="submit">Сохранить рацион</button>
     <button  onclick="location.href='#'" class="btn btn-sm btn-primary w-25">Печать общей информации в Excel</button>
     <button  onclick="location.href='#'" class="btn btn-sm btn-primary w-25">Печать всей информации в Excel</button><br><br>
+    </form>
 </div>
 <script>
+    let rowCount = 0; // Глобальная переменная для отслеживания количества строк
+
     function addRow(selectElement) {
         if (selectElement.value) {
             const selectedOption = selectElement.selectedOptions[0];
             const nutrients = [
                 'feedUnit', 'dryMatter','nulll' , 'dryProtein', 'energyExchange', 'digestedProtein', 'rawFat', 'rawFiber',
                 'starch', 'sugar', 'calcium', 'phosphorus', 'magnesium', 'potassium', 'sulfur', 'ferrum', 'copper',
-                'zins', 'manganese', 'cobalt', 'iodine', 'carotene', 'vitaminE', 'vitaminD'
+                'zins', 'manganese', 'cobalt', 'iodine', 'carotene', 'vitaminE', 'vitaminD', 'id'
             ];
 
             const rowData = [
                 selectElement.value,
-                '<input type="number" class="form-control" value="1" oninput="updateRow(this)">'
+                '<input type="number" class="form-control" value="1"  name="kg" oninput="updateRow(this)">'
             ];
 
             nutrients.forEach(nutrient => {
@@ -258,6 +263,10 @@
                     } else {
                         newCell.textContent = data;
                         newCell.setAttribute('data-original-value', data);
+                        if(data==rowData[26]){
+                            newCell.textContent = data;
+                            newCell.innerHTML = '<textarea type="number" class="form-control" name="feed">';
+                        }
                     }
                     newRow.appendChild(newCell);
                 }
@@ -266,6 +275,30 @@
             tableBody.insertBefore(newRow, selectElement.parentElement.parentElement);
 
             selectElement.value = '';
+            // Увеличиваем счетчик строк
+            rowCount++;
+            let elementsWithName = document.querySelectorAll('[name="feed"]');
+
+// Получаем последний элемент в коллекции
+            let lastElementWithName = elementsWithName[elementsWithName.length - 1];
+
+            if (lastElementWithName) {
+                lastElementWithName.value =rowData[26];
+
+            } else {
+                console.log('Элемент с атрибутом name="feed" не найден.');
+            }
+//             let elementsWithNameFeed = document.querySelectorAll('[name="nameFeed"]');
+//
+// // Получаем последний элемент в коллекции
+//             let lastElementWithNameFeed = elementsWithName[elementsWithName.length - 1];
+//
+//             if (lastElementWithNameFeed) {
+//                 lastElementWithNameFeed.value =rowData[26];
+//
+//             } else {
+//                 console.log('Элемент с атрибутом name="feed" не найден.');
+//             }
             // Вызываем пересчет сумм по столбцам
              updateTotals();
         }
