@@ -27,10 +27,11 @@ public class RationServiceImpl implements RationService {
     }
 
     @Override
-    public void saveRation(FeedGroup feedGroup, List<Feed> feeds, List<BigDecimal> kg) {
+    public void saveRation(String title, FeedGroup feedGroup, List<Feed> feeds, List<BigDecimal> kg) {
         List<RationFeeds> list=new ArrayList<>();
         Ration ration =new Ration();
         ration.setFeedGroup(feedGroup);
+        ration.setTitle(title);
         int i=0, j=0;
         for(Feed feed:feeds){
             j = 0; // Сброс значения j при каждом новом проходе внешнего цикла

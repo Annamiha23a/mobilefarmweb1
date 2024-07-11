@@ -10,5 +10,5 @@ import java.util.List;
 public interface RationService {
     List<Ration> getAll();
 
-    void saveRation(FeedGroup feedGroup, List<Feed> feeds, List<BigDecimal> kg);
+    void saveRation(String title, FeedGroup feedGroup, List<Feed> feeds, List<BigDecimal> kg);
 }

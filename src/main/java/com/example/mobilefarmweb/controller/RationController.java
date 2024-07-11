@@ -58,15 +58,22 @@ public class RationController {
 
     }
     @PostMapping("/save")
-    public String saveRations(Model model, @RequestParam(name="kg") List<BigDecimal>  kg, @RequestParam(name="feed") List<Long>  feed, @RequestParam(name="feedGroup") Long  feedGroup){
-        System.out.println("Успешно сохранено " + kg + feed + feedGroup);
+    public String saveRations(Model model, @RequestParam(name="title") String  title, @RequestParam(name="kg") List<BigDecimal>  kg, @RequestParam(name="feed") List<Long>  feed, @RequestParam(name="feedGroup") Long  feedGroup){
+        System.out.println("Успешно сохранено "+ title + kg + feed + feedGroup);
         FeedGroup feedGroup1=feedGroupService.findByFeedGroupId(feedGroup);
         List<Feed> feeds = new ArrayList<>();
         for(Long f:feed){
             Feed feed1=feedService.findbyId(f);
             feeds.add(feed1);
         }
-        rationService.saveRation(feedGroup1, feeds, kg );
+        rationService.saveRation(title, feedGroup1, feeds, kg );
         return "admin/rations";
     }
+
+    @PostMapping("/excel")
+    public String excelAllRations(){
+       System.out.println("Запись в ексель");
+        return "admin/rations";
+    }
+
 }

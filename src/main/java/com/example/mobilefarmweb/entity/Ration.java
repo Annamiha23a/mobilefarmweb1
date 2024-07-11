@@ -24,6 +24,8 @@ public class Ration {
     @OneToMany(mappedBy = "ration")
     private List<RationFeeds> rationFeeds;
 
+    @Column(name = "title", nullable = false)
+    private String title;
     @Override
     public String toString(){
         return  "'{rationId = " + rationId + ", " +

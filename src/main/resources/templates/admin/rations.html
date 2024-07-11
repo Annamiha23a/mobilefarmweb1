@@ -17,7 +17,7 @@
 
 <div class="sidebar" th:insert="blocks/navication :: nav" ></div>
 
-<div  class="content container mt-5">
+<div  class="content container mt-5" style="width: 75%">
     <div class="btn-group">
         <button  onclick="location.href='/animal_passports/organization_id'" class="btn w-50 btn-sm ">Паспорта животных</button>
         <button  onclick="location.href='/rations'" class="btn w-50 btn-sm btn-primary">Рацион кормления</button>
@@ -29,12 +29,12 @@
     <button  onclick="location.href='/rations/all'" class="btn btn-sm btn-primary w-100">Добавить рацион</button>
     <div th:each="ration:${rations}" class="alert alert-primary mt-2">
 
-        <h5 th:utext="${'Рацион №'+ration.getRationId}"></h5>
+        <h5 th:utext="${'Рацион №'+ration.getRationId +' ' + ration.title}"></h5>
         <br>
         <h5 th:utext="${'<strong>Норма кормления:</strong> '+ration.feedGroup.getType() }" ></h5>
         <br>
         <div th:each="el:${ration.rationFeeds}" >
-            <h5 th:utext="${'<strong>Корм:</strong> ' + el.feed.getName()}"></h5>
+            <h5 th:utext="${'<strong>Корм:</strong> ' + el.feed.getName()+'<strong> Количество:</strong> ' + el.amount}"></h5>
             <br>
 
     </div>

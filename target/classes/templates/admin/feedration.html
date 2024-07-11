@@ -4,6 +4,14 @@
     <title>Калькулятор рационов кормления KPC</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
+<style>
+    select {
+        height: 3em; /* Увеличиваем высоту поля */
+        line-height: 1.5em; /* Высота строки, позволяющая двум строкам помещаться внутри поля */
+        white-space: normal; /* Позволяем тексту переноситься на новую строку */
+        overflow: hidden; /* Скрываем лишний текст, который выходит за пределы */
+    }
+</style>
 <body>
 <div class="sidebar" th:insert="blocks/navication :: nav" ></div>
 
@@ -14,6 +22,10 @@
     </div>
     <h4>Контроль рациона</h4>
     <form action="/rations/save" method="post">
+<!--        <h6>Название рациона</h6>-->
+<!--        <input type="text"  width="75%">-->
+        <input placeholder="Название рациона" type="text" class="form-control" name="title"  >
+        <br>
     <table class="table table-striped mt-3" >
         <thead>
         <tr>
@@ -81,7 +93,6 @@
                             th:data-carotene="${feedgroup.nutrients.carotene}"
                             th:data-vitaminE="${feedgroup.nutrients.vitaminE}"
                             th:data-vitaminD="${feedgroup.nutrients.vitaminD}">
-                           >
                     </option>
                 </select>
             </td>
@@ -144,7 +155,7 @@
         </tr>
         </tbody>
     </table>
-    <button  onclick="location.href='/feedgroups/add'" class="btn btn-sm btn-primary w-25">Создать группу</button><br><br>
+    <button  onclick="location.href='/feedgroups/add'" class="btn btn-sm btn-primary w-25" type="button">Создать группу</button><br><br>
     <h4>Подбор рациона</h4>
     <table class="table table-striped mt-3" >
         <thead>
@@ -175,6 +186,7 @@
             <th>Каротин, мг</th>
             <th>Вит. Д, МЕ</th>
             <th>Вит. Е, мг</th>
+            <th>Номер корма</th>
 <!--            <th>ЛФУ</th>-->
 <!--            <th>мин</th>-->
 <!--            <th>макс</th>-->
@@ -218,9 +230,12 @@
         </tr>
         </tbody>
     </table>
-    <button  class="btn btn-sm btn-primary w-25" type="submit">Сохранить рацион</button>
-    <button  onclick="location.href='#'" class="btn btn-sm btn-primary w-25">Печать общей информации в Excel</button>
+        <button class="btn btn-sm btn-primary w-25" type="button" onclick="clearTableData()">Очистить таблицу</button>
+        <br><br>
+        <button  class="btn btn-sm btn-primary w-25" type="submit">Сохранить рацион</button>
+        <button class="btn btn-sm btn-primary w-25" type="button" onclick="sendTableData()">Печать общей информации в Excel</button>
     <button  onclick="location.href='#'" class="btn btn-sm btn-primary w-25">Печать всей информации в Excel</button><br><br>
+
     </form>
 </div>
 <script>
@@ -269,6 +284,11 @@
                         }
                     }
                     newRow.appendChild(newCell);
+                    if (data==rowData[26]){
+                        const newCell = document.createElement('td');
+                        newCell.innerHTML = '<button type="button" onclick="deleteRow(this)" style="background: red" >Удалить</button>';
+                        newRow.appendChild(newCell);
+                    }
                 }
             });
 
@@ -534,6 +554,88 @@
             totalsCellsVar[i].textContent = totalsStand[i].toFixed(2);
              }
         }
+    }
+
+    function collectTableData() {
+        const tableBody = document.getElementById('feedroup-table-body');
+        //const rows = tableBody.querySelectorAll('tr');
+        const row = document.getElementById("data-row");
+        const totalsCells = row.children;
+        const data = [];
+
+        totalsCells.forEach((index) => {
+            // Смещаем индекс на 1, чтобы пропустить первую ячейку
+            let actualIndex = index + 1;
+            let existingCell = row.cells[actualIndex];
+
+            // Если ячейка уже существует, обновляем её данные
+            if (existingCell) {
+                data.push(existingCell.getAttribute('data-original-value'));
+            }
+        });
+        // rows.forEach(row => {
+        //     const cells = row.children;
+        //     const rowData = {};
+        //
+        //     // Убедитесь, что строка имеет хотя бы одну ячейку и что в ячейке есть необходимые элементы
+        //     if (cells.length > 0) {
+        //
+        //
+        //
+        //         for (let i = 2; i < cells.length; i++) {
+        //             const cellValue = cells[i].textContent.trim();
+        //             rowData[i] = cellValue;
+        //         }
+        //
+        //         data.push(rowData);
+        //     }
+        // });
+
+        return data;
+    }
+
+
+
+    function sendTableData() {
+        const data = collectTableData();
+        if (data.length === 0) {
+            console.error('No data to send!');
+            return;
+        }
+
+        fetch('/rations/excel', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify([])
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Ошибка при отправке данных');
+                }
+            })
+
+    }
+    function clearTableData(){
+        var tableBody = document.getElementById('feed-table-body');
+        while (tableBody.rows.length > 1) {
+            tableBody.deleteRow(0);
+        }
+        // Вызываем пересчет сумм по столбцам
+        updateTotals();
+    }
+    function deleteRow(button) {
+        const row = button.parentNode.parentNode;
+        const table = row.parentNode;
+
+        if (table.rows.length > 1) {
+            table.deleteRow(row.rowIndex-1);
+        }
+        // Вызываем пересчет сумм по столбцам
+        updateTotals();
     }
 
 </script>
