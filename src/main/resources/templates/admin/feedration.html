@@ -252,7 +252,7 @@
 
             const rowData = [
                 selectElement.value,
-                '<input type="number" class="form-control" value="1"  name="kg" oninput="updateRow(this)">'
+                '<input type="number" step=0.01 class="form-control" value="1"  name="kg" oninput="updateRow(this)">'
             ];
 
             nutrients.forEach(nutrient => {
@@ -280,7 +280,7 @@
                         newCell.setAttribute('data-original-value', data);
                         if(data==rowData[26]){
                             newCell.textContent = data;
-                            newCell.innerHTML = '<textarea type="number" class="form-control" name="feed">';
+                            newCell.innerHTML = '<textarea readonly type="number" class="form-control" style="width: 60px; height: 30px" name="feed">';
                         }
                     }
                     newRow.appendChild(newCell);

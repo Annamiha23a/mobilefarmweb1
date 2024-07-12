@@ -11,35 +11,130 @@
     <link rel="stylesheet"  type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
 </head>
 <body>
-
+<style>
+    .form-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px; /* для отступа между группами */
+    }
+    .control-label {
+        min-width: 170px; /* фиксированная ширина для метки */
+        margin-right: 10px;
+        white-space: nowrap; /* предотвращает перенос текста */
+    }
+    .form-control {
+        flex: 1; /* позволяет растянуть поле ввода */
+    }
+</style>
 <div class="sidebar" th:insert="blocks/navication :: nav" ></div>
 
 <div  class="content container mt-4">
     <h3 style="padding-left: 10px" >Создание группы питания</h3>
     <div class="container">
         <form action="/feedgroups/add" method="post" style="width: 70%">
-        <div  class="alert alert-primary mt-2" >
-                Общие сведения
-                <input placeholder="Тип" type="text" class="form-control" name="type"  >
-                <br>
-                <input placeholder="Продуктивность" type="number" class="form-control" name="productivity" >
-                <br>
-                <input placeholder="Вес" type="number" class="form-control" name="weight" >
-                <br>
-                <input placeholder="Генетический вес" type="number" class="form-control" name="geneticWeight" >
-                <br>
-                <input placeholder="Возвраст" type="number" class="form-control" name="age" >
+            <h4>Общие сведения</h4>
+            <div  class="alert alert-primary mt-2" >
+                <div class="form-group">
+            <label for="type" class="control-label">Тип </label>
+            <input placeholder="Тип" type="text" class="form-control" name="type" id="type"  ><br>
+                </div>
+                <div class="form-group">
+                <label for="productivity" class="control-label">Продуктивность</label>
+               <input placeholder="Продуктивность" type="number" step=0.01 class="form-control" name="productivity" id="productivity" >
                 <br>
                 </div>
+                <div class="form-group">
+            <label for="weight" class="control-label">Вес</label>
+                <input placeholder="Вес" type="number" class="form-control" name="weight" id="weight" >
+                <br>
+                </div>
+                <div class="form-group">
+                  <label for="geneticWeight" class="control-label">Генетический вес</label>
+                <input id="geneticWeight" placeholder="Генетический вес" type="number" class="form-control" name="geneticWeight" >
+                    <br></div><div class="form-group">
+                <label for="age" class="control-label">Возвраст</label>
+                <input id="age" placeholder="Возвраст" type="number" step=0.01 class="form-control" name="age" >
+                <br></div>
+                </div>
 
+                <h4>Нутриенты</h4>
                 <div  class="alert alert-primary mt-2">
-                    Нутриенты
-                    <select id="nutrient"  name="nutrients_rate_id"  class="form-select">
-                        <option value=""> Выберите нутриенты</option>
-                        <option th:each="nutrient : ${nutrients}"
-                                th:value="${nutrient.getNutrientsId()}"
-                                th:utext="${'Корм ед ' +nutrient.feedUnit + '. Обмен.энерг. ' + nutrient.energyExchange + '. Сухое в-во ' + nutrient.dryMatter + '.'}"/>
-                    </select><br>
+                    <div class="form-group">
+                    <label for="feedUnit" class="control-label">Кормовые единицы</label>
+                    <input placeholder="Кормовые единицы" type="number"  step=0.01  class="form-control" name="feedUnit" id="feedUnit" >
+                        <br></div> <div class="form-group">
+                    <label for="energyExchange" class="control-label">Обмен. энерг (МДж)</label>
+                    <input placeholder="Обмен. энерг (МДж)" type="number" step=0.01 class="form-control" name="energyExchange" id="energyExchange">
+                    <br> </div> <div class="form-group">
+                    <label for="dryMatter" class="control-label">Сухое вещество (г.)</label>
+                    <input placeholder="Сухое вещество (г.)" type="number" step=0.01 class="form-control" name="dryMatter" id="dryMatter">
+                    <br> </div> <div class="form-group">
+                    <label for="dryProtein" class="control-label">Сырой протеин (г.)</label>
+                    <input placeholder="Сырой протеин (г.)" type="number" step=0.01 class="form-control" name="dryProtein" id="dryProtein">
+                    <br> </div> <div class="form-group">
+                    <label for="digestedProtein" class="control-label">Перев. протеин (г.)</label>
+                    <input placeholder="Перев. протеин (г.)" type="number" step=0.01 class="form-control" name="digestedProtein" id="digestedProtein">
+                    <br> </div> <div class="form-group">
+                    <label for="rawFat" class="control-label">Сыр. жир (г.)</label>
+                    <input placeholder="Сыр. жир (г.)" type="number" step=0.01 class="form-control" name="rawFat" id="rawFat" >
+                    <br> </div> <div class="form-group">
+                    <label for="rawFiber" class="control-label">Сыр. клетчатка (г.)</label>
+                    <input placeholder="Сыр. клетчатка (г.)" type="number" step=0.01 class="form-control" name="rawFiber" id="rawFiber">
+                    <br> </div> <div class="form-group">
+                    <label for="starch" class="control-label">Крахмал</label>
+                    <input placeholder="Крахмал" type="number" step=0.01 class="form-control" name="starch" id="starch">
+                    <br> </div> <div class="form-group">
+                    <label for="sugar" class="control-label">Сахар (г)</label>
+                    <input placeholder="Сахар (г)" type="number" step=0.01 class="form-control" name="sugar" id="sugar" >
+                    <br> </div> <div class="form-group">
+                    <label for="lysine" class="control-label">Лизин (г.)</label>
+                    <input placeholder="Лизин (г.)" type="number" step=0.01 class="form-control" name="lysine" id="lysine" >
+                    <br> </div> <div class="form-group">
+                    <label for="methionineAndCystitis" class="control-label">Метионин + цистин (г.)</label>
+                    <input placeholder="Метионин + цистин (г.)" step=0.01 type="number" class="form-control" name="methionineAndCystitis" id="methionineAndCystitis" >
+                    <br> </div> <div class="form-group">
+                    <label for="calcium" class="control-label">Кальций (г.)</label>
+                    <input placeholder="Кальций (г.)" type="number" step=0.01 class="form-control" name="calcium" id="calcium">
+                    <br> </div> <div class="form-group">
+                    <label for="phosphorus" class="control-label">Фосфор (г.)</label>
+                    <input placeholder="Фосфор (г.)" type="number" step=0.01  class="form-control" name="phosphorus" id="phosphorus" >
+                    <br> </div> <div class="form-group">
+                    <label for="magnesium" class="control-label">Магний (г.)</label>
+                    <input placeholder="Магний (г.)" type="number" step=0.01 class="form-control" name="magnesium" id="magnesium" >
+                    <br> </div> <div class="form-group">
+                    <label for="potassium" class="control-label">Калий (г.)</label>
+                    <input placeholder="Калий (г.)" type="number" step=0.01  class="form-control" name="potassium" id="potassium">
+                    <br> </div> <div class="form-group">
+                    <label for="sulfur" class="control-label">Сера (г)</label>
+                    <input placeholder="Сера (г)" type="number" step=0.01 class="form-control" name="sulfur" id="sulfur">
+                    <br> </div> <div class="form-group">
+                    <label for="ferrum" class="control-label">Железо (г.)</label>
+                    <input placeholder="Железо (г.)" type="number" step=0.01 class="form-control" name="ferrum" id="ferrum">
+                    <br> </div> <div class="form-group">
+                    <label for="copper" class="control-label">Медь (мг.)</label>
+                    <input placeholder="Медь (мг.)" type="number" step=0.01 class="form-control" name="copper" id="copper" >
+                    <br> </div> <div class="form-group">
+                    <label for="zins" class="control-label">Цинк (мг.)</label>
+                    <input placeholder="Цинк (мг.)" type="number" step=0.01 class="form-control" name="zins" id="zins">
+                    <br> </div> <div class="form-group">
+                    <label for="manganese" class="control-label">Марганец (мг.)</label>
+                    <input placeholder="Марганец (мг.)" type="number" step=0.01 class="form-control" name="manganese" id="manganese" >
+                    <br> </div> <div class="form-group">
+                    <label for="cobalt" class="control-label">Кобальт (мг.)</label>
+                    <input placeholder="Кобальт (мг.)" type="number" step=0.01 class="form-control" name="cobalt" id="cobalt" >
+                    <br> </div> <div class="form-group">
+                    <label for="iodine" class="control-label">Йод (мг.)</label>
+                    <input placeholder="Йод (мг.)" type="number" step=0.01 class="form-control" name="iodine" id="iodine" >
+                    <br> </div> <div class="form-group">
+                    <label for="carotene" class="control-label">Каротин (мг.)</label>
+                    <input placeholder="Каротин (мг.)" type="number" step=0.01 class="form-control" name="carotene" id="carotene">
+                    <br> </div> <div class="form-group">
+                    <label for="vitaminE" class="control-label">Витамин Д (мг.)</label>
+                    <input placeholder="Витамин Д (мг.)" type="number" step=0.01 class="form-control" name="vitaminE" id="vitaminE">
+                    <br> </div> <div class="form-group">
+                    <label for="vitaminD" class="control-label">Витамин Е (мг.)</label>
+                    <input placeholder="Витамин Е (мг.)" type="number" step=0.01 class="form-control" name="vitaminD" id="vitaminD" >
+                    <br> </div>
                 </div>
                 <button class="btn w-100 btn-lg btn-primary" type="submit">Сохранить группу питания</button>
 

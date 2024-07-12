@@ -53,8 +53,9 @@ public class FeedGroupController {
     }
 
     @PostMapping("/add")
-    public String saveFeedGroup(Model model, FeedGroup feedGroup, @RequestParam(name="type", required = false) String  type, @RequestParam(name="weight", required = false) Integer weight, @RequestParam(name="geneticWeight", required = false) Integer geneticWeight, @RequestParam(name="age", required = false) Integer age, @RequestParam(name="nutrients_rate_id", required = false) Long nutrients_rate_id){
-        feedGroupService.save(feedGroup, type, weight, geneticWeight, age, nutrients_rate_id);
+    public String saveFeedGroup(Model model, FeedGroup feedGroup, @RequestParam(name="type", required = false) String  type, @RequestParam(name="weight", required = false) Integer weight, @RequestParam(name="geneticWeight", required = false) Integer geneticWeight, @RequestParam(name="age", required = false) Integer age, @RequestParam BigDecimal feedUnit, @RequestParam BigDecimal energyExchange, @RequestParam BigDecimal dryMatter, @RequestParam BigDecimal dryProtein, @RequestParam BigDecimal digestedProtein, @RequestParam BigDecimal rawFat, @RequestParam BigDecimal rawFiber, @RequestParam BigDecimal starch, @RequestParam BigDecimal sugar, @RequestParam BigDecimal lysine, @RequestParam BigDecimal methionineAndCystitis, @RequestParam BigDecimal calcium, @RequestParam BigDecimal phosphorus, @RequestParam BigDecimal magnesium, @RequestParam BigDecimal potassium, @RequestParam BigDecimal sulfur, @RequestParam BigDecimal ferrum, @RequestParam BigDecimal copper, @RequestParam BigDecimal zins, @RequestParam BigDecimal manganese, @RequestParam BigDecimal cobalt, @RequestParam BigDecimal iodine, @RequestParam  BigDecimal carotene, @RequestParam BigDecimal vitaminE, @RequestParam BigDecimal vitaminD ){
+        Nutrients nutrients=nutrientsService.saveNutrient(feedUnit, energyExchange, dryMatter, dryProtein, digestedProtein, rawFat, rawFiber, starch, sugar, lysine, methionineAndCystitis, calcium, phosphorus, magnesium, potassium, sulfur, ferrum, copper, zins, manganese, cobalt, iodine, carotene, vitaminE, vitaminD);
+        feedGroupService.save(feedGroup, type, weight, geneticWeight, age, nutrients.getNutrientsId());
         List<FeedGroup> feedgroups = feedGroupService.findAll();
         model.addAttribute("feedgroups", feedgroups);
         return "admin/feedgroups";
