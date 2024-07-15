@@ -9,6 +9,9 @@ import java.util.List;
 
 public interface RationService {
     List<Ration> getAll();
+    Ration getRationById(Long id);
 
     void saveRation(String title, FeedGroup feedGroup, List<Feed> feeds, List<BigDecimal> kg);
+
+    void deleteRations(Ration ration);
 }

@@ -27,6 +27,11 @@ public class RationServiceImpl implements RationService {
     }
 
     @Override
+    public Ration getRationById(Long id) {
+        return rationRepository.findRationByRationId(id);
+    }
+
+    @Override
     public void saveRation(String title, FeedGroup feedGroup, List<Feed> feeds, List<BigDecimal> kg) {
         List<RationFeeds> list=new ArrayList<>();
         Ration ration =new Ration();
@@ -59,6 +64,13 @@ public class RationServiceImpl implements RationService {
             rationFeeds.setId(rationFeedKey);
             rationFeedsRepository.save(rationFeeds);
         }
+    }
+
+    @Override
+    public void deleteRations(Ration ration) {
+        for(RationFeeds rationFeed: ration.getRationFeeds()){
+        rationFeedsRepository.delete(rationFeed);}
+        rationRepository.delete(ration);
     }
 
 

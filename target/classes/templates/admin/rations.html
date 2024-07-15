@@ -28,16 +28,18 @@
     <h1>Рационы</h1>
     <button  onclick="location.href='/rations/all'" class="btn btn-sm btn-primary w-100">Добавить рацион</button>
     <div th:each="ration:${rations}" class="alert alert-primary mt-2">
-
-        <h5 th:utext="${'Рацион №'+ration.getRationId +' ' + ration.title}"></h5>
-        <br>
-        <h5 th:utext="${'<strong>Норма кормления:</strong> '+ration.feedGroup.getType() }" ></h5>
-        <br>
-        <div th:each="el:${ration.rationFeeds}" >
-            <h5 th:utext="${'<strong>Корм:</strong> ' + el.feed.getName()+'<strong> Количество:</strong> ' + el.amount}"></h5>
+        <details>
+        <summary th:utext="${'<strong>Рацион №</strong>'+ration.getRationId +' ' + ration.title}"></summary>
             <br>
-
-    </div>
+            <h5 th:utext="${'<strong>Норма кормления:</strong> '+ration.feedGroup.getType() }" ></h5>
+            <div th:each="el:${ration.rationFeeds}" ><br>
+                <h6 th:utext="${'<strong>Корм:</strong> ' + el.feed.getName()}"></h6>
+                <h6 th:utext="${'<strong>Количество:</strong> ' + el.amount}"></h6>
+            </div>
+            <form th:action="'/rations/delete/'+${ration.getRationId}" method="post">
+                <button class="btn btn-sm btn-danger" type="submit">Удалить рацион</button>
+            </form>
+    </details>
 </div>
 </div>
 <!--<footer th:insert="blocks/footer :: footer"></footer>-->

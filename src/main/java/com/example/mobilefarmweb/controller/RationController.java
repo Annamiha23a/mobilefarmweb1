@@ -67,6 +67,7 @@ public class RationController {
             feeds.add(feed1);
         }
         rationService.saveRation(title, feedGroup1, feeds, kg );
+        model.addAttribute("rations", rationService.getAll());
         return "admin/rations";
     }
 
@@ -76,4 +77,10 @@ public class RationController {
         return "admin/rations";
     }
 
+    @PostMapping("/delete/{id}")
+    public String deleteRation(Model model, @PathVariable("id") Long id){
+        rationService.deleteRations(rationService.getRationById(id));
+        model.addAttribute("rations", rationService.getAll());
+        return "admin/rations";
+    }
 }

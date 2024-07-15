@@ -15,4 +15,6 @@ public interface RationRepository extends JpaRepository<Ration, Long> {
             "INNER JOIN Farm f ON a.farm.farmId = f.farmId\n" +
             "WHERE f.organization.name = ?1")
     List<Integer> findByOrganizationName(String organization);
+
+    Ration findRationByRationId(Long RationId);
 }
