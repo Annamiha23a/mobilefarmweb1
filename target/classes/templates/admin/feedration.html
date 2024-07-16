@@ -24,11 +24,11 @@
     <form action="/rations/save" method="post">
 <!--        <h6>Название рациона</h6>-->
 <!--        <input type="text"  width="75%">-->
-        <input placeholder="Название рациона" type="text" class="form-control" name="title"  >
+        <input placeholder="Название рациона" type="text" class="form-control" name="title" id="title" >
         <br>
     <table class="table table-striped mt-3" >
         <thead>
-        <tr>
+        <tr id="nameTable1">
             <th>Группа животных</th>
             <th>Килограммы корма</th>
             <th>Корм. ед.</th>
@@ -65,7 +65,7 @@
             <td>Норма</td></tr>
         <tr id="data-row">
             <td id="stand" >
-                <select class="form-select" style="width: 300px" oninput="addRowStandard(this)" name="feedGroup">
+                <select class="form-select" style="width: 300px" oninput="addRowStandard(this)" name="feedGroup" id="feedGroup">
                     <option value="">Выберите</option>
                     <option th:each="feedgroup:${feedgroups}"
                             th:value="${feedgroup.feedGroupId}"
@@ -157,7 +157,7 @@
     </table>
     <button  onclick="location.href='/feedgroups/add'" class="btn btn-sm btn-primary w-25" type="button">Создать группу</button><br><br>
     <h4>Подбор рациона</h4>
-    <table class="table table-striped mt-3" >
+    <table class="table table-striped mt-3" id="tableFeed">
         <thead>
         <tr>
             <th>Корм</th>
@@ -233,6 +233,9 @@
         <button class="btn btn-sm btn-primary w-25" type="button" onclick="clearTableData()">Очистить таблицу</button>
         <br><br>
         <button  class="btn btn-sm btn-primary w-25" type="submit">Сохранить рацион</button>
+<!--        <form th:action="'/rations/excel/'+${ration.getRationId}" method="post">-->
+<!--            <button class="btn btn-sm btn-danger" type="submit">Печать общей информации в Excel</button>-->
+<!--        </form>-->
         <button class="btn btn-sm btn-primary w-25" type="button" onclick="sendTableData()">Печать общей информации в Excel</button>
     <button  onclick="location.href='#'" class="btn btn-sm btn-primary w-25">Печать всей информации в Excel</button><br><br>
 
@@ -555,70 +558,172 @@
              }
         }
     }
-
-    function collectTableData() {
-        const tableBody = document.getElementById('feedroup-table-body');
-        //const rows = tableBody.querySelectorAll('tr');
-        const row = document.getElementById("data-row");
-        const totalsCells = row.children;
+    function getNameTable1() {
+        const row = document.getElementById("nameTable1");
+        const totalsCells = Array.from(row.children); // Преобразование HTMLCollection в массив
         const data = [];
 
-        totalsCells.forEach((index) => {
+        totalsCells.forEach((cell, index) => {
             // Смещаем индекс на 1, чтобы пропустить первую ячейку
-            let actualIndex = index + 1;
-            let existingCell = row.cells[actualIndex];
-
-            // Если ячейка уже существует, обновляем её данные
-            if (existingCell) {
-                data.push(existingCell.getAttribute('data-original-value'));
+            if (index >= 0) {
+                let existingCell = row.cells[index];
+                if (existingCell) {
+                    data.push(existingCell.textContent);
+                }
             }
         });
-        // rows.forEach(row => {
-        //     const cells = row.children;
-        //     const rowData = {};
-        //
-        //     // Убедитесь, что строка имеет хотя бы одну ячейку и что в ячейке есть необходимые элементы
-        //     if (cells.length > 0) {
-        //
-        //
-        //
-        //         for (let i = 2; i < cells.length; i++) {
-        //             const cellValue = cells[i].textContent.trim();
-        //             rowData[i] = cellValue;
-        //         }
-        //
-        //         data.push(rowData);
-        //     }
-        // });
 
         return data;
     }
 
+    function getVariance() {
+        const row = document.getElementById("variance");
+        const totalsCells = Array.from(row.children); // Преобразование HTMLCollection в массив
+        const data = [];
 
+        totalsCells.forEach((cell, index) => {
+            // Смещаем индекс на 1, чтобы пропустить первую ячейку
+            if (index >= 0) {
+                let existingCell = row.cells[index];
+                if (existingCell) {
+                    data.push(existingCell.textContent);
+                }
+            }
+        });
 
-    function sendTableData() {
-        const data = collectTableData();
-        if (data.length === 0) {
-            console.error('No data to send!');
-            return;
+        return data;
+    }
+
+    function collectTableDataReal() {
+        const row = document.getElementById("real");
+        const totalsCells = Array.from(row.children); // Преобразование HTMLCollection в массив
+        const data = [];
+
+        totalsCells.forEach((cell, index) => {
+            // Смещаем индекс на 1, чтобы пропустить первую ячейку
+            if (index >= 0) {
+                let existingCell = row.cells[index];
+                if (existingCell) {
+                    data.push(existingCell.textContent);
+                }
+            }
+        });
+
+        return data;
+    }
+    function getValue() {
+        const inputElement = document.getElementById('title');
+        const nameRation = inputElement.value;
+
+        return  nameRation;
+    }
+
+    function getFeedGroup() {
+        const selectElement = document.getElementById('feedGroup');
+        const feedgroup = selectElement.value;
+       return feedgroup;
+    }
+
+    function readTableData() {
+        const table = document.getElementById('tableFeed'); // Выбираем таблицу по классу, можно использовать более точный селектор
+
+        // Получаем строки данных
+        const rows = [];
+        const bodyRows = table.querySelectorAll('tbody tr');
+        // Проходим по строкам данных, исключая последнюю
+        for (let i = 0; i < bodyRows.length - 1; i++) {
+            const row = bodyRows[i];
+            const rowData = [];
+
+            // Получаем ячейки строки
+            const cells = row.querySelectorAll('td');
+
+            // Перебираем ячейки и сохраняем данные
+            cells.forEach((cell, index) => {
+                let cellValue;
+
+                // В зависимости от типа элемента в ячейке, считываем значение
+                if (cell.querySelector('input[type="number"]')) {
+                    cellValue = parseFloat(cell.querySelector('input[type="number"]').value);
+                } else if (cell.querySelector('textarea')) {
+                    cellValue = cell.querySelector('textarea').value.trim();
+                } else {
+                    cellValue = cell.textContent.trim();
+                }
+
+                rowData[index] = cellValue.toString();
+            });
+
+            rows.push(rowData);
         }
 
+        return  rows;
+    }
+    function readTableDataTitle() {
+        const table = document.getElementById('tableFeed'); // Выбираем таблицу по классу, можно использовать более точный селектор
+
+        // Получаем заголовки таблицы
+        const headerCells = table.querySelectorAll('thead th');
+        const header = Array.from(headerCells).map(cell => cell.textContent.trim());
+
+
+        return header;
+    }
+
+    function sendTableData() {
+        const dataReal = collectTableDataReal();
+        const nameRation = getValue();
+        const nameTable1 = getNameTable1();
+        const feedgroup = getFeedGroup();
+        const variance = getVariance();
+        const feedtitle = readTableDataTitle();
+        const feeds = readTableData();
+        if (dataReal.length === 0) {
+            console.error('Нет данных для отправки!');
+            return;
+        }
+        console.log("Название " + nameRation);
+        console.log("Группа " + feedgroup);
+        console.log("Названия таблицы " + nameTable1);
+        console.log('Отправляемые данные:', JSON.stringify(dataReal));
+        console.log("Отклонения " + variance);
+        console.log("Заголовки второй таблицы " + feedtitle);
+        console.log("Корма "+ feeds);
+        const requestData = {
+            nameRation: nameRation,
+            feedgroup: feedgroup,
+            nameTable1: nameTable1,
+            dataReal: dataReal,
+            variance: variance,
+            feedtitle: feedtitle,
+            feeds: feeds
+        };
         fetch('/rations/excel', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify([])
+            body: JSON.stringify(requestData)
         })
             .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error('Ошибка при отправке данных');
-                }
+                return response.text(); // Обрабатываем ответ как текст (HTML)
             })
-
+            .then(html => {
+                console.log('HTML-ответ получен');
+                // Вставляем HTML в элемент на странице, например:
+               // document.getElementById('response-container').innerHTML = html;
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+            });
     }
+
+
+
+
+
+
+
     function clearTableData(){
         var tableBody = document.getElementById('feed-table-body');
         while (tableBody.rows.length > 1) {

@@ -1,6 +1,7 @@
 package com.example.mobilefarmweb.controller;
 
 import com.example.mobilefarmweb.entity.*;
+import com.example.mobilefarmweb.excel.RationsExcelData;
 import com.example.mobilefarmweb.service.RationService;
 import com.example.mobilefarmweb.service.impl.FeedGroupServiceImpl;
 import com.example.mobilefarmweb.service.impl.FeedServiceImpl;
@@ -16,6 +17,7 @@ import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/rations")
@@ -72,8 +74,20 @@ public class RationController {
     }
 
     @PostMapping("/excel")
-    public String excelAllRations(){
-       System.out.println("Запись в ексель");
+    public String excelAllRations(@RequestBody RationsExcelData requestData){
+        System.out.println("Получены данные для экспорта в Excel:");
+        System.out.println("Название рациона: " + requestData.getNameRation());
+        System.out.println("Группа животных: " + requestData.getFeedgroup());
+        System.out.println("Название таблицы: " + requestData.getNameTable1());
+        System.out.println("Фактические значения: " + requestData.getDataReal());
+        System.out.println("Отклонения: " + requestData.getVariance());
+        System.out.println("Заголовки второй таблицы" + requestData.getFeedtitle());
+        for (Object ob:requestData.getFeeds()){
+            System.out.println("Корма" + ob);
+        }
+
+
+
         return "admin/rations";
     }
 
