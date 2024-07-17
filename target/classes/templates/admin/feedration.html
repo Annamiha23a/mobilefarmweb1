@@ -250,7 +250,7 @@
             const nutrients = [
                 'feedUnit', 'dryMatter','nulll' , 'dryProtein', 'energyExchange', 'digestedProtein', 'rawFat', 'rawFiber',
                 'starch', 'sugar', 'calcium', 'phosphorus', 'magnesium', 'potassium', 'sulfur', 'ferrum', 'copper',
-                'zins', 'manganese', 'cobalt', 'iodine', 'carotene', 'vitaminE', 'vitaminD', 'id'
+                'zins', 'manganese', 'cobalt', 'iodine', 'carotene', 'vitaminD', 'vitaminE', 'id'
             ];
 
             const rowData = [
@@ -347,9 +347,9 @@
         if (selectElement.value) {
             const selectedOption = selectElement.selectedOptions[0];
             const nutrients = [
-                'feedUnit','dryMatter', '100%', 'dryProtein',  'energyExchange', 'digestedProtein', 'rawFat', 'rawFiber',
+                'feedUnit','energyExchange', '100%', 'dryMatter','dryProtein' , 'digestedProtein', 'rawFat', 'rawFiber',
                 'starch', 'sugar', 'calcium', 'phosphorus', 'magnesium', 'potassium', 'sulfur', 'ferrum', 'copper',
-                'zins', 'manganese', 'cobalt', 'iodine', 'carotene', 'vitaminE', 'vitaminD'
+                'zins', 'manganese', 'cobalt', 'iodine', 'carotene', 'vitaminD', 'vitaminE'
             ];
 
             const rowData = [
@@ -682,13 +682,6 @@
             console.error('Нет данных для отправки!');
             return;
         }
-        console.log("Название " + nameRation);
-        console.log("Группа " + feedgroup);
-        console.log("Названия таблицы " + nameTable1);
-        console.log('Отправляемые данные:', JSON.stringify(dataReal));
-        console.log("Отклонения " + variance);
-        console.log("Заголовки второй таблицы " + feedtitle);
-        console.log("Корма "+ feeds);
         const requestData = {
             nameRation: nameRation,
             feedgroup: feedgroup,
@@ -717,12 +710,6 @@
                 console.error('Ошибка:', error);
             });
     }
-
-
-
-
-
-
 
     function clearTableData(){
         var tableBody = document.getElementById('feed-table-body');

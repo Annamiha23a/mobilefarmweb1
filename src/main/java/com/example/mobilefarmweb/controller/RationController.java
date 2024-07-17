@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.example.mobilefarmweb.excel.Write.writeRation;
+
 @Controller
 @RequestMapping(value = "/rations")
 public class RationController {
@@ -77,7 +79,8 @@ public class RationController {
     public String excelAllRations(@RequestBody RationsExcelData requestData){
         System.out.println("Получены данные для экспорта в Excel:");
         System.out.println("Название рациона: " + requestData.getNameRation());
-        System.out.println("Группа животных: " + requestData.getFeedgroup());
+        FeedGroup feedGroup= feedGroupService.findByFeedGroupId(Long.parseLong(requestData.getFeedgroup()));
+        System.out.println("Группа животных: " + feedGroup.getNutrients());
         System.out.println("Название таблицы: " + requestData.getNameTable1());
         System.out.println("Фактические значения: " + requestData.getDataReal());
         System.out.println("Отклонения: " + requestData.getVariance());
@@ -85,9 +88,7 @@ public class RationController {
         for (Object ob:requestData.getFeeds()){
             System.out.println("Корма" + ob);
         }
-
-
-
+        writeRation(requestData, feedGroup);
         return "admin/rations";
     }
 
