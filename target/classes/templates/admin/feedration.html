@@ -236,8 +236,8 @@
 <!--        <form th:action="'/rations/excel/'+${ration.getRationId}" method="post">-->
 <!--            <button class="btn btn-sm btn-danger" type="submit">Печать общей информации в Excel</button>-->
 <!--        </form>-->
-        <button class="btn btn-sm btn-primary w-25" type="button" onclick="sendTableData()">Печать общей информации в Excel</button>
-    <button  onclick="location.href='#'" class="btn btn-sm btn-primary w-25">Печать всей информации в Excel</button><br><br>
+        <button class="btn btn-sm btn-primary w-25" type="button" onclick="sendTableData()">Печать всей информации в Excel</button>
+    <button  class="btn btn-sm btn-primary w-25" type="button" onclick="sendTableData2()">Печать общей информации в Excel</button><br><br>
 
     </form>
 </div>
@@ -248,7 +248,7 @@
         if (selectElement.value) {
             const selectedOption = selectElement.selectedOptions[0];
             const nutrients = [
-                'feedUnit', 'dryMatter','nulll' , 'dryProtein', 'energyExchange', 'digestedProtein', 'rawFat', 'rawFiber',
+                'feedUnit', 'energyExchange', 'nulll' ,'dryMatter', 'dryProtein', 'digestedProtein', 'rawFat', 'rawFiber',
                 'starch', 'sugar', 'calcium', 'phosphorus', 'magnesium', 'potassium', 'sulfur', 'ferrum', 'copper',
                 'zins', 'manganese', 'cobalt', 'iodine', 'carotene', 'vitaminD', 'vitaminE', 'id'
             ];
@@ -711,6 +711,47 @@
             });
     }
 
+    function sendTableData2() {
+        const dataReal = collectTableDataReal();
+        const nameRation = getValue();
+        const nameTable1 = getNameTable1();
+        const feedgroup = getFeedGroup();
+        const variance = getVariance();
+        const feedtitle = readTableDataTitle();
+        const feeds = readTableData();
+        if (dataReal.length === 0) {
+            console.error('Нет данных для отправки!');
+            return;
+        }
+        const requestData = {
+            nameRation: nameRation,
+            feedgroup: feedgroup,
+            nameTable1: nameTable1,
+            dataReal: dataReal,
+            variance: variance,
+            feedtitle: feedtitle,
+            feeds: feeds
+        };
+        fetch('/rations/excel2', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestData)
+        })
+            .then(response => {
+                return response.text(); // Обрабатываем ответ как текст (HTML)
+            })
+            .then(html => {
+                console.log('HTML-ответ получен');
+
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+            });
+    }
+
+
     function clearTableData(){
         var tableBody = document.getElementById('feed-table-body');
         while (tableBody.rows.length > 1) {
@@ -729,6 +770,8 @@
         // Вызываем пересчет сумм по столбцам
         updateTotals();
     }
+
+
 
 </script>
 </body>
