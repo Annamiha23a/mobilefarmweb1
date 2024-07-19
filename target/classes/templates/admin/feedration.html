@@ -699,12 +699,20 @@
             body: JSON.stringify(requestData)
         })
             .then(response => {
-                return response.text(); // Обрабатываем ответ как текст (HTML)
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.blob(); // Обрабатываем ответ как Blob
             })
-            .then(html => {
-                console.log('HTML-ответ получен');
-                // Вставляем HTML в элемент на странице, например:
-               // document.getElementById('response-container').innerHTML = html;
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = 'rationsAllInfo.xlsx'; // Имя скачиваемого файла
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
             })
             .catch(error => {
                 console.error('Ошибка:', error);
@@ -740,11 +748,20 @@
             body: JSON.stringify(requestData)
         })
             .then(response => {
-                return response.text(); // Обрабатываем ответ как текст (HTML)
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.blob(); // Обрабатываем ответ как Blob
             })
-            .then(html => {
-                console.log('HTML-ответ получен');
-
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = 'rations.xlsx'; // Имя скачиваемого файла
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
             })
             .catch(error => {
                 console.error('Ошибка:', error);

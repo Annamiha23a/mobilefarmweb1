@@ -7,12 +7,19 @@ import com.example.mobilefarmweb.service.impl.FeedGroupServiceImpl;
 import com.example.mobilefarmweb.service.impl.FeedServiceImpl;
 import com.example.mobilefarmweb.service.impl.NutrientsServiceImpl;
 import com.example.mobilefarmweb.service.impl.RationServiceImpl;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.apache.poi.ss.usermodel.Workbook;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -77,21 +84,57 @@ public class RationController {
     }
 
     @PostMapping("/excel")
-    public String excelAllRations(@RequestBody RationsExcelData requestData){
+    public ResponseEntity<byte[]> excelAllRations(@RequestBody RationsExcelData requestData){
 
         FeedGroup feedGroup= feedGroupService.findByFeedGroupId(Long.parseLong(requestData.getFeedgroup()));
 
-        writeRation(requestData, feedGroup);
-        return "admin/rations";
+        XSSFWorkbook workbook = writeRation(requestData, feedGroup);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        try {
+            workbook.write(bos);
+            workbook.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        byte[] excelBytes = bos.toByteArray();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment; filename=rations.xlsx");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(excelBytes);
     }
 
     @PostMapping("/excel2")
-    public String excelAllRations2(@RequestBody RationsExcelData requestData){
+    public ResponseEntity<byte[]> excelAllRations2(@RequestBody RationsExcelData requestData){
 
         FeedGroup feedGroup= feedGroupService.findByFeedGroupId(Long.parseLong(requestData.getFeedgroup()));
 
-        writeRation2(requestData, feedGroup);
-        return "admin/rations";
+        XSSFWorkbook workbook = writeRation2(requestData, feedGroup);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        try {
+            workbook.write(bos);
+            workbook.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        byte[] excelBytes = bos.toByteArray();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment; filename=rations.xlsx");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(excelBytes);
     }
 
     @PostMapping("/delete/{id}")

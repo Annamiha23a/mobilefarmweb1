@@ -19,7 +19,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 // Main class
 public class Write {
 
-    public static void writeRation(RationsExcelData requestData, FeedGroup feedGroup)
+    public static XSSFWorkbook writeRation(RationsExcelData requestData, FeedGroup feedGroup)
     {
 
         // Blank workbook
@@ -130,9 +130,10 @@ public class Write {
             // using printStackTrace() method
             e.printStackTrace();
         }
+        return workbook;
     }
 
-    public static void writeRation2(RationsExcelData requestData, FeedGroup feedGroup)
+    public static XSSFWorkbook writeRation2(RationsExcelData requestData, FeedGroup feedGroup)
     {
 
         // Blank workbook
@@ -247,5 +248,7 @@ public class Write {
             // using printStackTrace() method
             e.printStackTrace();
         }
+
+        return workbook;
     }
 }
