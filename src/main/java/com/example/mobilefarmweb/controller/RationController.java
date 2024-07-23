@@ -69,6 +69,15 @@ public class RationController {
         return "admin/rations";
 
     }
+
+    @GetMapping("/update/{id}")
+    public String updateRationGet(Model model, @PathVariable("id") Long id){
+        model.addAttribute("ration", rationService.getRationById(id));
+        model.addAttribute("feeds", feedService.getAll());
+        model.addAttribute("feedgroups", feedGroupService.findAll() );
+        return "admin/rationUpdate";
+
+    }
     @PostMapping("/save")
     public String saveRations(Model model, @RequestParam(name="title") String  title, @RequestParam(name="kg") List<BigDecimal>  kg, @RequestParam(name="feed") List<Long>  feed, @RequestParam(name="feedGroup") Long  feedGroup){
         System.out.println("Успешно сохранено "+ title + kg + feed + feedGroup);

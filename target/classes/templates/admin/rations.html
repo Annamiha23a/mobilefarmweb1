@@ -36,9 +36,13 @@
                 <h6 th:utext="${'<strong>Корм:</strong> ' + el.feed.getName()}"></h6>
                 <h6 th:utext="${'<strong>Количество:</strong> ' + el.amount}"></h6>
             </div>
-            <form th:action="'/rations/delete/'+${ration.getRationId}" method="post">
-                <button class="btn btn-sm btn-danger" type="submit">Удалить рацион</button>
+            <form th:action="'/rations/update/'+${ration.getRationId}" method="get">
+                <button class="btn w-25 btn-sm btn-primary" type="submit">Редактировать рацион</button>
             </form>
+            <form th:action="'/rations/delete/'+${ration.getRationId}" method="post">
+                <button class="btn w-25 btn-sm btn-danger" type="submit">Удалить рацион</button>
+            </form>
+
     </details>
 </div>
 </div>

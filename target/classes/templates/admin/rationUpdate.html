@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Калькулятор рационов кормления KPC</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<style>
+  #feedGroup {
+    height: 3em; /* Увеличиваем высоту поля */
+    line-height: 1.5em; /* Высота строки, позволяющая двум строкам помещаться внутри поля */
+    white-space: normal; /* Позволяем тексту переноситься на новую строку */
+    overflow: hidden; /* Скрываем лишний текст, который выходит за пределы */
+  }
+  #select-feed {
+    height: 1.8em; /* Увеличиваем высоту поля */
+    line-height: 1.8em; /* Высота строки, позволяющая двум строкам помещаться внутри поля */
+    /*white-space: break-spaces; !* Позволяем тексту переноситься на новую строку *!*/
+    overflow: hidden; /* Скрываем лишний текст, который выходит за пределы */
+    width: 300px;
+  }
+  .autocomplete-container, .autocomplete-containerNorma {
+    position: relative;
+    display: inline-block;
+    width: 300px; /* Устанавливаем ширину контейнера */
+  }
+  .autocomplete-items, .autocomplete-itemsNorma {
+    position: absolute;
+    border: 1px solid #d4d4d4;
+    border-bottom: none;
+    border-top: none;
+    z-index: 99;
+    top: 100%;
+    left: 0;
+    right: 0;
+  }
+  .autocomplete-item, .autocomplete-itemNorma {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #fff;
+    border-bottom: 1px solid #d4d4d4;
+  }
+  .autocomplete-item:hover, .autocomplete-item:hover {
+    background-color: #e9e9e9;
+  }
+  /*#select-feed {*/
+  /*    !*position: absolute;*!*/
+  /*    !*top: 0;*!*/
+  /*    !*right: 0;*!*/
+  /*    width: 30px; !* Устанавливаем минимальную ширину для отображения стрелки *!*/
+  /*    !*height: 100%;*!*/
+  /*    !* opacity: 0;  Прозрачность, чтобы не был виден сам селект *!*/
+  /*    cursor: pointer; !* Указатель курсора *!*/
+  /*}*/
+  #autocomplete-input, #autocomplete-inputNorma {
+    width: 100%;
+    box-sizing: border-box; /* Учитываем бордер и паддинг в ширину */
+  }
+</style>
+<body>
+<div class="sidebar" th:insert="blocks/navication :: nav" ></div>
+
+<div class="content container mt-5">
+  <div class="text-center">
+    <h2>Калькулятор</h2>
+    <p class="lead">рационов кормления KPC</p>
+  </div>
+  <h3 th:utext="${'Редактирование рациона №' + ration.rationId}"></h3>
+  <h4>Контроль рациона</h4>
+  <form action="/rations/save" method="post">
+    <input placeholder="Название рациона" type="text" class="form-control" name="title" id="title" th:value="${ration.title}">
+    <br>
+    <table class="table table-striped mt-3" >
+      <thead>
+      <tr id="nameTable1">
+        <th>Группа животных</th>
+        <th>Килограммы корма</th>
+        <th>Корм. ед.</th>
+        <th>Обмен.энерг. (ОЭ), МДж</th>
+        <th>Структура по ОЭ, %</th>
+        <th>Сухое в-во, г.</th>
+        <th>Сырой протеин,г</th>
+        <th>Перев.протеин, г</th>
+        <th>сыр. жир, г</th>
+        <th>сыр.клетчатка,г</th>
+        <th>крахмал,г</th>
+        <th>Сахар,г</th>
+        <th>кальций,г</th>
+        <th>Фосфор,г</th>
+        <th>Магний,г</th>
+        <th>Калий,г</th>
+        <th>Сера,г</th>
+        <th>Железо, мг</th>
+        <th>Медь, мг</th>
+        <th>Цинк, мг</th>
+        <th>Марганец, мг</th>
+        <th>Кобальт, мг</th>
+        <th>Йод, мг</th>
+        <th>Каротин, мг</th>
+        <th>Вит. Д, МЕ</th>
+        <th>Вит. Е, мг</th>
+        <!--            <th>ЛФУ</th>-->
+        <!--            <th>мин</th>-->
+        <!--            <th>макс</th>-->
+      </tr>
+      </thead>
+      <tbody id="feedgroup-table-body">
+      <tr>
+        <td>Норма</td>
+      </tr>
+      <tr id="data-row">
+        <td id="stand" >
+          <div class="autocomplete-containerNorma">
+            <input type="text" id="autocomplete-inputNorma" placeholder="Введите или" style="width: 300px">
+            <div id="autocomplete-listNorma" class="autocomplete-itemsNorma"></div>
+          </div>
+          <select class="form-select" style="width: 300px" onchange="addRowStandard(this)" name="feedGroup" id="feedGroup">
+            <option
+                    th:value="${ration.feedGroup.feedGroupId}"
+                    th:utext="${ration.feedGroup.type}"
+                    th:data-feedUnit="${ration.feedGroup.nutrients.feedUnit}"
+                    th:data-energyExchange="${ration.feedGroup.nutrients.energyExchange}"
+                    th:data-dryMatter="${ration.feedGroup.nutrients.dryMatter}"
+                    th:data-dryProtein="${ration.feedGroup.nutrients.dryProtein}"
+                    th:data-digestedProtein="${ration.feedGroup.nutrients.digestedProtein}"
+                    th:data-rawFat="${ration.feedGroup.nutrients.rawFat}"
+                    th:data-rawFiber="${ration.feedGroup.nutrients.rawFiber}"
+                    th:data-starch="${ration.feedGroup.nutrients.starch}"
+                    th:data-sugar="${ration.feedGroup.nutrients.sugar}"
+                    th:data-calcium="${ration.feedGroup.nutrients.calcium}"
+                    th:data-phosphorus="${ration.feedGroup.nutrients.phosphorus}"
+
+                    th:data-magnesium="${ration.feedGroup.nutrients.magnesium}"
+
+                    th:data-potassium="${ration.feedGroup.nutrients.potassium}"
+
+                    th:data-sulfur="${ration.feedGroup.nutrients.sulfur}"
+
+                    th:data-ferrum="${ration.feedGroup.nutrients.ferrum}"
+
+                    th:data-copper="${ration.feedGroup.nutrients.copper}"
+
+                    th:data-zins="${ration.feedGroup.nutrients.zins}"
+
+                    th:data-manganese="${ration.feedGroup.nutrients.manganese}"
+
+                    th:data-cobalt="${ration.feedGroup.nutrients.cobalt}"
+
+                    th:data-iodine="${ration.feedGroup.nutrients.iodine}"
+
+                    th:data-carotene="${ration.feedGroup.nutrients.carotene}"
+
+                    th:data-vitaminE="${ration.feedGroup.nutrients.vitaminE}"
+                    th:data-vitaminD="${ration.feedGroup.nutrients.vitaminD}">></option>
+            <option th:each="feedgroup:${feedgroups}"
+                    th:value="${feedgroup.feedGroupId}"
+                    th:utext="${feedgroup.type}"
+                    th:data-feedUnit="${feedgroup.nutrients.feedUnit}"
+                    th:data-energyExchange="${feedgroup.nutrients.energyExchange}"
+                    th:data-dryMatter="${feedgroup.nutrients.dryMatter}"
+                    th:data-dryProtein="${feedgroup.nutrients.dryProtein}"
+                    th:data-digestedProtein="${feedgroup.nutrients.digestedProtein}"
+                    th:data-rawFat="${feedgroup.nutrients.rawFat}"
+                    th:data-rawFiber="${feedgroup.nutrients.rawFiber}"
+                    th:data-starch="${feedgroup.nutrients.starch}"
+                    th:data-sugar="${feedgroup.nutrients.sugar}"
+                    th:data-calcium="${feedgroup.nutrients.calcium}"
+                    th:data-phosphorus="${feedgroup.nutrients.phosphorus}"
+                    th:data-magnesium="${feedgroup.nutrients.magnesium}"
+                    th:data-potassium="${feedgroup.nutrients.potassium}"
+                    th:data-sulfur="${feedgroup.nutrients.sulfur}"
+                    th:data-ferrum="${feedgroup.nutrients.ferrum}"
+                    th:data-copper="${feedgroup.nutrients.copper}"
+                    th:data-zins="${feedgroup.nutrients.zins}"
+                    th:data-manganese="${feedgroup.nutrients.manganese}"
+                    th:data-cobalt="${feedgroup.nutrients.cobalt}"
+                    th:data-iodine="${feedgroup.nutrients.iodine}"
+                    th:data-carotene="${feedgroup.nutrients.carotene}"
+                    th:data-vitaminE="${feedgroup.nutrients.vitaminE}"
+                    th:data-vitaminD="${feedgroup.nutrients.vitaminD}">
+            </option>
+          </select>
+        </td>
+        <td></td>
+        <td th:text="${ration.feedGroup.nutrients.feedUnit}"></td>
+        <td th:text="${ration.feedGroup.nutrients.energyExchange}"></td>
+        <td>100%</td>
+        <td th:text="${ration.feedGroup.nutrients.dryMatter*1000}"></td>
+        <td th:text="${ration.feedGroup.nutrients.dryProtein}"></td>
+        <td th:text="${ration.feedGroup.nutrients.digestedProtein}"></td>
+        <td th:text="${ration.feedGroup.nutrients.rawFat}"></td>
+        <td th:text="${ration.feedGroup.nutrients.rawFiber}"></td>
+        <td th:text="${ration.feedGroup.nutrients.starch}"></td>
+        <td th:text="${ration.feedGroup.nutrients.sugar}"></td>
+        <td th:text="${ration.feedGroup.nutrients.calcium}"></td>
+        <td th:text="${ration.feedGroup.nutrients.phosphorus}"></td>
+        <td th:text="${ration.feedGroup.nutrients.magnesium}"></td>
+        <td th:text="${ration.feedGroup.nutrients.potassium}"></td>
+        <td th:text="${ration.feedGroup.nutrients.sulfur}"></td>
+        <td th:text="${ration.feedGroup.nutrients.ferrum}"></td>
+        <td th:text="${ration.feedGroup.nutrients.copper}"></td>
+        <td th:text="${ration.feedGroup.nutrients.zins}"></td>
+        <td th:text="${ration.feedGroup.nutrients.manganese}"></td>
+        <td th:text="${ration.feedGroup.nutrients.cobalt}"></td>
+        <td th:text="${ration.feedGroup.nutrients.iodine}"></td>
+        <td th:text="${ration.feedGroup.nutrients.carotene}"></td>
+        <td th:text="${ration.feedGroup.nutrients.vitaminD}"></td>
+        <td th:text="${ration.feedGroup.nutrients.vitaminE}"></td>
+      </tr>
+      <tr id = "real">
+        <td>Фактически содержится в рационе</td>
+        <td id="kg"></td>
+        <td id = "feedUnit"></td>
+        <td id = "energyExchange"></td>
+        <td id = "structura"></td>
+        <td id = "dryMatter"></td>
+        <td id = "dryProtein"></td>
+        <td id = "digestedProtein"></td>
+        <td id = "rawFat"></td>
+        <td id = "rawFiber"></td>
+        <td id = "starch"></td>
+        <td id = "sugar"></td>
+        <td id = "calcium"></td>
+        <td id = "phosphorus"></td>
+        <td id = "magnesium"></td>
+        <td id = "potassium"></td>
+        <td id = "sulfur"></td>
+        <td id = "ferrum"></td>
+        <td id = "copper"></td>
+        <td id = "zins"></td>
+        <td id = "manganese"></td>
+        <td id = "cobalt"></td>
+        <td id = "iodine"></td>
+        <td id = "carotene"></td>
+        <td id = "vitaminE"></td>
+        <td id = "vitaminD"></td>
+      </tr>
+      <tr id = "variance">
+        <td>Отклонение от нормы</td>
+        <td ></td>
+        <td ></td>
+        <td ></td>
+        <td ></td>
+        <td ></td>
+        <td ></td>
+        <td ></td>
+        <td ></td>
+        <td ></td>
+        <td ></td>
+        <td ></td>
+        <td ></td>
+        <td ></td>
+        <td ></td>
+        <td ></td>
+        <td ></td>
+        <td ></td>
+        <td ></td>
+        <td ></td>
+        <td ></td>
+        <td ></td>
+        <td ></td>
+        <td ></td>
+        <td ></td>
+        <td ></td>
+      </tr>
+      </tbody>
+    </table>
+    <button  onclick="location.href='/feedgroups/add'" class="btn btn-sm btn-primary w-25" type="button">Создать группу</button><br><br>
+    <h4>Подбор рациона</h4>
+    <table class="table table-striped mt-3" id="tableFeed">
+      <thead>
+      <tr>
+        <th>Корм</th>
+        <th>Килограммы корма</th>
+        <th>Корм. ед.</th>
+        <th>Обмен.энерг. (ОЭ), МДж</th>
+        <th>Структура по ОЭ, %</th>
+        <th>Сухое в-во, г.</th>
+        <th>Сырой протеин,г</th>
+        <th>Перев.протеин, г</th>
+        <th>сыр. жир, г</th>
+        <th>сыр.клетчатка,г</th>
+        <th>крахмал,г</th>
+        <th>Сахар,г</th>
+        <th>кальций,г</th>
+        <th>Фосфор,г</th>
+        <th>Магний,г</th>
+        <th>Калий,г</th>
+        <th>Сера,г</th>
+        <th>Железо, мг</th>
+        <th>Медь, мг</th>
+        <th>Цинк, мг</th>
+        <th>Марганец, мг</th>
+        <th>Кобальт, мг</th>
+        <th>Йод, мг</th>
+        <th>Каротин, мг</th>
+        <th>Вит. Д, МЕ</th>
+        <th>Вит. Е, мг</th>
+        <th>Номер корма</th>
+        <!--            <th>ЛФУ</th>-->
+        <!--            <th>мин</th>-->
+        <!--            <th>макс</th>-->
+      </tr>
+      </thead>
+      <tbody id="feed-table-body">
+      <tr th:each="rationfeed:${ration.rationFeeds}">
+        <td th:text="${rationfeed.feed.name}"></td>
+        <td><input type="number" step=0.01 class="form-control"   name="kg" oninput="updateRow(this)"  th:value="${rationfeed.amount}"></td>
+        <td th:text="${rationfeed.feed.nutrients.feedUnit}"></td>
+        <td th:text="${rationfeed.feed.nutrients.energyExchange}"></td>
+        <td th:text="${rationfeed.feed.nutrients.energyExchange/(ration.feedGroup.nutrients.energyExchange) + '%'}"></td>
+        <td th:text="${rationfeed.feed.nutrients.dryMatter}"></td>
+        <td th:text="${rationfeed.feed.nutrients.dryProtein}"></td>
+        <td th:text="${rationfeed.feed.nutrients.digestedProtein}"></td>
+        <td th:text="${rationfeed.feed.nutrients.rawFat}"></td>
+        <td th:text="${rationfeed.feed.nutrients.rawFiber}"></td>
+        <td th:text="${rationfeed.feed.nutrients.starch}"></td>
+      </tr><tr>
+
+        <td >
+          <div class="autocomplete-container">
+            <input type="text" id="autocomplete-input" placeholder="Введите или" style="width: 300px">
+            <div id="autocomplete-list" class="autocomplete-items"></div>
+          </div>
+          <select class="form-select"  onchange="addRow(this)" id="select-feed" >
+            <option value="">Выберите</option>
+            <option th:each="feed:${feeds}"
+                    th:value="${feed.name}"
+                    th:utext="${feed.name}"
+                    th:data-id="${feed.feedId}"
+                    th:data-feedUnit="${feed.nutrients.feedUnit}"
+                    th:data-energyExchange="${feed.nutrients.energyExchange}"
+                    th:data-dryMatter="${feed.nutrients.dryMatter}"
+                    th:data-dryProtein="${feed.nutrients.dryProtein}"
+                    th:data-digestedProtein="${feed.nutrients.digestedProtein}"
+                    th:data-rawFat="${feed.nutrients.rawFat}"
+                    th:data-rawFiber="${feed.nutrients.rawFiber}"
+                    th:data-starch="${feed.nutrients.starch}"
+                    th:data-sugar="${feed.nutrients.sugar}"
+                    th:data-calcium="${feed.nutrients.calcium}"
+                    th:data-phosphorus="${feed.nutrients.phosphorus}"
+                    th:data-magnesium="${feed.nutrients.magnesium}"
+                    th:data-potassium="${feed.nutrients.potassium}"
+                    th:data-sulfur="${feed.nutrients.sulfur}"
+                    th:data-ferrum="${feed.nutrients.ferrum}"
+                    th:data-copper="${feed.nutrients.copper}"
+                    th:data-zins="${feed.nutrients.zins}"
+                    th:data-manganese="${feed.nutrients.manganese}"
+                    th:data-cobalt="${feed.nutrients.cobalt}"
+                    th:data-iodine="${feed.nutrients.iodine}"
+                    th:data-carotene="${feed.nutrients.carotene}"
+                    th:data-vitaminE="${feed.nutrients.vitaminE}"
+                    th:data-vitaminD="${feed.nutrients.vitaminD}">
+            </option>
+          </select>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <button class="btn btn-sm btn-primary w-25" type="button" onclick="clearTableData()">Очистить таблицу</button>
+    <br><br>
+    <button  class="btn btn-sm btn-primary w-25" type="submit">Сохранить рацион</button>
+    <!--        <form th:action="'/rations/excel/'+${ration.getRationId}" method="post">-->
+    <!--            <button class="btn btn-sm btn-danger" type="submit">Печать общей информации в Excel</button>-->
+    <!--        </form>-->
+    <button class="btn btn-sm btn-primary w-25" type="button" onclick="sendTableData()">Печать всей информации в Excel</button>
+    <button  class="btn btn-sm btn-primary w-25" type="button" onclick="sendTableData2()">Печать общей информации в Excel</button><br><br>
+
+  </form>
+</div>
+<br><br><br><br><br><br><br><br><br><br><br><br><br>
+<script>
+  let rowCount = 0; // Глобальная переменная для отслеживания количества строк
+
+  function addRow(selectElement) {
+
+    if (selectElement.value) {
+      const normSelect = document.getElementById('feedGroup');
+      const selectedNorm = normSelect.value;
+
+      // Проверяем, выбрана ли норма
+      if (!selectedNorm) {
+        alert('Пожалуйста, выберите норму перед выбором корма.');
+        selectElement.value = '';  // Сброс выбора корма
+        return;  // Прерываем выполнение функции
+      }
+      const selectedOption = selectElement.selectedOptions[0];
+      const nutrients = [
+        'feedUnit', 'energyExchange', 'nulll' ,'dryMatter', 'dryProtein', 'digestedProtein', 'rawFat', 'rawFiber',
+        'starch', 'sugar', 'calcium', 'phosphorus', 'magnesium', 'potassium', 'sulfur', 'ferrum', 'copper',
+        'zins', 'manganese', 'cobalt', 'iodine', 'carotene', 'vitaminD', 'vitaminE', 'id'
+      ];
+
+      const rowData = [
+        selectElement.value,
+        '<input type="number" step=0.01 class="form-control" value="1"  name="kg" oninput="updateRow(this)">'
+      ];
+
+      nutrients.forEach(nutrient => {
+        if(nutrient === 'nulll'){
+          rowData.push(' ');
+        }
+        else {  rowData.push(selectedOption.getAttribute(`data-${nutrient}`));}
+
+      });
+
+      const tableBody = document.getElementById('feed-table-body');
+      const newRow = document.createElement('tr');
+
+      rowData.forEach(data => {
+        const newCell = document.createElement('td');
+        if(data == null){
+          //newCell.textContent = ' ';
+          newRow.appendChild(newCell);
+        }
+        else {
+          if (typeof data === 'string' && data.includes('<input')) {
+            newCell.innerHTML = data;
+          } else {
+            newCell.textContent = data;
+            newCell.setAttribute('data-original-value', data);
+            if(data==rowData[26]){
+              newCell.textContent = data;
+              newCell.innerHTML = '<textarea readonly type="number" class="form-control" style="width: 60px; height: 30px" name="feed">';
+            }
+          }
+          newRow.appendChild(newCell);
+          if (data==rowData[26]){
+            const newCell = document.createElement('td');
+            newCell.innerHTML = '<button type="button" onclick="deleteRow(this)" style="background: red" >Удалить</button>';
+            newRow.appendChild(newCell);
+          }
+        }
+      });
+
+      tableBody.insertBefore(newRow, selectElement.parentElement.parentElement);
+
+      selectElement.value = '';
+      // Увеличиваем счетчик строк
+      rowCount++;
+      let elementsWithName = document.querySelectorAll('[name="feed"]');
+
+// Получаем последний элемент в коллекции
+      let lastElementWithName = elementsWithName[elementsWithName.length - 1];
+
+      if (lastElementWithName) {
+        lastElementWithName.value =rowData[26];
+
+      } else {
+        console.log('Элемент с атрибутом name="feed" не найден.');
+      }
+//             let elementsWithNameFeed = document.querySelectorAll('[name="nameFeed"]');
+//
+// // Получаем последний элемент в коллекции
+//             let lastElementWithNameFeed = elementsWithName[elementsWithName.length - 1];
+//
+//             if (lastElementWithNameFeed) {
+//                 lastElementWithNameFeed.value =rowData[26];
+//
+//             } else {
+//                 console.log('Элемент с атрибутом name="feed" не найден.');
+//             }
+      // Вызываем пересчет сумм по столбцам
+      updateTotals();
+    }
+  }
+
+  function updateRow(inputElement) {
+    const quantity = parseFloat(inputElement.value);
+    const row = inputElement.parentElement.parentElement;
+    const cells = row.children;
+
+    for (let i = 2; i < cells.length && i != 4; i++) {
+      const cell = cells[i];
+      const originalValue = parseFloat(cell.getAttribute('data-original-value'));
+      if (!isNaN(originalValue)) {
+        cell.textContent = (originalValue * quantity).toFixed(2);
+      }
+    }
+    // Вызываем пересчет сумм по столбцам
+    updateTotals();
+  }
+
+  function addRowStandard(selectElement) {
+    if (selectElement.value) {
+      const selectedOption = selectElement.selectedOptions[0];
+      const nutrients = [
+        'feedUnit','energyExchange', '100%', 'dryMatter','dryProtein' , 'digestedProtein', 'rawFat', 'rawFiber',
+        'starch', 'sugar', 'calcium', 'phosphorus', 'magnesium', 'potassium', 'sulfur', 'ferrum', 'copper',
+        'zins', 'manganese', 'cobalt', 'iodine', 'carotene', 'vitaminD', 'vitaminE'
+      ];
+
+      const rowData = [
+        ''
+      ];
+
+      nutrients.forEach(nutrient => {
+        let value = selectedOption.getAttribute(`data-${nutrient}`);
+        // Умножаем значение сухого вещества на 1000
+        if (nutrient === 'dryMatter' && value) {
+          value = (parseFloat(value) * 1000).toString();
+
+        }
+        if (nutrient === '100%') {
+          value = "100%";
+
+        }
+        rowData.push(value);
+      });
+
+      const tableBody = document.getElementById('feedroup-table-body');
+      const row = document.getElementById("data-row");
+
+      rowData.forEach((data, index) => {
+        // Смещаем индекс на 1, чтобы пропустить первую ячейку
+        let actualIndex = index + 1;
+        let existingCell = row.cells[actualIndex];
+
+        // Если ячейка уже существует, обновляем её данные
+        if (existingCell) {
+          if (typeof data === 'string' && data.includes('<input')) {
+            existingCell.innerHTML = data;
+          } else {
+            existingCell.textContent = data;
+            existingCell.setAttribute('data-original-value', data);
+          }
+        }
+        // Если ячейки нет, создаём новую и заполняем её
+        else {
+          const newCell = document.createElement('td');
+          if (typeof data === 'string' && data.includes('<input')) {
+            newCell.innerHTML = data;
+          } else {
+            newCell.textContent = data;
+            newCell.setAttribute('data-original-value', data);
+          }
+          row.appendChild(newCell);
+        }
+      });
+
+      // Если строка уже существует в таблице, обновляем её; если нет, вставляем её
+      if (!row.parentElement) {
+        tableBody.insertBefore(row, selectElement.parentElement.parentElement);
+      }
+    }
+  }
+
+  function updateTotals() {
+    const tableBody = document.getElementById('feed-table-body');
+    const rows = tableBody.querySelectorAll('tr');
+    const totalsRow = document.getElementById('real');
+    const totalsCells = totalsRow.children;
+    const totalsRowStand = document.getElementById('stand');
+    const totalsCellsStand = totalsRowStand.children;
+
+
+    // Инициализируем массив для хранения сумм
+    const totals = new Array(totalsRow.length).fill(0);
+
+    totals[1] = 0;
+    totals[2] = 0;
+    totals[3] = 0;
+    totals[4] = 0;
+    totals[5] = 0;
+    totals[6] = 0;
+    totals[7] = 0;
+    totals[8] = 0;
+    totals[9] = 0;
+    totals[10] = 0;
+    totals[11] = 0;
+    totals[12] = 0;
+    totals[13] = 0;
+    totals[14] = 0;
+    totals[15] = 0;
+    totals[16] = 0;
+    totals[17] = 0;
+    totals[18] = 0;
+    totals[19] = 0;
+    totals[20] = 0;
+    totals[21] = 0;
+    totals[22] = 0;
+    totals[23] = 0;
+    totals[24] = 0;
+    totals[25] = 0;
+    rows.forEach(row => {
+      const cells = row.children;
+
+      // const cellValue = parseFloat(cells[1].valueOf());
+      if (cells[1] && cells[1].querySelector('input[type="number"]')) {
+        const kgCell = cells[1].querySelector('input');
+        let kgValue = 1; // default value
+        if (kgCell) {
+          kgValue = parseFloat(kgCell.value);
+          if (isNaN(kgValue)) {
+            kgValue = 0;
+          }
+        }
+
+        totals[1] += kgValue;
+      }
+
+
+      for (let i = 2; i < cells.length; i++) {
+        const cellValue = parseFloat(cells[i].textContent);
+        if (!isNaN(cellValue)) {
+          if(i==4){
+
+          }
+          else{
+            totals[i] += cellValue;
+          }
+        }
+      }
+    });
+
+    // Обновляем ячейки в строке с фактическими значениями
+
+    totalsCells[1].textContent = totals[1];
+
+    // Обновляем процентное соотношение для каждой строки
+    rows.forEach(row => {
+      const cells = row.children;
+      if (cells[3] != null) {
+        const dataRow = document.getElementById('data-row');
+        const cellsData = dataRow.children;
+        // Считываем значения из "data-row"
+        const cellValueSt = parseFloat(cellsData[3].textContent);
+
+        if (!isNaN(cellValueSt)) {
+          cellValue = parseFloat(cells[3].textContent);
+          if (!isNaN(cellValue)) {
+            const percentageCell = cells[4];
+            percentageCell.textContent = ((cellValue / cellValueSt) * 100).toFixed(2) + '%';
+          }
+        }
+
+        const cellValue2 = parseFloat(cells[4].textContent);
+        if (!isNaN(cellValue2)) {
+          totals[4] += cellValue2;
+        }
+
+
+
+
+      }
+    });
+
+    for (let i = 2; i < totalsCells.length ; i++) {
+      if(i== 4 ){
+        totalsCells[4].textContent = totals[4].toFixed(2) + "%";
+      }
+      else{
+        totalsCells[i].textContent = totals[i].toFixed(2);}
+
+    }
+
+
+
+    updateVariance();
+  }
+
+  function updateVariance() {
+    const tableBody = document.getElementById('feedgroup-table-body');
+    const rows = tableBody.querySelectorAll('tr');
+    const totalsRowStand = document.getElementById('stand');
+    const totalsCellsStand = totalsRowStand.children;
+    const totalsRowVar = document.getElementById('variance');
+    const totalsCellsVar = totalsRowVar.children;
+
+    // Инициализируем массив для хранения разностей
+    const totalsStand = new Array(totalsCellsStand.length).fill(0);
+
+    // Обрабатываем строку с данными "data-row"
+    const dataRow = document.getElementById('data-row');
+    const cellsData = dataRow.children;
+    const dataRowReal = document.getElementById('real');
+    const cellsDataReal = dataRowReal.children;
+
+    // Считываем значения из "data-row"
+    for (let i = 2; i < cellsData.length ; i++) {
+
+      const cellValue = parseFloat(cellsData[i].textContent);
+      const cellValueReal = parseFloat(cellsDataReal[i].textContent);
+      if (!isNaN(cellValue)) {
+        totalsStand[i] = cellValue - cellValueReal;
+      }
+    }
+
+
+    for (let i = 2; i < totalsCellsVar.length ; i++) {
+      if(i==4){
+        totalsCellsVar[4].textContent = totalsStand[4].toFixed(2) + "%";
+      }
+      else{
+        totalsCellsVar[i].textContent = totalsStand[i].toFixed(2);
+      }
+    }
+  }
+  function getNameTable1() {
+    const row = document.getElementById("nameTable1");
+    const totalsCells = Array.from(row.children); // Преобразование HTMLCollection в массив
+    const data = [];
+
+    totalsCells.forEach((cell, index) => {
+      // Смещаем индекс на 1, чтобы пропустить первую ячейку
+      if (index >= 0) {
+        let existingCell = row.cells[index];
+        if (existingCell) {
+          data.push(existingCell.textContent);
+        }
+      }
+    });
+
+    return data;
+  }
+
+  function getVariance() {
+    const row = document.getElementById("variance");
+    const totalsCells = Array.from(row.children); // Преобразование HTMLCollection в массив
+    const data = [];
+
+    totalsCells.forEach((cell, index) => {
+      // Смещаем индекс на 1, чтобы пропустить первую ячейку
+      if (index >= 0) {
+        let existingCell = row.cells[index];
+        if (existingCell) {
+          data.push(existingCell.textContent);
+        }
+      }
+    });
+
+    return data;
+  }
+
+  function collectTableDataReal() {
+    const row = document.getElementById("real");
+    const totalsCells = Array.from(row.children); // Преобразование HTMLCollection в массив
+    const data = [];
+
+    totalsCells.forEach((cell, index) => {
+      // Смещаем индекс на 1, чтобы пропустить первую ячейку
+      if (index >= 0) {
+        let existingCell = row.cells[index];
+        if (existingCell) {
+          data.push(existingCell.textContent);
+        }
+      }
+    });
+
+    return data;
+  }
+  function getValue() {
+    const inputElement = document.getElementById('title');
+    const nameRation = inputElement.value;
+
+    return  nameRation;
+  }
+
+  function getFeedGroup() {
+    const selectElement = document.getElementById('feedGroup');
+    const feedgroup = selectElement.value;
+    return feedgroup;
+  }
+
+  function readTableData() {
+    const table = document.getElementById('tableFeed'); // Выбираем таблицу по классу, можно использовать более точный селектор
+
+    // Получаем строки данных
+    const rows = [];
+    const bodyRows = table.querySelectorAll('tbody tr');
+    // Проходим по строкам данных, исключая последнюю
+    for (let i = 0; i < bodyRows.length - 1; i++) {
+      const row = bodyRows[i];
+      const rowData = [];
+
+      // Получаем ячейки строки
+      const cells = row.querySelectorAll('td');
+
+      // Перебираем ячейки и сохраняем данные
+      cells.forEach((cell, index) => {
+        let cellValue;
+
+        // В зависимости от типа элемента в ячейке, считываем значение
+        if (cell.querySelector('input[type="number"]')) {
+          cellValue = parseFloat(cell.querySelector('input[type="number"]').value);
+        } else if (cell.querySelector('textarea')) {
+          cellValue = cell.querySelector('textarea').value.trim();
+        } else {
+          cellValue = cell.textContent.trim();
+        }
+
+        rowData[index] = cellValue.toString();
+      });
+
+      rows.push(rowData);
+    }
+
+    return  rows;
+  }
+  function readTableDataTitle() {
+    const table = document.getElementById('tableFeed'); // Выбираем таблицу по классу, можно использовать более точный селектор
+
+    // Получаем заголовки таблицы
+    const headerCells = table.querySelectorAll('thead th');
+    const header = Array.from(headerCells).map(cell => cell.textContent.trim());
+
+
+    return header;
+  }
+
+  function sendTableData() {
+    const dataReal = collectTableDataReal();
+    const nameRation = getValue();
+    const nameTable1 = getNameTable1();
+    const feedgroup = getFeedGroup();
+    const variance = getVariance();
+    const feedtitle = readTableDataTitle();
+    const feeds = readTableData();
+    if (dataReal.length === 0) {
+      console.error('Нет данных для отправки!');
+      return;
+    }
+    const requestData = {
+      nameRation: nameRation,
+      feedgroup: feedgroup,
+      nameTable1: nameTable1,
+      dataReal: dataReal,
+      variance: variance,
+      feedtitle: feedtitle,
+      feeds: feeds
+    };
+    fetch('/rations/excel', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestData)
+    })
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Network response was not ok');
+              }
+              return response.blob(); // Обрабатываем ответ как Blob
+            })
+            .then(blob => {
+              const url = window.URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.style.display = 'none';
+              a.href = url;
+              a.download = 'rationsAllInfo.xlsx'; // Имя скачиваемого файла
+              document.body.appendChild(a);
+              a.click();
+              window.URL.revokeObjectURL(url);
+            })
+            .catch(error => {
+              console.error('Ошибка:', error);
+            });
+  }
+
+  function sendTableData2() {
+    const dataReal = collectTableDataReal();
+    const nameRation = getValue();
+    const nameTable1 = getNameTable1();
+    const feedgroup = getFeedGroup();
+    const variance = getVariance();
+    const feedtitle = readTableDataTitle();
+    const feeds = readTableData();
+    if (dataReal.length === 0) {
+      console.error('Нет данных для отправки!');
+      return;
+    }
+    const requestData = {
+      nameRation: nameRation,
+      feedgroup: feedgroup,
+      nameTable1: nameTable1,
+      dataReal: dataReal,
+      variance: variance,
+      feedtitle: feedtitle,
+      feeds: feeds
+    };
+    fetch('/rations/excel2', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestData)
+    })
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Network response was not ok');
+              }
+              return response.blob(); // Обрабатываем ответ как Blob
+            })
+            .then(blob => {
+              const url = window.URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.style.display = 'none';
+              a.href = url;
+              a.download = 'rations.xlsx'; // Имя скачиваемого файла
+              document.body.appendChild(a);
+              a.click();
+              window.URL.revokeObjectURL(url);
+            })
+            .catch(error => {
+              console.error('Ошибка:', error);
+            });
+  }
+
+
+  function clearTableData(){
+    var tableBody = document.getElementById('feed-table-body');
+    while (tableBody.rows.length > 1) {
+      tableBody.deleteRow(0);
+    }
+    // Вызываем пересчет сумм по столбцам
+    updateTotals();
+  }
+  function deleteRow(button) {
+    const row = button.parentNode.parentNode;
+    const table = row.parentNode;
+
+    if (table.rows.length > 1) {
+      table.deleteRow(row.rowIndex-1);
+    }
+    // Вызываем пересчет сумм по столбцам
+    updateTotals();
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const input = document.getElementById('autocomplete-input');
+    const listContainer = document.getElementById('autocomplete-list');
+    const select = document.getElementById('select-feed');
+
+    input.addEventListener('input', function () {
+      const value = this.value.toLowerCase();
+      listContainer.innerHTML = '';
+      if (!value) {
+        return false;
+      }
+
+      Array.from(select.options).forEach(option => {
+        if (option.text.toLowerCase().includes(value)) {
+          const item = document.createElement('div');
+          item.classList.add('autocomplete-item');
+          item.textContent = option.text;
+          item.dataset.value = option.value;
+          item.addEventListener('click', function () {
+            input.value = this.textContent;
+            listContainer.innerHTML = '';
+            addRow(this.dataset.value); // Используем ваше addRow с выбранным значением
+          });
+          listContainer.appendChild(item);
+        }
+      });
+    });
+
+    document.addEventListener('click', function (e) {
+      if (e.target !== input) {
+        listContainer.innerHTML = '';
+        let select = document.getElementById('select-feed');
+        addRow(select);
+      }
+    });
+  });
+  document.addEventListener('DOMContentLoaded', function () {
+    const input = document.getElementById('autocomplete-input');
+    const listContainer = document.getElementById('autocomplete-list');
+    const select = document.getElementById('select-feed');
+
+    input.addEventListener('input', function () {
+      const value = this.value.toLowerCase();
+      listContainer.innerHTML = '';
+      if (!value) {
+        return false;
+      }
+
+      Array.from(select.options).forEach(option => {
+        if (option.text.toLowerCase().includes(value)) {
+          const item = document.createElement('div');
+          item.classList.add('autocomplete-item');
+          item.textContent = option.text;
+          item.dataset.value = option.value;
+          item.addEventListener('click', function () {
+            selectOption(select, this.dataset.value);
+            input.value = ''; // Очищаем поле ввода после выбора
+            listContainer.innerHTML = '';
+          });
+          listContainer.appendChild(item);
+        }
+      });
+    });
+
+    document.addEventListener('click', function (e) {
+      if (e.target !== input) {
+        listContainer.innerHTML = '';
+      }
+    });
+  });
+
+  function selectOption(selectElement, value) {
+    selectElement.value = value; // Устанавливаем значение опции
+    const event = new Event('change', { bubbles: true });
+    selectElement.dispatchEvent(event); // Генерируем событие изменения
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const input = document.getElementById('autocomplete-inputNorma');
+    const listContainer = document.getElementById('autocomplete-listNorma');
+    const select = document.getElementById('feedGroup');
+
+    input.addEventListener('input', function () {
+      const value = this.value.toLowerCase();
+      listContainer.innerHTML = '';
+      if (!value) {
+        return false;
+      }
+
+      Array.from(select.options).forEach(option => {
+        if (option.text.toLowerCase().includes(value)) {
+          const item = document.createElement('div');
+          item.classList.add('autocomplete-itemNorma');
+          item.textContent = option.text;
+          item.dataset.value = option.value;
+          item.addEventListener('click', function () {
+            input.value = this.textContent;
+            listContainer.innerHTML = '';
+            addRowStandard(this.dataset.value); // Используем ваше addRow с выбранным значением
+          });
+          listContainer.appendChild(item);
+        }
+      });
+    });
+
+    document.addEventListener('click', function (e) {
+      if (e.target !== input) {
+        listContainer.innerHTML = '';
+        let select = document.getElementById('feedGroup');
+        addRowStandard(select);
+      }
+    });
+  });
+  document.addEventListener('DOMContentLoaded', function () {
+    const input = document.getElementById('autocomplete-inputNorma');
+    const listContainer = document.getElementById('autocomplete-listNorma');
+    const select = document.getElementById('feedGroup');
+
+    input.addEventListener('input', function () {
+      const value = this.value.toLowerCase();
+      listContainer.innerHTML = '';
+      if (!value) {
+        return false;
+      }
+
+      Array.from(select.options).forEach(option => {
+        if (option.text.toLowerCase().includes(value)) {
+          const item = document.createElement('div');
+          item.classList.add('autocomplete-itemNorma');
+          item.textContent = option.text;
+          item.dataset.value = option.value;
+          item.addEventListener('click', function () {
+            selectOption(select, this.dataset.value);
+            input.value = ''; // Очищаем поле ввода после выбора
+            listContainer.innerHTML = '';
+          });
+          listContainer.appendChild(item);
+        }
+      });
+    });
+    document.addEventListener('click', function (e) {
+      if (e.target !== input) {
+        listContainer.innerHTML = '';
+        let select = document.getElementById('feedGroup');
+        addRowStandard(select);
+      }
+    });
+  });
+
+</script>
+</body>
+</html>
