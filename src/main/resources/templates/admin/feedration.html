@@ -5,11 +5,55 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <style>
-    select {
+    #feedGroup {
         height: 3em; /* Увеличиваем высоту поля */
         line-height: 1.5em; /* Высота строки, позволяющая двум строкам помещаться внутри поля */
         white-space: normal; /* Позволяем тексту переноситься на новую строку */
         overflow: hidden; /* Скрываем лишний текст, который выходит за пределы */
+    }
+    #select-feed {
+        height: 1.8em; /* Увеличиваем высоту поля */
+        line-height: 1.8em; /* Высота строки, позволяющая двум строкам помещаться внутри поля */
+        /*white-space: break-spaces; !* Позволяем тексту переноситься на новую строку *!*/
+        overflow: hidden; /* Скрываем лишний текст, который выходит за пределы */
+        width: 300px;
+    }
+    .autocomplete-container, .autocomplete-containerNorma {
+        position: relative;
+        display: inline-block;
+        width: 300px; /* Устанавливаем ширину контейнера */
+    }
+    .autocomplete-items, .autocomplete-itemsNorma {
+        position: absolute;
+        border: 1px solid #d4d4d4;
+        border-bottom: none;
+        border-top: none;
+        z-index: 99;
+        top: 100%;
+        left: 0;
+        right: 0;
+    }
+    .autocomplete-item, .autocomplete-itemNorma {
+        padding: 10px;
+        cursor: pointer;
+        background-color: #fff;
+        border-bottom: 1px solid #d4d4d4;
+    }
+    .autocomplete-item:hover, .autocomplete-item:hover {
+        background-color: #e9e9e9;
+    }
+    /*#select-feed {*/
+    /*    !*position: absolute;*!*/
+    /*    !*top: 0;*!*/
+    /*    !*right: 0;*!*/
+    /*    width: 30px; !* Устанавливаем минимальную ширину для отображения стрелки *!*/
+    /*    !*height: 100%;*!*/
+    /*    !* opacity: 0;  Прозрачность, чтобы не был виден сам селект *!*/
+    /*    cursor: pointer; !* Указатель курсора *!*/
+    /*}*/
+    #autocomplete-input, #autocomplete-inputNorma {
+        width: 100%;
+        box-sizing: border-box; /* Учитываем бордер и паддинг в ширину */
     }
 </style>
 <body>
@@ -62,9 +106,14 @@
         </thead>
         <tbody id="feedgroup-table-body">
         <tr>
-            <td>Норма</td></tr>
+            <td>Норма</td>
+            </tr>
         <tr id="data-row">
             <td id="stand" >
+                <div class="autocomplete-containerNorma">
+                <input type="text" id="autocomplete-inputNorma" placeholder="Введите или" style="width: 300px">
+                <div id="autocomplete-listNorma" class="autocomplete-itemsNorma"></div>
+                </div>
                 <select class="form-select" style="width: 300px" oninput="addRowStandard(this)" name="feedGroup" id="feedGroup">
                     <option value="">Выберите</option>
                     <option th:each="feedgroup:${feedgroups}"
@@ -195,7 +244,11 @@
         <tbody id="feed-table-body">
         <tr>
             <td >
-                <select class="form-select" style="width: 300px" onchange="addRow(this)">
+                <div class="autocomplete-container">
+                    <input type="text" id="autocomplete-input" placeholder="Введите или" style="width: 300px">
+                    <div id="autocomplete-list" class="autocomplete-items"></div>
+                </div>
+                <select class="form-select"  onchange="addRow(this)" id="select-feed" >
                     <option value="">Выберите</option>
                     <option th:each="feed:${feeds}"
                             th:value="${feed.name}"
@@ -241,11 +294,22 @@
 
     </form>
 </div>
+<br><br><br><br><br><br><br><br><br><br><br><br><br>
 <script>
     let rowCount = 0; // Глобальная переменная для отслеживания количества строк
 
     function addRow(selectElement) {
+
         if (selectElement.value) {
+            const normSelect = document.getElementById('feedGroup');
+            const selectedNorm = normSelect.value;
+
+            // Проверяем, выбрана ли норма
+            if (!selectedNorm) {
+                alert('Пожалуйста, выберите норму перед выбором корма.');
+                selectElement.value = '';  // Сброс выбора корма
+                return;  // Прерываем выполнение функции
+            }
             const selectedOption = selectElement.selectedOptions[0];
             const nutrients = [
                 'feedUnit', 'energyExchange', 'nulll' ,'dryMatter', 'dryProtein', 'digestedProtein', 'rawFat', 'rawFiber',
@@ -788,7 +852,154 @@
         updateTotals();
     }
 
+    document.addEventListener('DOMContentLoaded', function () {
+        const input = document.getElementById('autocomplete-input');
+        const listContainer = document.getElementById('autocomplete-list');
+        const select = document.getElementById('select-feed');
 
+        input.addEventListener('input', function () {
+            const value = this.value.toLowerCase();
+            listContainer.innerHTML = '';
+            if (!value) {
+                return false;
+            }
+
+            Array.from(select.options).forEach(option => {
+                if (option.text.toLowerCase().includes(value)) {
+                    const item = document.createElement('div');
+                    item.classList.add('autocomplete-item');
+                    item.textContent = option.text;
+                    item.dataset.value = option.value;
+                    item.addEventListener('click', function () {
+                        input.value = this.textContent;
+                        listContainer.innerHTML = '';
+                        addRow(this.dataset.value); // Используем ваше addRow с выбранным значением
+                    });
+                    listContainer.appendChild(item);
+                }
+            });
+        });
+
+        document.addEventListener('click', function (e) {
+            if (e.target !== input) {
+                listContainer.innerHTML = '';
+                let select = document.getElementById('select-feed');
+                addRow(select);
+            }
+        });
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        const input = document.getElementById('autocomplete-input');
+        const listContainer = document.getElementById('autocomplete-list');
+        const select = document.getElementById('select-feed');
+
+        input.addEventListener('input', function () {
+            const value = this.value.toLowerCase();
+            listContainer.innerHTML = '';
+            if (!value) {
+                return false;
+            }
+
+            Array.from(select.options).forEach(option => {
+                if (option.text.toLowerCase().includes(value)) {
+                    const item = document.createElement('div');
+                    item.classList.add('autocomplete-item');
+                    item.textContent = option.text;
+                    item.dataset.value = option.value;
+                    item.addEventListener('click', function () {
+                        selectOption(select, this.dataset.value);
+                        input.value = ''; // Очищаем поле ввода после выбора
+                        listContainer.innerHTML = '';
+                    });
+                    listContainer.appendChild(item);
+                }
+            });
+        });
+
+        document.addEventListener('click', function (e) {
+            if (e.target !== input) {
+                listContainer.innerHTML = '';
+            }
+        });
+    });
+
+    function selectOption(selectElement, value) {
+        selectElement.value = value; // Устанавливаем значение опции
+        const event = new Event('change', { bubbles: true });
+        selectElement.dispatchEvent(event); // Генерируем событие изменения
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const input = document.getElementById('autocomplete-inputNorma');
+        const listContainer = document.getElementById('autocomplete-listNorma');
+        const select = document.getElementById('feedGroup');
+
+        input.addEventListener('input', function () {
+            const value = this.value.toLowerCase();
+            listContainer.innerHTML = '';
+            if (!value) {
+                return false;
+            }
+
+            Array.from(select.options).forEach(option => {
+                if (option.text.toLowerCase().includes(value)) {
+                    const item = document.createElement('div');
+                    item.classList.add('autocomplete-itemNorma');
+                    item.textContent = option.text;
+                    item.dataset.value = option.value;
+                    item.addEventListener('click', function () {
+                        input.value = this.textContent;
+                        listContainer.innerHTML = '';
+                        addRowStandard(this.dataset.value); // Используем ваше addRow с выбранным значением
+                    });
+                    listContainer.appendChild(item);
+                }
+            });
+        });
+
+        document.addEventListener('click', function (e) {
+            if (e.target !== input) {
+                listContainer.innerHTML = '';
+                let select = document.getElementById('feedGroup');
+                addRowStandard(select);
+            }
+        });
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        const input = document.getElementById('autocomplete-inputNorma');
+        const listContainer = document.getElementById('autocomplete-listNorma');
+        const select = document.getElementById('feedGroup');
+
+        input.addEventListener('input', function () {
+            const value = this.value.toLowerCase();
+            listContainer.innerHTML = '';
+            if (!value) {
+                return false;
+            }
+
+            Array.from(select.options).forEach(option => {
+                if (option.text.toLowerCase().includes(value)) {
+                    const item = document.createElement('div');
+                    item.classList.add('autocomplete-itemNorma');
+                    item.textContent = option.text;
+                    item.dataset.value = option.value;
+                    item.addEventListener('click', function () {
+                        selectOption(select, this.dataset.value);
+                        input.value = ''; // Очищаем поле ввода после выбора
+                        listContainer.innerHTML = '';
+                    });
+                    listContainer.appendChild(item);
+                }
+            });
+        });
+        document.addEventListener('click', function (e) {
+            if (e.target !== input) {
+                listContainer.innerHTML = '';
+                let select = document.getElementById('feedGroup');
+                addRowStandard(select);
+            }
+        });
+    });
 
 </script>
 </body>
