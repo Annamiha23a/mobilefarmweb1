@@ -66,7 +66,7 @@
   </div>
   <h3 th:utext="${'Редактирование рациона №' + ration.rationId}"></h3>
   <h4>Контроль рациона</h4>
-  <form action="/rations/save" method="post">
+  <form th:action="'/rations/update/'  +${ration.rationId}" method="post">
     <input placeholder="Название рациона" type="text" class="form-control" name="title" id="title" th:value="${ration.title}">
     <br>
     <table class="table table-striped mt-3" >
@@ -314,6 +314,26 @@
         <td th:text="${rationfeed.feed.nutrients.rawFat}"></td>
         <td th:text="${rationfeed.feed.nutrients.rawFiber}"></td>
         <td th:text="${rationfeed.feed.nutrients.starch}"></td>
+
+
+        <td th:text="${rationfeed.feed.nutrients.sugar}"></td>
+        <td th:text="${rationfeed.feed.nutrients.calcium}"></td>
+        <td th:text="${rationfeed.feed.nutrients.phosphorus}"></td>
+        <td th:text="${rationfeed.feed.nutrients.magnesium}"></td>
+        <td th:text="${rationfeed.feed.nutrients.potassium}"></td>
+        <td th:text="${rationfeed.feed.nutrients.sulfur}"></td>
+        <td th:text="${rationfeed.feed.nutrients.ferrum}"></td>
+        <td th:text="${rationfeed.feed.nutrients.copper}"></td>
+        <td th:text="${rationfeed.feed.nutrients.zins}"></td>
+
+        <td th:text="${rationfeed.feed.nutrients.manganese}"></td>
+        <td th:text="${rationfeed.feed.nutrients.cobalt}"></td>
+        <td th:text="${rationfeed.feed.nutrients.iodine}"></td>
+        <td th:text="${rationfeed.feed.nutrients.carotene}"></td>
+        <td th:text="${rationfeed.feed.nutrients.vitaminE}"></td>
+        <td th:text="${rationfeed.feed.nutrients.vitaminD}"></td>
+        <td><textarea th:text="${rationfeed.feed.feedId}" readonly type="number" class="form-control" style="width: 60px; height: 30px" name="feed"></textarea></td>
+        <td><button type="button" onclick="deleteRow(this)" style="background: red" >Удалить</button></td>
       </tr><tr>
 
         <td >
@@ -358,7 +378,7 @@
     </table>
     <button class="btn btn-sm btn-primary w-25" type="button" onclick="clearTableData()">Очистить таблицу</button>
     <br><br>
-    <button  class="btn btn-sm btn-primary w-25" type="submit">Сохранить рацион</button>
+    <button  class="btn btn-sm btn-primary w-25" type="submit">Сохранить изменения рациона</button>
     <!--        <form th:action="'/rations/excel/'+${ration.getRationId}" method="post">-->
     <!--            <button class="btn btn-sm btn-danger" type="submit">Печать общей информации в Excel</button>-->
     <!--        </form>-->
@@ -1072,6 +1092,11 @@
         addRowStandard(select);
       }
     });
+  });
+
+  // Вызов функции при загрузке страницы
+  document.addEventListener('DOMContentLoaded', function() {
+    updateTotals();
   });
 
 </script>

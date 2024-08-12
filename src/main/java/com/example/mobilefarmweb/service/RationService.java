@@ -12,6 +12,7 @@ public interface RationService {
     Ration getRationById(Long id);
 
     void saveRation(String title, FeedGroup feedGroup, List<Feed> feeds, List<BigDecimal> kg);
+    void updateRation(Long id, String title, FeedGroup feedGroup, List<Feed> feeds, List<BigDecimal> kg);
 
     void deleteRations(Ration ration);
 }

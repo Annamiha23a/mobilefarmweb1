@@ -91,6 +91,19 @@ public class RationController {
         model.addAttribute("rations", rationService.getAll());
         return "admin/rations";
     }
+    @PostMapping("/update/{id}")
+    public String updateRations(Model model,@PathVariable("id") Long id,  @RequestParam(name="title") String  title, @RequestParam(name="kg") List<BigDecimal>  kg, @RequestParam(name="feed") List<Long>  feed, @RequestParam(name="feedGroup") Long  feedGroup){
+        System.out.println("Успешно обнавлено "+ "id " + id + title +"kg "+ kg + "feed "+feed + "feedgroup "+ feedGroup);
+        FeedGroup feedGroup1=feedGroupService.findByFeedGroupId(feedGroup);
+        List<Feed> feeds = new ArrayList<>();
+        for(Long f:feed){
+            Feed feed1=feedService.findbyId(f);
+            feeds.add(feed1);
+        }
+        rationService.updateRation(id, title, feedGroup1, feeds, kg );
+        model.addAttribute("rations", rationService.getAll());
+        return "admin/rations";
+    }
 
     @PostMapping("/excel")
     public ResponseEntity<byte[]> excelAllRations(@RequestBody RationsExcelData requestData){
