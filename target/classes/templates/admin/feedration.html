@@ -396,10 +396,11 @@
         const row = inputElement.parentElement.parentElement;
         const cells = row.children;
 
-        for (let i = 2; i < cells.length && i != 4; i++) {
+        for (let i = 2; i < cells.length - 2; i++) {
             const cell = cells[i];
             const originalValue = parseFloat(cell.getAttribute('data-original-value'));
-            if (!isNaN(originalValue)) {
+
+            if (!isNaN(originalValue && i != 4)) {
                 cell.textContent = (originalValue * quantity).toFixed(2);
             }
         }

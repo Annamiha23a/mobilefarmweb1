@@ -303,35 +303,35 @@
       </thead>
       <tbody id="feed-table-body">
       <tr th:each="rationfeed:${ration.rationFeeds}">
-        <td th:text="${rationfeed.feed.name}"></td>
+        <td th:text="${rationfeed.feed.name}" th:data-original-value="${rationfeed.feed.name}"></td>
         <td><input type="number" step=0.01 class="form-control"   name="kg" oninput="updateRow(this)"  th:value="${rationfeed.amount}"></td>
-        <td th:text="${rationfeed.feed.nutrients.feedUnit}"></td>
-        <td th:text="${rationfeed.feed.nutrients.energyExchange}"></td>
-        <td th:text="${rationfeed.feed.nutrients.energyExchange/(ration.feedGroup.nutrients.energyExchange) + '%'}"></td>
-        <td th:text="${rationfeed.feed.nutrients.dryMatter}"></td>
-        <td th:text="${rationfeed.feed.nutrients.dryProtein}"></td>
-        <td th:text="${rationfeed.feed.nutrients.digestedProtein}"></td>
-        <td th:text="${rationfeed.feed.nutrients.rawFat}"></td>
-        <td th:text="${rationfeed.feed.nutrients.rawFiber}"></td>
-        <td th:text="${rationfeed.feed.nutrients.starch}"></td>
+        <td th:text="${rationfeed.feed.nutrients.feedUnit}" th:data-original-value="${rationfeed.feed.nutrients.feedUnit}"  ></td>
+        <td th:text="${rationfeed.feed.nutrients.energyExchange}" th:data-original-value="${rationfeed.feed.nutrients.energyExchange}"></td>
+        <td th:text="${rationfeed.feed.nutrients.energyExchange/(ration.feedGroup.nutrients.energyExchange) + '%'}"  th:data-original-value="${rationfeed.feed.nutrients.energyExchange/(ration.feedGroup.nutrients.energyExchange) + '%'}"></td>
+        <td th:text="${rationfeed.feed.nutrients.dryMatter}"th:data-original-value="${rationfeed.feed.nutrients.dryMatter}"></td>
+        <td th:text="${rationfeed.feed.nutrients.dryProtein}"th:data-original-value="${rationfeed.feed.nutrients.dryProtein}"></td>
+        <td th:text="${rationfeed.feed.nutrients.digestedProtein}"th:data-original-value="${rationfeed.feed.nutrients.digestedProtein}"></td>
+        <td th:text="${rationfeed.feed.nutrients.rawFat}"th:data-original-value="${rationfeed.feed.nutrients.rawFat}"></td>
+        <td th:text="${rationfeed.feed.nutrients.rawFiber}"th:data-original-value="${rationfeed.feed.nutrients.rawFiber}"></td>
+        <td th:text="${rationfeed.feed.nutrients.starch}"th:data-original-value="${rationfeed.feed.nutrients.starch}"></td>
 
 
-        <td th:text="${rationfeed.feed.nutrients.sugar}"></td>
-        <td th:text="${rationfeed.feed.nutrients.calcium}"></td>
-        <td th:text="${rationfeed.feed.nutrients.phosphorus}"></td>
-        <td th:text="${rationfeed.feed.nutrients.magnesium}"></td>
-        <td th:text="${rationfeed.feed.nutrients.potassium}"></td>
-        <td th:text="${rationfeed.feed.nutrients.sulfur}"></td>
-        <td th:text="${rationfeed.feed.nutrients.ferrum}"></td>
-        <td th:text="${rationfeed.feed.nutrients.copper}"></td>
-        <td th:text="${rationfeed.feed.nutrients.zins}"></td>
+        <td th:text="${rationfeed.feed.nutrients.sugar}"th:data-original-value="${rationfeed.feed.nutrients.sugar}"></td>
+        <td th:text="${rationfeed.feed.nutrients.calcium}"th:data-original-value="${rationfeed.feed.nutrients.calcium}"></td>
+        <td th:text="${rationfeed.feed.nutrients.phosphorus}"th:data-original-value="${rationfeed.feed.nutrients.phosphorus}"></td>
+        <td th:text="${rationfeed.feed.nutrients.magnesium}"th:data-original-value="${rationfeed.feed.nutrients.magnesium}"></td>
+        <td th:text="${rationfeed.feed.nutrients.potassium}"th:data-original-value="${rationfeed.feed.nutrients.potassium}"></td>
+        <td th:text="${rationfeed.feed.nutrients.sulfur}"th:data-original-value="${rationfeed.feed.nutrients.sulfur}"></td>
+        <td th:text="${rationfeed.feed.nutrients.ferrum}"th:data-original-value="${rationfeed.feed.nutrients.ferrum}"></td>
+        <td th:text="${rationfeed.feed.nutrients.copper}"th:data-original-value="${rationfeed.feed.nutrients.copper}"></td>
+        <td th:text="${rationfeed.feed.nutrients.zins}"th:data-original-value="${rationfeed.feed.nutrients.zins}"></td>
 
-        <td th:text="${rationfeed.feed.nutrients.manganese}"></td>
-        <td th:text="${rationfeed.feed.nutrients.cobalt}"></td>
-        <td th:text="${rationfeed.feed.nutrients.iodine}"></td>
-        <td th:text="${rationfeed.feed.nutrients.carotene}"></td>
-        <td th:text="${rationfeed.feed.nutrients.vitaminE}"></td>
-        <td th:text="${rationfeed.feed.nutrients.vitaminD}"></td>
+        <td th:text="${rationfeed.feed.nutrients.manganese}"th:data-original-value="${rationfeed.feed.nutrients.manganese}"></td>
+        <td th:text="${rationfeed.feed.nutrients.cobalt}"th:data-original-value="${rationfeed.feed.nutrients.cobalt}"></td>
+        <td th:text="${rationfeed.feed.nutrients.iodine}"th:data-original-value="${rationfeed.feed.nutrients.iodine}"></td>
+        <td th:text="${rationfeed.feed.nutrients.carotene}"th:data-original-value="${rationfeed.feed.nutrients.carotene}"></td>
+        <td th:text="${rationfeed.feed.nutrients.vitaminE}"th:data-original-value="${rationfeed.feed.nutrients.vitaminE}"></td>
+        <td th:text="${rationfeed.feed.nutrients.vitaminD}"th:data-original-value="${rationfeed.feed.nutrients.vitaminD}"></td>
         <td><textarea th:text="${rationfeed.feed.feedId}" readonly type="number" class="form-control" style="width: 60px; height: 30px" name="feed"></textarea></td>
         <td><button type="button" onclick="deleteRow(this)" style="background: red" >Удалить</button></td>
       </tr><tr>
@@ -489,10 +489,10 @@
     const row = inputElement.parentElement.parentElement;
     const cells = row.children;
 
-    for (let i = 2; i < cells.length && i != 4; i++) {
+    for (let i = 2; i < cells.length -12; i++) {
       const cell = cells[i];
       const originalValue = parseFloat(cell.getAttribute('data-original-value'));
-      if (!isNaN(originalValue)) {
+      if (!isNaN(originalValue && i != 4)) {
         cell.textContent = (originalValue * quantity).toFixed(2);
       }
     }
